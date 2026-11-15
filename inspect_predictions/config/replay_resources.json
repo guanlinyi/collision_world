@@ -1,0 +1,8 @@
+{
+  "case": "joint_fresh_11",
+  "recorded_camera": "datasets/carla_replay/case11/input_json/camera.json",
+  "structure_comparison": "datasets/carla_replay/case11/input_json/structure.json",
+  "pose_experiments": "datasets/carla_replay/case11/input_json/pose_experiments.json",
+  "pair_geometry": "datasets/carla_replay/case11/input_json/pair_geometry.json",
+  "case_truth": "datasets/carla_replay/case11/input_json/case_truth.json"
+}

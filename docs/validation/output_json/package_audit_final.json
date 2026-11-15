@@ -1,0 +1,16 @@
+{
+  "public_files_excluding_this_audit": 2269,
+  "public_bytes_excluding_this_audit": 456154902,
+  "local_total_bytes_including_ignored": 653283130,
+  "largest_public_file": "estimate_geometry/refine_contours/evaluation_only_json/frozen_candidate.json",
+  "largest_public_file_bytes": 20732118,
+  "parsed_python_files": 76,
+  "checked_local_markdown_links": 38,
+  "broken_links": [],
+  "runtime_code_absolute_old_drive_paths": [],
+  "credential_pattern_candidate_files": [],
+  "scope": "Static/package integrity only. Does not rerun training, SAM, geometry or the browser.",
+  "final_manifest_file_hash_mismatches": [],
+  "initial_missing_manifest_link_resolved_after_creation": true,
+  "passed": true
+}

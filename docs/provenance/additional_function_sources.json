@@ -1,0 +1,44 @@
+[
+  {
+    "target": "estimate_geometry/refine_contours/code/portable_geometry.py",
+    "source": "E:/Reset/mask2world/video_to_3d_lab_20261007/tools/structure_s0_halfpixel_coordinates.py",
+    "functions": "camera",
+    "source_sha256": "12e2c6f011402a35bc640e70757b19de7710c31b3e2fccc24e680e557fc9202f",
+    "target_sha256": "68d78b1e77e2c45a88cf03c04214c05621ad0561f6de9e90acdc2a5b6dcd1324"
+  },
+  {
+    "target": "estimate_geometry/refine_contours/code/portable_geometry.py",
+    "source": "E:/Reset/mask2world/video_to_3d_lab_20261007/tools/fit_asset_part_contours.py",
+    "functions": "pose_row",
+    "source_sha256": "31a8cc3c12079101f6877da2750338299dc26d6d6a7912224e9e274504b35261",
+    "target_sha256": "68d78b1e77e2c45a88cf03c04214c05621ad0561f6de9e90acdc2a5b6dcd1324"
+  },
+  {
+    "target": "estimate_geometry/refine_contours/code/portable_geometry.py",
+    "source": "F:/Reset/collision_world_model/collision_understanding/diagnose_geometry_evidence/experiments/20261107_rgb_structure_candidate/code/run_candidate.py",
+    "functions": "project",
+    "source_sha256": "5e3d41a2a68ce50e730207e9197b43811cb3e7c951b7f650dba15567b98ab31a",
+    "target_sha256": "68d78b1e77e2c45a88cf03c04214c05621ad0561f6de9e90acdc2a5b6dcd1324"
+  },
+  {
+    "target": "estimate_geometry/refine_contours/code/portable_geometry.py",
+    "source": "F:/Reset/collision_world_model/collision_understanding/diagnose_geometry_evidence/experiments/20261108_wheel_soft_direction/code/frozen_mask_problem.py",
+    "functions": "geometry_from_meta",
+    "source_sha256": "e2574361397ada3a8d5423487ad2637bfe8a7ad59708e7191f5e5c2b842781d5",
+    "target_sha256": "68d78b1e77e2c45a88cf03c04214c05621ad0561f6de9e90acdc2a5b6dcd1324"
+  },
+  {
+    "target": "estimate_geometry/observe_structure/code/sam_loader.py",
+    "source": "E:/Reset/mask2world/vehicle_parts_probe_20261006/tools/sam2_faces_multi.py",
+    "functions": "load_predictor Hydra construction only, explicit parameters",
+    "source_sha256": "28bb13bee99af7eb7b401971d3ea7bdd65eba12005ecad949ac2dd932e0183c7",
+    "target_sha256": "415c6cbed9e8f2ba937023e42236a95785cd77ff957412e1ff33a6abc60dc30e"
+  },
+  {
+    "target": "estimate_geometry/observe_structure/code/whole_observer.py",
+    "source": "F:/Reset/collision_world_model/collision_understanding/diagnose_geometry_evidence/experiments/20261115_case07_far_observation/code/observe_case07_far.py",
+    "functions": "case07 original consensus3of4 policy",
+    "source_sha256": "3c5c9e8474f82620077cc0e36864bf6ca54f04bad0ac883a96df470019806757",
+    "target_sha256": "2e613471427490c2055dc728e15e270e08b2050ead5359a884d0749fc2fab02c"
+  }
+]

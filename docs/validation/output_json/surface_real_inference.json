@@ -1,0 +1,21 @@
+{
+  "seconds": 0.45549599999958446,
+  "states": 6,
+  "device": "cpu",
+  "model": "F:\\Reset\\collision_world_model_public\\estimate_geometry\\personal_checkpoint",
+  "state_update": "released",
+  "experimental_state_update": false,
+  "experimental_proposal_recovery": false,
+  "recovered_states": 0,
+  "ground_truth_opened": false,
+  "depth_opened": false,
+  "provided_inputs": [
+    "RGB crops",
+    "native instance masks",
+    "calibration",
+    "object identities",
+    "saved upstream learned proposals"
+  ],
+  "causality_scope": "State and optional recovery use only current/past evidence; proposal provenance is a separate upstream contract.",
+  "scope": "Prepared CARLA input only; not arbitrary video deployment"
+}

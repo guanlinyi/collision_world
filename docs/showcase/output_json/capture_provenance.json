@@ -1,0 +1,25 @@
+{
+    "captured_at":  "2026-11-15T12:17:03.9393022+08:00",
+    "renderer":  "Chrome headless actual application",
+    "images_edited":  false,
+    "visually_inspected":  true,
+    "scope":  "Two real browser states; no claim of all controls, platforms or frame states",
+    "images":  [
+                   {
+                       "image":  "docs/showcase/output_png/overview_case07.png",
+                       "url":  "http://127.0.0.1:8883/cases/07/#frame=41\u0026car=0\u0026method=case07_far_exterior_bt8",
+                       "method":  "case07_far_exterior_bt8",
+                       "case":  "07",
+                       "frame":  41,
+                       "sha256":  "6c09f5fb320e29b3b8c9428808ecf710430b6d548ccb78d765d750edf519dd25"
+                   },
+                   {
+                       "image":  "docs/showcase/output_png/overview_case11.png",
+                       "url":  "http://127.0.0.1:8883/cases/11/#frame=22\u0026car=0\u0026method=contiguous_exact_contour_bt8",
+                       "method":  "contiguous_exact_contour_bt8",
+                       "case":  "11",
+                       "frame":  22,
+                       "sha256":  "3f9dd94a7624b134b849fc8ce5942db9df432cc8ec68d057109374519bd93b4b"
+                   }
+               ]
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "target": "code/portable_io.py",
+    "target_sha256": "c09b995bda39a6bdc9357fe2579343dc80dcd4fdb3ad2d57f7a491c19f5a6785",
+    "source": null,
+    "source_sha256": null
+  },
+  {
+    "target": "code/portable_geometry.py",
+    "target_sha256": "68d78b1e77e2c45a88cf03c04214c05621ad0561f6de9e90acdc2a5b6dcd1324",
+    "source": "E:\\Reset\\mask2world\\video_to_3d_lab_20261007\\tools\\collision_diag_core.py",
+    "source_sha256": "06cd518d90825ccec07e215e6e65c395634dc3797251128ccffafdd9e95c4375"
+  },
+  {
+    "target": "code/audit_silhouette.py",
+    "target_sha256": "3d0d064308f55c616fbb96d186c5c3821c312689db3f618162e0403722798f81",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261108_mesh_silhouette_audit\\code\\audit_silhouette.py",
+    "source_sha256": "9c82ad9d4b1419582c31bf62d71b4c43243652025c6744b94ac43bfd3ac3515a"
+  },
+  {
+    "target": "code/continuous_depth_attempt.py",
+    "target_sha256": "7cd0d91d91f0f1e961c301e03254d219734e0111255358c083ea0941a2cbd8c9",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261108_mesh_silhouette_audit\\code\\continuous_depth_attempt.py",
+    "source_sha256": "2b7d1c0608065e4a0cc891620fd1bb777a7c2a38995c22cd030aab1e1f40d46a"
+  },
+  {
+    "target": "code/tangent_kernel.py",
+    "target_sha256": "25e65b2d8af2203f13046a5f9c876c54a15656a571052c9a4fa9dffd0007413e",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261108_mesh_silhouette_audit\\code\\tangent_kernel.py",
+    "source_sha256": "68632c2f50cd6793ac817e2be337b2f046a559276f80e703ca405ab1ec6dd564"
+  },
+  {
+    "target": "code/exact_union_index.py",
+    "target_sha256": "01b8ebac4011ca827d1cd73f66edf0c5ce121992a39ed2717704289b1d6b40a3",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_exact_contour_refresh_repair\\code\\exact_union_index.py",
+    "source_sha256": "a827e1bd6d504b0d3a4571b880908c70940d3d0a3757600211abb9aaebd72ef0"
+  },
+  {
+    "target": "code/geometry_pool.py",
+    "target_sha256": "df1dbb377c4d457c7a172eeca7021fb63c4c6deff563a9f573fc76266b08a946",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261109_exterior_pose_candidate\\code\\geometry_pool.py",
+    "source_sha256": "5f9eafd269763d3881c40c6ef99b13498a8e34c8d20d1d5a6581091d73c0abc5"
+  },
+  {
+    "target": "code/exterior_matching.py",
+    "target_sha256": "2ad049beb3013e8c7063cb89681acfee5f1cb7572fd2a0ac83ad72ba6fb540ec",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261109_exterior_pose_candidate\\code\\exterior_matching.py",
+    "source_sha256": "dbd5202f7d99fed02c34b8c4f93d8d6737853756e8a848d1564568a2d222541b"
+  },
+  {
+    "target": "code/prototype_frame27.py",
+    "target_sha256": "8b0842aed348e96ea901faef7a44b277415c74b97640be7e0426c81a15c786b4",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261109_exterior_pose_candidate\\code\\prototype_frame27.py",
+    "source_sha256": "4c1af51857440e1508d589729857a3adde82994076ee85873999941297ffbf2a"
+  },
+  {
+    "target": "code/refresh_associations.py",
+    "target_sha256": "43ba4fe45732b2ca591f13802bdc0042cc7f6215e802cff0b6519030092dbd7a",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261109_exterior_pose_candidate\\code\\refresh_associations.py",
+    "source_sha256": "1f4fb008ed0d8f1d00b2b03cb131f74e78a07d158762e544b23c33df5d36b9cf"
+  },
+  {
+    "target": "code/run_candidate.py",
+    "target_sha256": "1c37b5ed86c9f74a1bf4a95f5ac1cf6daaabeae976b76d2648b7da06f5fee6fb",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261109_exterior_pose_candidate\\code\\run_candidate.py",
+    "source_sha256": "54de69132ee201a9b7ded45acc0684cb1e382628b0fa0b45b986b450ad1805cc"
+  },
+  {
+    "target": "code/problem.py",
+    "target_sha256": "e6cb1a28362868ab91060b806a4027a1ab5c40cbd4f5ac982d2b82a4fc22418d",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261111_contact_window_exterior_fit\\code\\contact_adapter.py",
+    "source_sha256": "0d275cb6eebabda478c30bb3dc8353ca2e6e7a183c7fbadde92f4ccc42a20af0"
+  },
+  {
+    "target": "input_json/safe_inputs.json",
+    "target_sha256": "dc0e1abad0dee7edc3774858ed88c2e15e2eebee155d12dec3770e5683fba21b",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_transfer\\input_json\\uniform_joint_fresh_07_c0_f28_safe_inputs.json",
+    "source_sha256": "143ea2e4de81687ecf37bda82b2e9bd1ed9d48ba58d23bfc6f8c3981a5630542"
+  },
+  {
+    "target": "input_json/support.json",
+    "target_sha256": "ce9b0a4d4f2ffe04f5b496d5e4b9a5fd11ee76079e5d0b03cd93e0e6641c76a1",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261108_wheel_soft_direction\\output_json\\baseline_problems.json",
+    "source_sha256": "ba83d0915f00b3216b488570ec4555b802a0246ae3db45a03911f01d61914d97"
+  },
+  {
+    "target": "input_json/observation.json",
+    "target_sha256": "ca3d8519130660d9d3140343004d8095a4caf79b1821f18e72cd308effcf9ec4",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_observation\\attempt3\\observation\\output_json\\reliable_exterior\\frame_28.json",
+    "source_sha256": "ca3d8519130660d9d3140343004d8095a4caf79b1821f18e72cd308effcf9ec4"
+  },
+  {
+    "target": "input_json/contract.json",
+    "target_sha256": "18dae9ec6c125c089edd198dff4a142de145365ba9040d465d89e579c8779fb0",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261109_exterior_pose_candidate\\input_json\\contract.json",
+    "source_sha256": "f41102d825c7f1f0db0b7598aaef8c56c14d5c50c22993a7ad33160698e02d9f"
+  },
+  {
+    "target": "evaluation_only_json/frozen_candidate.json",
+    "target_sha256": "c8135dcb2946c6ff61d720ca64652ce3bfd183bc875ee95aa548c68c5397525a",
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_transfer\\output_json\\uniform_fit\\joint_fresh_07_c0_f28_fit_before_scoring.json",
+    "source_sha256": "c8135dcb2946c6ff61d720ca64652ce3bfd183bc875ee95aa548c68c5397525a"
+  },
+  {
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261108_mesh_silhouette_audit\\output_npz\\source_mesh.npz",
+    "source_sha256": "bbeb62c00db354542add58ef4e9a855388d741fc9bdf957615a8dc08a4fd8941",
+    "target": "geometry_source/input_npz/source_mesh.npz",
+    "target_sha256": "bbeb62c00db354542add58ef4e9a855388d741fc9bdf957615a8dc08a4fd8941"
+  },
+  {
+    "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261108_mesh_silhouette_audit\\output_npz\\edge_samples_frame27.npz",
+    "source_sha256": "e7b5df87be38e693a0d146d48219454bfa72ee996752c1a88c9a7f8490cb0b94",
+    "target": "geometry_source/input_npz/edge_samples_frame27.npz",
+    "target_sha256": "05ce5da3ef51710057ea8c3ef482996547b14dce5f98f46f781fa6f9869e3809"
+  },
+  {
+    "target": "SOURCE_TRANSFORMATION.json",
+    "target_sha256": "5e2a1500c8b0413a68384962a9e3246372266177ce78e0f5aa31fc4324a4282a",
+    "source": null,
+    "source_sha256": null
+  }
+]

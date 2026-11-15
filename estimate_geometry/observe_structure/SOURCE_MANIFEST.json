@@ -1,0 +1,52 @@
+{
+  "sources": [
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261108_whole_vehicle_observation\\code\\observe_whole_vehicle.py",
+      "sha256": "22de9d09a03e748f37435543513d7223c4356e85ffe41843349a52debbf797fb"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261109_reliable_exterior_edges\\code\\observe_rgb_edges.py",
+      "sha256": "a9c107626055a95bda4a18744578d505d5038a363c38b4b9e8d2ff1acf941aed"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_observation\\attempt3\\observation\\output_json\\observations.json",
+      "sha256": "0de034649741e5d6de6c1a119e1b02100729237f5ac5d9ce54bc7d65d05b6d4d"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_observation\\attempt3\\observation\\output_npz\\f28_whole_candidates.npz",
+      "sha256": "279e41e7d32113469adadee768e85ea3690b323fa50ba273c3a14cbe7f220a44"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_observation\\attempt3\\observation\\output_png\\f28_whole_mask.png",
+      "sha256": "8e30a933f383726ad4ca0a436d819ba6b6066cd163c6c62a3af27a056d6b5415"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_observation\\attempt3\\seed\\output_json\\segmentation.json",
+      "sha256": "32e8588ff0221ba17ad08fb8ba2cffe59497c0a5388d5d55a5f7bde577c60ff0"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_observation\\attempt3\\seed\\input_json\\rgb_prompts.json",
+      "sha256": "74353a894a0d41b0d13caec01d61180f1b195980e4cd316a9acdd871d140c59a"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_observation\\attempt3\\seed\\output_png\\car0_whole.png",
+      "sha256": "1adb1f37e1de6855c78f8d19efb4e1d627eddaeaadda7720af4a0679111eb4e2"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_observation\\code\\observe_case07_far.py",
+      "sha256": "3c5c9e8474f82620077cc0e36864bf6ca54f04bad0ac883a96df470019806757"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261115_case07_far_observation\\code\\observe_attempt3.py",
+      "sha256": "169414778ab49f56d78bbb934dce7ff25809462043cb9b6b538b8ac04c62e216"
+    }
+  ],
+  "engineering_changes": [
+    "Explicit backend factory instead of private UI loader",
+    "Single frozen frame input",
+    "Seed metadata/path relocation"
+  ],
+  "scientific_changes_from_whole_source": [
+    "Original case07 consensus threshold 3-of-4"
+  ]
+}

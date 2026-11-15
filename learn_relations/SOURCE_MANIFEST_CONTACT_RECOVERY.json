@@ -1,0 +1,49 @@
+{
+  "organized_on": "2026-11-15",
+  "rights_status": "Company-stage source, local candidate only pending ownership/licensing review. Not published or relicensed.",
+  "sources": [
+    {
+      "source": "E:\\Reset\\mask2world\\train_carla_privileged_temporal_baseline.py",
+      "source_sha256": "7b3a39435eb3d0e5508e27e13c58d593669d06c6dca061410347488a4e6f1e20",
+      "selected_symbols": [
+        "load_static_geometry",
+        "vec",
+        "norm",
+        "angle_delta",
+        "object_state",
+        "aabb_gap",
+        "_convex_hull_xy",
+        "_point_segment_distance",
+        "_polygons_overlap",
+        "oriented_box_gap",
+        "frame_features",
+        "recording_features"
+      ],
+      "origin_phase": "company-stage collision research; local audit only; redistribution rights unresolved"
+    },
+    {
+      "source": "E:\\Reset\\mask2world\\augment_carla_contact_teacher_cache.py",
+      "source_sha256": "2cd31ab625063e341f128f9fc8aee730d248c254b52975325a2baf2733d899a9",
+      "selected_symbols": [
+        "values_at_ends",
+        "augment_record"
+      ],
+      "origin_phase": "company-stage collision research; local audit only; redistribution rights unresolved"
+    }
+  ],
+  "targets": [
+    {
+      "target": "code/contact_physics.py",
+      "sha256": "b3caad06b3266d13c872e6fc5b753c55b6a469e401d73d9cf1ac586ba47c9d29"
+    },
+    {
+      "target": "code/augment_contact.py",
+      "sha256": "781e683ea2e119a7072e1e0791bd20c47239cdf9bcb995f8d00538778afc49ca"
+    }
+  ],
+  "adaptations": [
+    "Extract original definitions rather than inventing contact labels.",
+    "Import shared manifest/actor selection helpers; add relative path handling and exclusive output creation.",
+    "Document XY-hull/z-gap approximation, nearest-center static target and first-frame speed-delta behavior; algorithm unchanged."
+  ]
+}

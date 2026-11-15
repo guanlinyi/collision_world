@@ -1,0 +1,111 @@
+{
+  "organized_on": "2026-11-15",
+  "license_status": "Rights not established by source availability; no third-party or company license is granted.",
+  "adaptations": [
+    "Selected actual model, losses, calibration and evaluation functions; removed unrelated experiment programs.",
+    "Explicit V-JEPA root/checkpoint; relative annotation and cache manifest paths; image_dir override.",
+    "CPU/CUDA option in student training; exclusive output creation; tensors in safe-load checkpoints.",
+    "Contact-label generator absent from inventory: requires external reviewed teacher labels; no replacement labels claimed equivalent."
+  ],
+  "sources": [
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_relation_contact_student_cross_view.py",
+      "source_sha256": "de1a5c4a391dedca4166b69e0d2c655eba4d13c0c7255e11f0eb622dac5c4111",
+      "selected_symbols": [
+        "RelationContactStudent"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_contact_student_cross_view.py",
+      "source_sha256": "eb8ccbd55c302d0ef0b56cbbd1499ed863ce19a85e89bd00dc1b8331c0a3d189",
+      "selected_symbols": [
+        "regression_metrics",
+        "alarm_summary"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_privileged_temporal_baseline.py",
+      "source_sha256": "7b3a39435eb3d0e5508e27e13c58d593669d06c6dca061410347488a4e6f1e20",
+      "selected_symbols": [
+        "load_json"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_vjepa_dense_25d.py",
+      "source_sha256": "76aae018c2448c0b5e8ca4e81130a6c5793f0a14a7d6ae09b29835c425a69f5a",
+      "selected_symbols": [
+        "load_record"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_spatial_collision_height_holdout.py",
+      "source_sha256": "ad538b228197edcd3c410604e28b34f8efdbc5be3b09424b4e956994cacf72f8",
+      "selected_symbols": [
+        "manifest_metadata"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_relation_contact_student_cross_view.py",
+      "source_sha256": "de1a5c4a391dedca4166b69e0d2c655eba4d13c0c7255e11f0eb622dac5c4111",
+      "selected_symbols": [
+        "load_records",
+        "concatenate",
+        "participant_mask_metrics"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_relation_contact_event_student_cross_view.py",
+      "source_sha256": "35b2bae6943b833d51355059eed4450bf93720878ae2039478c0200351d0f3eb",
+      "selected_symbols": "complete module"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\carla_rgb_25d_targets.py",
+      "source_sha256": "cee311d8abb80b6ef0e9dae156836cce3ac86324320db7e7154b9ad71072e7b8",
+      "selected_symbols": "complete module"
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_privileged_temporal_baseline.py",
+      "source_sha256": "7b3a39435eb3d0e5508e27e13c58d593669d06c6dca061410347488a4e6f1e20",
+      "selected_symbols": [
+        "load_json",
+        "load_eligible_manifest",
+        "allowed",
+        "make_windows",
+        "choose_actor_ids"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_vjepa_rgb_baseline.py",
+      "source_sha256": "140473e582277c3da6357a31e98d4cc503a1735baf70597fb2e6dd32dafabd18",
+      "selected_symbols": [
+        "load_rgb_tensor",
+        "selected_windows",
+        "base_by_training_iteration"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\analyze_kick_vjepa21_prototypes.py",
+      "source_sha256": "7437df345af07e935ba69e549620573f2e3a1cd983ba63b79cbadab433b63244",
+      "selected_symbols": [
+        "build_encoder"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_vjepa_dense_25d.py",
+      "source_sha256": "76aae018c2448c0b5e8ca4e81130a6c5793f0a14a7d6ae09b29835c425a69f5a",
+      "selected_symbols": [
+        "cache_name",
+        "extract_record"
+      ]
+    },
+    {
+      "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\augment_carla_relation_teacher_cache.py",
+      "source_sha256": "be9454cc17c04392beddd9c7d4f8e6abc86bba8912bdaf48b8cead24b66bddc0",
+      "selected_symbols": [
+        "participant_ids",
+        "actor_patch_target",
+        "participant_targets"
+      ]
+    }
+  ]
+}

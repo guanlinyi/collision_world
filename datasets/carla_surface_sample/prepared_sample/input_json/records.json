@@ -1,0 +1,597 @@
+[
+  {
+    "index": 0,
+    "source_state": 0,
+    "source_feature_index": 0,
+    "episode": 0,
+    "step": 0,
+    "view": 0,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      475.0,
+      171.0,
+      596.0,
+      206.0
+    ],
+    "valid_pixels": 2696
+  },
+  {
+    "index": 1,
+    "source_state": 1,
+    "source_feature_index": 1,
+    "episode": 0,
+    "step": 0,
+    "view": 0,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      372.0,
+      151.0,
+      402.0,
+      180.0
+    ],
+    "valid_pixels": 3514
+  },
+  {
+    "index": 2,
+    "source_state": 0,
+    "source_feature_index": 2,
+    "episode": 0,
+    "step": 0,
+    "view": 1,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      330.0,
+      168.0,
+      356.0,
+      189.0
+    ],
+    "valid_pixels": 3072
+  },
+  {
+    "index": 3,
+    "source_state": 1,
+    "source_feature_index": 3,
+    "episode": 0,
+    "step": 0,
+    "view": 1,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      79.0,
+      159.0,
+      190.0,
+      205.0
+    ],
+    "valid_pixels": 3171
+  },
+  {
+    "index": 4,
+    "source_state": 0,
+    "source_feature_index": 4,
+    "episode": 0,
+    "step": 0,
+    "view": 2,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      140.0,
+      171.0,
+      217.0,
+      195.0
+    ],
+    "valid_pixels": 2887
+  },
+  {
+    "index": 5,
+    "source_state": 1,
+    "source_feature_index": 5,
+    "episode": 0,
+    "step": 0,
+    "view": 2,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      323.0,
+      176.0,
+      429.0,
+      274.0
+    ],
+    "valid_pixels": 3391
+  },
+  {
+    "index": 6,
+    "source_state": 0,
+    "source_feature_index": 6,
+    "episode": 0,
+    "step": 0,
+    "view": 3,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      592.0,
+      194.0,
+      640.0,
+      240.0
+    ],
+    "valid_pixels": 2815
+  },
+  {
+    "index": 7,
+    "source_state": 1,
+    "source_feature_index": 7,
+    "episode": 0,
+    "step": 0,
+    "view": 3,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      327.0,
+      144.0,
+      364.0,
+      187.0
+    ],
+    "valid_pixels": 3395
+  },
+  {
+    "index": 8,
+    "source_state": 0,
+    "source_feature_index": 8,
+    "episode": 0,
+    "step": 0,
+    "view": 4,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      219.0,
+      159.0,
+      267.0,
+      187.0
+    ],
+    "valid_pixels": 2934
+  },
+  {
+    "index": 9,
+    "source_state": 0,
+    "source_feature_index": 9,
+    "episode": 0,
+    "step": 0,
+    "view": 5,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      387.0,
+      169.0,
+      428.0,
+      183.0
+    ],
+    "valid_pixels": 2573
+  },
+  {
+    "index": 10,
+    "source_state": 1,
+    "source_feature_index": 10,
+    "episode": 0,
+    "step": 0,
+    "view": 5,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      323.0,
+      160.0,
+      338.0,
+      177.0
+    ],
+    "valid_pixels": 3198
+  },
+  {
+    "index": 11,
+    "source_state": 2,
+    "source_feature_index": 11,
+    "episode": 0,
+    "step": 1,
+    "view": 0,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      469.0,
+      173.0,
+      588.0,
+      209.0
+    ],
+    "valid_pixels": 2639
+  },
+  {
+    "index": 12,
+    "source_state": 3,
+    "source_feature_index": 12,
+    "episode": 0,
+    "step": 1,
+    "view": 0,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      371.0,
+      151.0,
+      401.0,
+      181.0
+    ],
+    "valid_pixels": 3450
+  },
+  {
+    "index": 13,
+    "source_state": 2,
+    "source_feature_index": 13,
+    "episode": 0,
+    "step": 1,
+    "view": 1,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      330.0,
+      169.0,
+      356.0,
+      189.0
+    ],
+    "valid_pixels": 3135
+  },
+  {
+    "index": 14,
+    "source_state": 3,
+    "source_feature_index": 14,
+    "episode": 0,
+    "step": 1,
+    "view": 1,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      88.0,
+      159.0,
+      198.0,
+      205.0
+    ],
+    "valid_pixels": 3181
+  },
+  {
+    "index": 15,
+    "source_state": 2,
+    "source_feature_index": 15,
+    "episode": 0,
+    "step": 1,
+    "view": 2,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      145.0,
+      171.0,
+      221.0,
+      197.0
+    ],
+    "valid_pixels": 2726
+  },
+  {
+    "index": 16,
+    "source_state": 3,
+    "source_feature_index": 16,
+    "episode": 0,
+    "step": 1,
+    "view": 2,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      321.0,
+      174.0,
+      420.0,
+      266.0
+    ],
+    "valid_pixels": 3425
+  },
+  {
+    "index": 17,
+    "source_state": 2,
+    "source_feature_index": 17,
+    "episode": 0,
+    "step": 1,
+    "view": 3,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      582.0,
+      191.0,
+      640.0,
+      241.0
+    ],
+    "valid_pixels": 2690
+  },
+  {
+    "index": 18,
+    "source_state": 3,
+    "source_feature_index": 18,
+    "episode": 0,
+    "step": 1,
+    "view": 3,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      327.0,
+      144.0,
+      365.0,
+      188.0
+    ],
+    "valid_pixels": 3382
+  },
+  {
+    "index": 19,
+    "source_state": 2,
+    "source_feature_index": 19,
+    "episode": 0,
+    "step": 1,
+    "view": 4,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      221.0,
+      160.0,
+      269.0,
+      187.0
+    ],
+    "valid_pixels": 2985
+  },
+  {
+    "index": 20,
+    "source_state": 3,
+    "source_feature_index": 20,
+    "episode": 0,
+    "step": 1,
+    "view": 4,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      0.0,
+      192.0,
+      58.0,
+      267.0
+    ],
+    "valid_pixels": 2699
+  },
+  {
+    "index": 21,
+    "source_state": 2,
+    "source_feature_index": 21,
+    "episode": 0,
+    "step": 1,
+    "view": 5,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      385.0,
+      170.0,
+      426.0,
+      183.0
+    ],
+    "valid_pixels": 2740
+  },
+  {
+    "index": 22,
+    "source_state": 3,
+    "source_feature_index": 22,
+    "episode": 0,
+    "step": 1,
+    "view": 5,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      323.0,
+      160.0,
+      338.0,
+      177.0
+    ],
+    "valid_pixels": 3215
+  },
+  {
+    "index": 23,
+    "source_state": 4,
+    "source_feature_index": 23,
+    "episode": 0,
+    "step": 2,
+    "view": 0,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      463.0,
+      173.0,
+      580.0,
+      208.0
+    ],
+    "valid_pixels": 2673
+  },
+  {
+    "index": 24,
+    "source_state": 5,
+    "source_feature_index": 24,
+    "episode": 0,
+    "step": 2,
+    "view": 0,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      369.0,
+      151.0,
+      401.0,
+      181.0
+    ],
+    "valid_pixels": 3378
+  },
+  {
+    "index": 25,
+    "source_state": 4,
+    "source_feature_index": 25,
+    "episode": 0,
+    "step": 2,
+    "view": 1,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      330.0,
+      170.0,
+      356.0,
+      190.0
+    ],
+    "valid_pixels": 3276
+  },
+  {
+    "index": 26,
+    "source_state": 5,
+    "source_feature_index": 26,
+    "episode": 0,
+    "step": 2,
+    "view": 1,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      97.0,
+      159.0,
+      206.0,
+      205.0
+    ],
+    "valid_pixels": 3200
+  },
+  {
+    "index": 27,
+    "source_state": 4,
+    "source_feature_index": 27,
+    "episode": 0,
+    "step": 2,
+    "view": 2,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      149.0,
+      172.0,
+      226.0,
+      197.0
+    ],
+    "valid_pixels": 2760
+  },
+  {
+    "index": 28,
+    "source_state": 5,
+    "source_feature_index": 28,
+    "episode": 0,
+    "step": 2,
+    "view": 2,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      319.0,
+      173.0,
+      412.0,
+      260.0
+    ],
+    "valid_pixels": 3442
+  },
+  {
+    "index": 29,
+    "source_state": 4,
+    "source_feature_index": 29,
+    "episode": 0,
+    "step": 2,
+    "view": 3,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      573.0,
+      189.0,
+      640.0,
+      247.0
+    ],
+    "valid_pixels": 2490
+  },
+  {
+    "index": 30,
+    "source_state": 5,
+    "source_feature_index": 30,
+    "episode": 0,
+    "step": 2,
+    "view": 3,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      327.0,
+      144.0,
+      366.0,
+      189.0
+    ],
+    "valid_pixels": 3352
+  },
+  {
+    "index": 31,
+    "source_state": 4,
+    "source_feature_index": 31,
+    "episode": 0,
+    "step": 2,
+    "view": 4,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      222.0,
+      161.0,
+      271.0,
+      188.0
+    ],
+    "valid_pixels": 2999
+  },
+  {
+    "index": 32,
+    "source_state": 5,
+    "source_feature_index": 32,
+    "episode": 0,
+    "step": 2,
+    "view": 4,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      0.0,
+      176.0,
+      80.0,
+      262.0
+    ],
+    "valid_pixels": 2579
+  },
+  {
+    "index": 33,
+    "source_state": 4,
+    "source_feature_index": 33,
+    "episode": 0,
+    "step": 2,
+    "view": 5,
+    "actor_id": 46,
+    "type_id": "vehicle.tesla.model3",
+    "bbox": [
+      383.0,
+      170.0,
+      423.0,
+      183.0
+    ],
+    "valid_pixels": 2756
+  },
+  {
+    "index": 34,
+    "source_state": 5,
+    "source_feature_index": 34,
+    "episode": 0,
+    "step": 2,
+    "view": 5,
+    "actor_id": 47,
+    "type_id": "vehicle.mercedes.sprinter",
+    "bbox": [
+      323.0,
+      160.0,
+      338.0,
+      177.0
+    ],
+    "valid_pixels": 3263
+  }
+]

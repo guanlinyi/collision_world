@@ -1,0 +1,65 @@
+{
+  "scope": "fabricated tokens and labels; real model/loss/optimizer/checkpoint/inference, no V-JEPA encoder, no CARLA quality claim",
+  "steps": [
+    {
+      "command": [
+        "D:\\application\\anaconda3\\envs\\reset3\\python.exe",
+        "-B",
+        "F:\\Reset\\collision_world_model_public\\learn_relations\\code\\train.py",
+        "--source-cache-dir",
+        "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_public_smoke_release\\input_npz\\source",
+        "--validation-cache-dir",
+        "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_public_smoke_release\\input_npz\\heldout",
+        "--output",
+        "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_public_smoke_release\\output_json\\training.json",
+        "--checkpoint-dir",
+        "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_public_smoke_release\\output_pt",
+        "--epochs",
+        "2",
+        "--seeds",
+        "20261115",
+        "--device",
+        "cpu",
+        "--threads",
+        "2"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "D:\\application\\anaconda3\\envs\\reset3\\python.exe",
+        "-B",
+        "F:\\Reset\\collision_world_model_public\\learn_relations\\code\\infer.py",
+        "--checkpoint",
+        "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_public_smoke_release\\output_pt\\relation_contact_event_seed_20261115.pt",
+        "--tokens",
+        "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_public_smoke_release\\input_npz\\heldout\\heldout.npz",
+        "--output",
+        "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_public_smoke_release\\output_npz\\predictions.npz",
+        "--threads",
+        "2"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "prediction_shapes": {
+    "contact_gap_and_speed_change": [
+      8,
+      2
+    ],
+    "participant_mask_probability": [
+      8,
+      2,
+      4
+    ],
+    "event_probability": [
+      8
+    ],
+    "event_alarm": [
+      8
+    ]
+  },
+  "maximum_difference_after_removing_all_teacher_fields": 0.0,
+  "python": "3.12.0 | packaged by Anaconda, Inc. | (main, Oct  2 2023, 17:20:38) [MSC v.1916 64 bit (AMD64)]",
+  "status": "passed"
+}

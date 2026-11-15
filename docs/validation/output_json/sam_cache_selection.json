@@ -1,0 +1,12 @@
+{
+  "cached_candidates": true,
+  "SAM_forward_rerun": false,
+  "new_GPU_forward_verified": false,
+  "query_truth_read": false,
+  "source_image_sha256": "b635927c9055ef68c7e483c7ca295dc2bc95d3a8d4ca87ff1716a3278f1260b9",
+  "selected": 2,
+  "selected_area_pixels": 12999,
+  "candidate_summaries_exact": true,
+  "selected_mask_pixel_identical": true,
+  "passed": true
+}

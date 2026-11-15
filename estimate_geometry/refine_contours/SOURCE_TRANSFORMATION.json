@@ -1,0 +1,19 @@
+{
+  "kind": "repaired",
+  "source_path": "F:\\Reset\\collision_world_model\\collision_understanding\\diagnose_geometry_evidence\\experiments\\20261109_exterior_pose_candidate\\code\\refresh_associations.py",
+  "source_sha256": "1f4fb008ed0d8f1d00b2b03cb131f74e78a07d158762e544b23c33df5d36b9cf",
+  "changes": [
+    "cache_current_complete_projected_union_index",
+    "closest_closed_finite_segment_alpha_clip",
+    "finite_endpoints_eligible_same5px_normal30deg",
+    "best_unique_current_union_ring_binding",
+    "competition_shortest_complete_union_ring_arc",
+    "ambiguous_competitor_location_unknown_not_dropped",
+    "union_location_unknown_not_sample_graph_branch_gate"
+  ],
+  "original_function_AST_sha256": "a31f8930f953429541feeedeefcb112261a2f922b4eee98994a82627e0aedaad",
+  "transformed_function_AST_sha256": "e7914b7332dcc6029ff652402144a509d8dfefa7db52eecfa2849262be51c9d0",
+  "competitor_certificate_is_not_an_eligibility_filter": true,
+  "all_other_gates_weights_missing_objective_unchanged": true,
+  "budget_transformation": "Original fit_frame outer range(3) -> range(8), all other function AST retained."
+}

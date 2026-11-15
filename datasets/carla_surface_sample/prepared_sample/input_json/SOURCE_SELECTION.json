@@ -1,0 +1,54 @@
+{
+  "states": 6,
+  "records": 35,
+  "files": [
+    {
+      "source_file": "cameras.npz",
+      "source_sha256": "ff43d351fc7d200921c369d2eaa25a19ded7bbf16cb7df6636bbf2e6f58cf5c9",
+      "target": "input_npz/cameras.npz",
+      "target_sha256": "ae4f3192c6e11b7cb2ed769a2c4d6d94f7abd22a715010c42216d1336eabab52"
+    },
+    {
+      "source_file": "reference_geometry.npz",
+      "source_sha256": "29befb53a7ffffe9e503876fd00882cb31930c0e56722b52d9ef8fbbd8dd4251",
+      "target": "input_npz/reference_geometry.npz",
+      "target_sha256": "5c80e7479922768bbe60ae0718125ff2a65c9180f945c0d6d60f678023b187e6"
+    },
+    {
+      "source_file": "inputs.npz",
+      "source_sha256": "ca0e06ccce621c9c2a74d9f96bebb0afafc8a34607979ddfe15d5b3712db7972",
+      "target": "input_npz/inputs.npz",
+      "target_sha256": "461a2a9650ac5bef513cea5fbca38b149da792fa5f41ab3382554b74e54e22ec"
+    },
+    {
+      "source_file": "training_targets.npz",
+      "source_sha256": "86ca0bdd3a26c95c5613805e831beb001b9ece149959e0b701abdef09859eb69",
+      "target": "input_npz/training_targets.npz",
+      "target_sha256": "47332aed573b66e23175be2827adc2bcf5b180ba101d6c1b5596a76d751833d7"
+    },
+    {
+      "source_file": "proposals.npz",
+      "source_sha256": "6d3a9bb9b14b30a06b2cf4524d9a356805ca7de6f1096c3fa8cce3ea73cfe1c5",
+      "target": "input_npz/proposals.npz",
+      "target_sha256": "86d5e3ad7a2271b4818eed93c45a69dec9c9b5d180941adac5a5619b3b7ed49f"
+    },
+    {
+      "source_file": "states.json",
+      "source_sha256": "0a6592638edaeef6217830966af6374f59bc73c7305de9ec68b40a6214c04673",
+      "target": "input_json/states.json",
+      "target_sha256": "977c20656661da78825344306533f8fe797a5a451e8428d6f60e101b611fa145"
+    },
+    {
+      "source_file": "records.json",
+      "source_sha256": "616c9fec37f80193d445ac28d24d0f72fb55347543a6f2de495d81c2974306cc",
+      "target": "input_json/records.json",
+      "target_sha256": "2e45d23f363ea8cafb25a62f1f4e58abd9afbbc5fa2f5f6641bd661434735ca7"
+    },
+    {
+      "source_file": "contract.json",
+      "source_sha256": "642e351c1a6b5eb101751cf3ca5a63730bf39e52c63bdf33904d5061dcb65cdc",
+      "target": "input_json/contract.json",
+      "target_sha256": "e71cf019e0f6aa4c506699e53f3a16327ce865738339363b2509268bbef46d03"
+    }
+  ]
+}

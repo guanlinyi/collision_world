@@ -1,0 +1,16 @@
+{
+  "train_episodes": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "counts": {
+    "complete": 2561,
+    "clipped": 249
+  },
+  "normalized_sigma": {
+    "complete": 0.3211682050008795,
+    "clipped": 0.6018244890356614
+  }
+}

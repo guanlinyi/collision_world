@@ -1,0 +1,11 @@
+{
+  "case": "joint_fresh_07",
+  "case_bundle": "datasets/carla_replay/case07/input_json/case_bundle.json",
+  "recorded_camera": "datasets/carla_replay/case07/input_json/camera.json",
+  "geometry": "datasets/carla_replay/case07/input_json/asset_convex_hull.json",
+  "image_map": "datasets/carla_replay/case07/input_json/image_map.json",
+  "mask_directory": "datasets/carla_replay/case07/input_png/masks",
+  "pose_experiments": "datasets/carla_replay/case07/input_json/pose_experiments.json",
+  "pair_geometry": "datasets/carla_replay/case07/input_json/pair_geometry.json",
+  "case_truth": "datasets/carla_replay/case07/input_json/case_truth.json"
+}

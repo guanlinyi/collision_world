@@ -1,0 +1,26 @@
+{
+  "prediction_saved_before_comparison": true,
+  "reference_truth_read": false,
+  "source_geometry_rebuilt": true,
+  "SAM_and_RGB_structure_extraction_cached": true,
+  "elapsed_seconds": 89.54699999999957,
+  "status": "accepted",
+  "accepted_outer_rounds": 6,
+  "candidate_pose": [
+    -9.529396225742842,
+    123.55107151344964,
+    0.7378746194065775,
+    0.0,
+    0.0,
+    269.4312311802022
+  ],
+  "candidate_cost": 0.10574435221845366,
+  "python": "3.12.0 | packaged by Anaconda, Inc. | (main, Oct  2 2023, 17:20:38) [MSC v.1916 64 bit (AMD64)]",
+  "frozen_candidate_sha256": "c8135dcb2946c6ff61d720ca64652ce3bfd183bc875ee95aa548c68c5397525a",
+  "center_difference_m": 0.0,
+  "rotation_difference_deg": 0.0,
+  "cost_difference": 0.0,
+  "same_status": true,
+  "same_accepted_rounds": true,
+  "passed": true
+}

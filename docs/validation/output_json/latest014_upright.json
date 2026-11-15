@@ -1,0 +1,12 @@
+{
+  "prediction_already_persisted": true,
+  "fit_rerun": false,
+  "query_reference_truth_read": false,
+  "pose_convention": "LAB xyz metres; degree rotation vector constrained to [0,0,rz]",
+  "center_difference_m": 0.0,
+  "rotation_difference_deg": 0.0,
+  "cost_difference": 0.0,
+  "same_status": true,
+  "same_accepted_rounds": true,
+  "passed": true
+}

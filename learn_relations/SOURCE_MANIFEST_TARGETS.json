@@ -1,0 +1,151 @@
+{
+  "organized_on": "2026-11-15",
+  "targets": [
+    {
+      "target": "code/relation_model.py",
+      "target_sha256": "1706b87051b56fe6628b028f987d18f62e216285e078c0c4b98d673b9cc6ca53",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_relation_contact_student_cross_view.py",
+          "source_sha256": "de1a5c4a391dedca4166b69e0d2c655eba4d13c0c7255e11f0eb622dac5c4111"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/relation_data.py",
+      "target_sha256": "1c618dfd4d82b5e860e3dee224ad3f449a4cf31d4f34c704a525910d10edca4b",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_relation_contact_student_cross_view.py",
+          "source_sha256": "de1a5c4a391dedca4166b69e0d2c655eba4d13c0c7255e11f0eb622dac5c4111"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/metrics.py",
+      "target_sha256": "a67b997799680ea530a44b5da89568b51b40b3aa573e8a8d231a3dd2dff31b5b",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_contact_student_cross_view.py",
+          "source_sha256": "eb8ccbd55c302d0ef0b56cbbd1499ed863ce19a85e89bd00dc1b8331c0a3d189"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/cache_io.py",
+      "target_sha256": "f605fea66c302c3c6c5ac29bfb290c109f080d92f4f1c1816ea3b51ea4bb3122",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_privileged_temporal_baseline.py",
+          "source_sha256": "7b3a39435eb3d0e5508e27e13c58d593669d06c6dca061410347488a4e6f1e20"
+        },
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_vjepa_dense_25d.py",
+          "source_sha256": "76aae018c2448c0b5e8ca4e81130a6c5793f0a14a7d6ae09b29835c425a69f5a"
+        },
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_spatial_collision_height_holdout.py",
+          "source_sha256": "ad538b228197edcd3c410604e28b34f8efdbc5be3b09424b4e956994cacf72f8"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/train.py",
+      "target_sha256": "4dfa632932056cdb23413de1b1cf16ed8c4add7db8464fd0840b9da591b46336",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_relation_contact_event_student_cross_view.py",
+          "source_sha256": "35b2bae6943b833d51355059eed4450bf93720878ae2039478c0200351d0f3eb"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/teacher_inputs.py",
+      "target_sha256": "5331da46ce786acb4ee4f8a4a53ccfe3a493f0ca204c0fd98540fa44c259ca03",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_privileged_temporal_baseline.py",
+          "source_sha256": "7b3a39435eb3d0e5508e27e13c58d593669d06c6dca061410347488a4e6f1e20"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/rgb_inputs.py",
+      "target_sha256": "2124b161a294492ace7c9ad33929830611aab900ed8ddd1a9310392a68163ebd",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_vjepa_rgb_baseline.py",
+          "source_sha256": "140473e582277c3da6357a31e98d4cc503a1735baf70597fb2e6dd32dafabd18"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/encoder.py",
+      "target_sha256": "11d28d2238d591e27bd9923336137446133511ec0b33632bb50139f0a8ddb4cd",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\analyze_kick_vjepa21_prototypes.py",
+          "source_sha256": "7437df345af07e935ba69e549620573f2e3a1cd983ba63b79cbadab433b63244"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/targets.py",
+      "target_sha256": "cee311d8abb80b6ef0e9dae156836cce3ac86324320db7e7154b9ad71072e7b8",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\carla_rgb_25d_targets.py",
+          "source_sha256": "cee311d8abb80b6ef0e9dae156836cce3ac86324320db7e7154b9ad71072e7b8"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/extract.py",
+      "target_sha256": "d97300b3f455131dec28474f2923dc6fecdb7054e35f9d2ab717ab6a698b8590",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_vjepa_dense_25d.py",
+          "source_sha256": "76aae018c2448c0b5e8ca4e81130a6c5793f0a14a7d6ae09b29835c425a69f5a"
+        },
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\augment_carla_relation_teacher_cache.py",
+          "source_sha256": "be9454cc17c04392beddd9c7d4f8e6abc86bba8912bdaf48b8cead24b66bddc0"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/infer.py",
+      "target_sha256": "f6c5a8bb20d6573ecb2e97445b4df6cd71b87f21e3b0326ef1f80e2fdb53557f",
+      "sources": [
+        {
+          "source": "F:\\Reset\\collision_world_model\\collision_understanding\\reconstruct_pipeline\\experiments\\20261104_core_inventory\\input_py\\legacy_relation_learning\\train_carla_relation_contact_event_student_cross_view.py",
+          "source_sha256": "35b2bae6943b833d51355059eed4450bf93720878ae2039478c0200351d0f3eb"
+        }
+      ],
+      "changes": "See README, SOURCE_MANIFEST adaptations and target module; new CLI glue and exclusive outputs. No teacher gap/speed-label generator invented."
+    },
+    {
+      "target": "code/attach_contact_labels.py",
+      "target_sha256": "4634cafeca72c7877d70f7af8b83f4169e1a380ab442444c1c3fd0cb05786ef9",
+      "sources": [],
+      "changes": "New exclusive-output interface or fabricated-data implementation check, authored for this organization task."
+    },
+    {
+      "target": "code/synthetic_smoke.py",
+      "target_sha256": "d51166a58bd147b6ef6d109a0f54d7358828fe193f2a8f63b2e7732a2b4ebc53",
+      "sources": [],
+      "changes": "New exclusive-output interface or fabricated-data implementation check, authored for this organization task."
+    }
+  ],
+  "rights": "No license grant inferred from file availability; synthetic evidence is explicitly labeled."
+}

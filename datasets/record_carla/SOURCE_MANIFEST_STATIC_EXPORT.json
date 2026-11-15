@@ -1,0 +1,12 @@
+{
+  "source": "E:\\Reset\\mask2world\\export_carla_static_geometry.py",
+  "source_sha256": "3e5643cdc7ba5a73ea9442e42d52e0b856ac78f1764f3900bb4a4a3e3b5f013f",
+  "target": "datasets/record_carla/code/export_carla_static_geometry.py",
+  "target_sha256": "2d7b0214f5bd8377fe2dad271614edc371f2b876d244bf202eb3433edc5cf233",
+  "changes": [
+    "Defer CARLA import until after argument parsing so help does not require CARLA.",
+    "Require --output-dir to name a new directory; write static_geometry.json exclusively.",
+    "World/static-object export logic unchanged; no map load, actor control, settings mutation or live CARLA run."
+  ],
+  "rights": "Earlier company-stage source; local audit candidate only, no redistribution license inferred."
+}

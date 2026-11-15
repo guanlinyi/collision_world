@@ -1,0 +1,17 @@
+{
+  "local_markdown_links_checked": 17,
+  "missing_links": [],
+  "static_exporter_ast": "passed",
+  "static_exporter_help": {
+    "command": [
+      "D:\\application\\anaconda3\\envs\\reset3\\python.exe",
+      "-S",
+      "-B",
+      "F:\\Reset\\collision_world_model_public\\datasets\\record_carla\\code\\export_carla_static_geometry.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  "runtime_EGF_absolute_paths_in_selected_code": [],
+  "scope": "Metadata/link/CLI checks only. No CARLA server connection, no publication, no new model training."
+}

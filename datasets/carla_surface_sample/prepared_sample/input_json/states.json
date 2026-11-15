@@ -1,0 +1,157 @@
+[
+  {
+    "index": 0,
+    "episode": 0,
+    "role": "training",
+    "step": 0,
+    "frame": 38547,
+    "time_s": 208.91019481793046,
+    "object_key": "0:46",
+    "available_views": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "input_mask": "native CARLA instance associated with actor using offline geometry; not RGB-only deployment",
+    "images": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "index": 1,
+    "episode": 0,
+    "role": "training",
+    "step": 0,
+    "frame": 38547,
+    "time_s": 208.91019481793046,
+    "object_key": "0:47",
+    "available_views": [
+      0,
+      1,
+      2,
+      3,
+      5
+    ],
+    "input_mask": "native CARLA instance associated with actor using offline geometry; not RGB-only deployment",
+    "images": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "index": 2,
+    "episode": 0,
+    "role": "training",
+    "step": 1,
+    "frame": 38548,
+    "time_s": 209.01019481942058,
+    "object_key": "0:46",
+    "available_views": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "input_mask": "native CARLA instance associated with actor using offline geometry; not RGB-only deployment",
+    "images": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "index": 3,
+    "episode": 0,
+    "role": "training",
+    "step": 1,
+    "frame": 38548,
+    "time_s": 209.01019481942058,
+    "object_key": "0:47",
+    "available_views": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "input_mask": "native CARLA instance associated with actor using offline geometry; not RGB-only deployment",
+    "images": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "index": 4,
+    "episode": 0,
+    "role": "training",
+    "step": 2,
+    "frame": 38549,
+    "time_s": 209.1101948209107,
+    "object_key": "0:46",
+    "available_views": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "input_mask": "native CARLA instance associated with actor using offline geometry; not RGB-only deployment",
+    "images": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "index": 5,
+    "episode": 0,
+    "role": "training",
+    "step": 2,
+    "frame": 38549,
+    "time_s": 209.1101948209107,
+    "object_key": "0:47",
+    "available_views": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "input_mask": "native CARLA instance associated with actor using offline geometry; not RGB-only deployment",
+    "images": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  }
+]

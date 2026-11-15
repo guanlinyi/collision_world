@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+**/experiments/**
+*.log
+.env
+.env.*
+!.env.example
+**/browser_profile/**
+**/output_txt/**
+*.zip
+*.7z
+# Local progress journals are retained in the workspace, not the public payload.
+**/*_20261115.md
+# Explicit user exclusion; keep this local journal out of GitHub.
+/inspect_predictions/便携完整回放_20261115.md
+# Retain the initial local publication audit without publishing its draft result.
+/docs/publication/output_json/release_check.json
+/docs/publication/output_json/release_check*.json
+!/docs/publication/output_json/release_check_final.json

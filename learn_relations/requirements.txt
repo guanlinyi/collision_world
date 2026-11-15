@@ -1,0 +1,5 @@
+# Student train/infer; versions used by the project environment during implementation check.
+numpy>=1.26,<3
+torch>=2.5,<3
+# Frozen RGB feature extraction additionally needs OpenCV and the official V-JEPA repository dependencies.
+opencv-python>=4.8,<6

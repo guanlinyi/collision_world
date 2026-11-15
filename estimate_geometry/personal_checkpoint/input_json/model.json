@@ -1,0 +1,13 @@
+{
+  "input_channels": 8,
+  "global_context": false,
+  "pixel_center_offset": 0.0,
+  "source": "v33 surface network + v39 known-asset dimensions and state",
+  "train_episodes": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "initial_proposals_required": true
+}

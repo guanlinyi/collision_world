@@ -1,0 +1,50 @@
+[
+  {
+    "source": "E:/Reset/mask2world/video_to_3d_lab_20261007/models/released/assets.json",
+    "target": "estimate_geometry/personal_checkpoint/input_json/assets.json",
+    "source_sha256": "9b73c107978806a8c3a9111687ad430ab2eb19ac043fda18cd23ac579391c11d",
+    "target_sha256": "9b73c107978806a8c3a9111687ad430ab2eb19ac043fda18cd23ac579391c11d",
+    "bytes": 29983,
+    "modified": false
+  },
+  {
+    "source": "E:/Reset/mask2world/video_to_3d_lab_20261007/models/released/model.json",
+    "target": "estimate_geometry/personal_checkpoint/input_json/model.json",
+    "source_sha256": "b5fa2718b3ae3f6dc667610ad44382a228518c17d9a385e72ab84be60dc23c25",
+    "target_sha256": "b5fa2718b3ae3f6dc667610ad44382a228518c17d9a385e72ab84be60dc23c25",
+    "bytes": 260,
+    "modified": false
+  },
+  {
+    "source": "E:/Reset/mask2world/video_to_3d_lab_20261007/models/released/state_noise.json",
+    "target": "estimate_geometry/personal_checkpoint/input_json/state_noise.json",
+    "source_sha256": "23da6a2552d2ff4f5cf59c7a08a574a67c1c9ec3526b7432c20f23bedab3dd85",
+    "target_sha256": "23da6a2552d2ff4f5cf59c7a08a574a67c1c9ec3526b7432c20f23bedab3dd85",
+    "bytes": 456,
+    "modified": false
+  },
+  {
+    "source": "E:/Reset/mask2world/video_to_3d_lab_20261007/models/released/surface.pt",
+    "target": "estimate_geometry/personal_checkpoint/input_pt/surface.pt",
+    "source_sha256": "fb52efca15c60bd46d66b1dede0542689ac816dec29dceae56136238f57c0d33",
+    "target_sha256": "fb52efca15c60bd46d66b1dede0542689ac816dec29dceae56136238f57c0d33",
+    "bytes": 1084517,
+    "modified": false
+  },
+  {
+    "source": "E:/Reset/mask2world/video_to_3d_lab_20261007/models/released/uncertainty.pt",
+    "target": "estimate_geometry/personal_checkpoint/input_pt/uncertainty.pt",
+    "source_sha256": "690af6d56375f05866973f357c80a93fccf7cf6e7ab7a2a86eb94901ff39ab73",
+    "target_sha256": "690af6d56375f05866973f357c80a93fccf7cf6e7ab7a2a86eb94901ff39ab73",
+    "bytes": 29597,
+    "modified": false
+  },
+  {
+    "source": "E:/Reset/mask2world/video_to_3d_lab_20261007/models/released/view_noise.json",
+    "target": "estimate_geometry/personal_checkpoint/input_json/view_noise.json",
+    "source_sha256": "60fb71481ed4d4108ec64fa9d8b3f34b5c1c89019f52dc53918f2edbf0e9b178",
+    "target_sha256": "60fb71481ed4d4108ec64fa9d8b3f34b5c1c89019f52dc53918f2edbf0e9b178",
+    "bytes": 230,
+    "modified": false
+  }
+]

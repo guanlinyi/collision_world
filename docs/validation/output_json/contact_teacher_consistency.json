@@ -1,0 +1,76 @@
+{
+  "status": "passed",
+  "scope": "synthetic CARLA-schema input; original source functions vs recovered modules, no actual CARLA capture, encoder or training",
+  "source_sha256": {
+    "E:\\Reset\\mask2world\\train_carla_privileged_temporal_baseline.py": "7b3a39435eb3d0e5508e27e13c58d593669d06c6dca061410347488a4e6f1e20",
+    "E:\\Reset\\mask2world\\augment_carla_contact_teacher_cache.py": "2cd31ab625063e341f128f9fc8aee730d248c254b52975325a2baf2733d899a9"
+  },
+  "cases": [
+    {
+      "case": "dynamic_reordered_ends",
+      "maximum_feature_difference": 0.0,
+      "all_four_target_arrays_exact": true,
+      "gap_m": [
+        0.0,
+        3.0
+      ],
+      "speed_change_mps": [
+        1.7001953125,
+        1.5
+      ]
+    },
+    {
+      "case": "async_logical_clock",
+      "maximum_feature_difference": 0.0,
+      "all_four_target_arrays_exact": true,
+      "gap_m": [
+        0.0,
+        3.0
+      ],
+      "speed_change_mps": [
+        1.7001953125,
+        1.5
+      ]
+    },
+    {
+      "case": "single_vehicle_static",
+      "maximum_feature_difference": 0.0,
+      "all_four_target_arrays_exact": true,
+      "gap_m": [
+        2.0,
+        2.0
+      ],
+      "speed_change_mps": [
+        1.099609375,
+        1.0
+      ]
+    },
+    {
+      "case": "participant_missing",
+      "maximum_feature_difference": 0.0,
+      "all_four_target_arrays_exact": true,
+      "gap_m": [
+        50.0,
+        50.0
+      ],
+      "speed_change_mps": [
+        1.099609375,
+        1.0
+      ]
+    }
+  ],
+  "missing_end_rejected": true,
+  "cli_command": [
+    "D:\\application\\anaconda3\\envs\\reset3\\python.exe",
+    "-B",
+    "F:\\Reset\\collision_world_model_public\\learn_relations\\code\\augment_contact.py",
+    "--cache-dir",
+    "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_contact_teacher_recovery\\input_npz\\portable",
+    "--static-geometry",
+    "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_contact_teacher_recovery\\input_json\\static_geometry.json",
+    "--output-dir",
+    "F:\\Reset\\collision_world_model_public\\learn_relations\\experiments\\20261115_contact_teacher_recovery\\output_npz"
+  ],
+  "cli_exit_code": 0,
+  "legacy_absolute_vs_portable_relative_all_targets_exact": true
+}

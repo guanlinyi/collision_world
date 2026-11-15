@@ -1,0 +1,58 @@
+{
+  "frame": 28,
+  "car": 0,
+  "crop_xyxy": [
+    639,
+    394,
+    851,
+    536
+  ],
+  "NCC_score": 0.9774029850959778,
+  "integer_crop_displacement_px": [
+    9,
+    4
+  ],
+  "positive_points_crop_xy": [
+    [
+      45,
+      43
+    ],
+    [
+      84,
+      22
+    ],
+    [
+      76,
+      79
+    ],
+    [
+      153,
+      74
+    ]
+  ],
+  "negative_points_crop_xy": [
+    [
+      2,
+      2
+    ],
+    [
+      209,
+      2
+    ],
+    [
+      209,
+      139
+    ],
+    [
+      2,
+      139
+    ]
+  ],
+  "body_box_crop_xyxy": [
+    14,
+    11,
+    198,
+    130
+  ],
+  "image": "datasets/carla_replay/case07/input_png/rgb/rgb_028.png"
+}

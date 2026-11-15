@@ -1,0 +1,71 @@
+{
+  "image_size": [
+    640,
+    360
+  ],
+  "fps": 10,
+  "train_episodes": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "validation_episodes": [
+    4
+  ],
+  "development_episodes": [
+    5
+  ],
+  "camera_convention": "q maps column camera vectors to world; t is world camera center; row world_to_camera=(world-t)@q",
+  "proposal_source": "Saved output of upstream learned six-view proposal model; NOT recomputed by this bundle. Required explicit input, not GT pose.",
+  "native_masks_and_actor_association": true,
+  "raw_demo_image_episodes": [],
+  "arbitrary_video_to_geometry_supported": false,
+  "subset_only": true,
+  "subset_source_state_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "subset_record_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+  ],
+  "sample_scope": "Real CARLA crop/native-mask/calibration/reference subset, existing learned proposals. No new capture, training replication or naked-RGB inference claim."
+}

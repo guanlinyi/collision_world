@@ -1,0 +1,8 @@
+# Preserve frozen input and provenance hashes across operating systems.
+* -text
+datasets/carla_replay/**/input_png/** filter=lfs diff=lfs merge=lfs -text
+datasets/carla_surface_sample/**/input_npz/** filter=lfs diff=lfs merge=lfs -text
+estimate_geometry/personal_checkpoint/input_pt/** filter=lfs diff=lfs merge=lfs -text
+# Local journals are also excluded from git archive exports.
+inspect_predictions/便携完整回放_20261115.md export-ignore
+**/*_20261115.md export-ignore

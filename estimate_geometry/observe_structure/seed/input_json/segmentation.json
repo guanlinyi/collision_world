@@ -1,0 +1,19 @@
+{
+  "records": [
+    {
+      "car": 0,
+      "image": "datasets/carla_replay/case07/input_png/rgb/rgb_027.png",
+      "crop_xyxy": [
+        630,
+        390,
+        842,
+        532
+      ],
+      "png_directory": "estimate_geometry/observe_structure/seed/input_png",
+      "whole_selected": 2,
+      "whole_pixels": 12700,
+      "semantic_source": "AI RGB coarse wholecar seed, not 3D labels"
+    }
+  ],
+  "query_truth_used": false
+}

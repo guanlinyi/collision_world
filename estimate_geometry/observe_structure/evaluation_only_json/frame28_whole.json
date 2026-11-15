@@ -1,0 +1,35 @@
+{
+  "selected": 2,
+  "selected_area_pixels": 12999,
+  "candidates": [
+    {
+      "index": 0,
+      "sam_self_score": 0.7285066246986389,
+      "area_pixels": 5890,
+      "positive_hits": 4,
+      "negative_hits": 0,
+      "eligible": false,
+      "reasons": [
+        "insufficient_wholecar_area"
+      ]
+    },
+    {
+      "index": 1,
+      "sam_self_score": 0.920583963394165,
+      "area_pixels": 13081,
+      "positive_hits": 4,
+      "negative_hits": 0,
+      "eligible": true,
+      "reasons": []
+    },
+    {
+      "index": 2,
+      "sam_self_score": 0.955331027507782,
+      "area_pixels": 12999,
+      "positive_hits": 4,
+      "negative_hits": 0,
+      "eligible": true,
+      "reasons": []
+    }
+  ]
+}

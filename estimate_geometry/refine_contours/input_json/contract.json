@@ -1,0 +1,54 @@
+{
+  "id": "reliable_partial_exterior_pose_v1",
+  "scope": "Prototype frame27 first, then frames27-32 with the same frozen method. Window/visible-left-lamp/reliable-exterior groups only. No wheel direction, no GT in selection or fitting, no weight sweep, no default replacement.",
+  "observation": "Use saved20261109_reliable_exterior_edges accepted RGB edge points/normals only. WholeSAM seeds and rejected/unknown edges are not observations. The reviewed frame27 image mainly supports roof, front edge and some wheel arcs; it does not establish every accepted edge as physical truth.",
+  "source": "Use original3D SOURCE exterior edge samples passing local tangent-cone plus exact-incident front-depth certification. Apply the audited method at each frame/outer pose; frame27 admission does not automatically certify another pose.",
+  "initial_pose": "Saved old filtered window/lamp fit, never GT. Preserve its underlying original global pose bounds.",
+  "arc_construction": {
+    "observed": "Connect only consecutive accepted seeds on the same original SAM contour with consecutive seed IDs and separation<=2px. Unknown/rejected seeds break arcs. Use refined RGB positions; do not bridge missing runs. Endpoint-only supports are excluded from point-to-segment fitting.",
+    "source": "Connect consecutive certified samples only along the same original edge; store exact local3D endpoints and edge parameter. Track connected exterior arcs through shared original vertices. Never connect across a rejected/unknown sample.",
+    "deduplication": "Deduplicate exact coincident projected exterior segments from identical source geometry so material duplication does not increase weight. Retain provenance."
+  },
+  "matching": {
+    "max_distance_original_px": 5.0,
+    "max_outward_normal_angle_deg": 30.0,
+    "ambiguity_margin_original_px": 2.0,
+    "competition_separation_original_px": 10.0,
+    "rule": "Match source sample to nearest reliable observed segment whose perpendicular foot lies strictly within the segment and whose outward normal agrees. For competition, collapse adjacent segments on the same observed arc; another candidate counts as distinct if on another arc and separated along original SAM contour by>=10px. Reject if second-best admissible distance minus best distance<2px. Preserve rejection categories.",
+    "fixed_observed_anchor": "For each accepted initial match save the observed footpoint, outward unit normal, original contour coordinate, competing arc identity and source provenance. These observed anchors remain fixed for all objective comparisons.",
+    "weights": "Weight each retained anchor by its initial supported SOURCE projected arc-length quadrature, not triangle count; normalize once by total initial retained length. Deduplicate shared footpoints/overlapping quadrature support. Never renormalize after dropping anchors."
+  },
+  "admission": {
+    "min_initial_arc_length_px": 30.0,
+    "min_source_longitudinal_span_fraction": 0.5,
+    "min_each_longitudinal_half_length_fraction": 0.2,
+    "longitudinal_definition": "Use the verified SOURCE vehicle longitudinal local axis and full SOURCE bbox length. Split at bbox midpoint; retain sign-independent front/back half coverage. Do not infer orientation from GT.",
+    "jacobian": "Compute signed observed-normal residual Jacobian wrt x,y,yaw using existing full pose projection. Scale columns by[0.01m,0.01m,0.1deg], rows by sqrt(initial normalized arc weights); require smallest/largest singular value>=0.01. Reject nonfinite or zero largest singular value. Record singular values; this is an engineering observability gate, not statistical confidence.",
+    "failure": "Persist distribution/Jacobian failure, keep old filtered output, and do not relax gates or fit that frame."
+  },
+  "loss": {
+    "weights": {"window": 0.3333333333333333, "visible_left_lamp": 0.3333333333333333, "exterior": 0.3333333333333333},
+    "mask_terms": "Reuse frozen existing window and RGB-visible left-lamp samples/distance maps, normalized separately by their sample counts. Do not include the far right lamp. Keep these mask samples fixed across all outer rounds.",
+    "exterior_residual": "r_i=n_observed_i dot(project(local3D_association_i,pose)-observed_anchor_i), in original image pixels. During each inner solve keep associations, anchors, normals and initial weights fixed.",
+    "huber_delta_px": 2.0,
+    "huber": "H(r)=r*r for abs(r)<=2; else4*abs(r)-4. Exterior group=sum_i(initial_weight_i*H(r_i)). Least-squares residual uses sign(r_i)*sqrt(initial_weight_i*H(r_i)/3), with global solver loss linear.",
+    "scope": "A balanced engineering objective, not a calibrated likelihood."
+  },
+  "comparable_refresh_objective": {
+    "fixed_domain": "All comparisons use the same initial observed anchor IDs, same observed points/normals, same initial weights and same window/lamp blocks. Do not compare losses independently averaged over changing sample counts.",
+    "refresh_match": "At each refreshed pose regenerate certified SOURCE silhouette. For each fixed observed anchor find its nearest certified source segment using the same5px distance and30degree outward-normal gates and ambiguity margin. Collapse adjacent segments in the same connected SOURCE exterior arc; arc separation>=10px defines a distinct competitor. Recover local3D at the image footpoint using perspective-correct interpolation.",
+    "missing": "If no unique certified source association exists, keep the anchor in the comparison with fixed penalty H(5px)=16px^2. Never silently omit it or renormalize remaining weights. In an inner solve such an unmatched anchor contributes its constant penalty until the next refresh.",
+    "support_gate": "At least80% of initial weighted length must remain uniquely matched, and longitudinal distribution plus Jacobian gates must still pass on matched support. All actual active3D associations must be newly certified. Missing anchors stay explicitly unknown, not fit-eligible geometry.",
+    "acceptance": "Evaluate both the current pose and proposed pose with this same refreshed-anchor objective. Accept only a decrease exceeding1e-10*max(1,current_cost), with support gates passed. A lower frozen-inner-surrogate cost alone is insufficient. Persist both costs, support and lost-anchor IDs."
+  },
+  "optimization": {
+    "max_outer_rounds": 3,
+    "inner_bounds": "Intersect original global bounds with current outer pose+[+/-0.01m,+/-0.01m,+/-0.5deg]. Use existing least_squares settings and linear loss; fixed correspondences within inner solve.",
+    "projected_step_limit_px": 2.0,
+    "step_validation": "Check actual projected displacement of every currently active source association from its outer-round starting projection. If any exceeds2px, try fixed step fractions1/2,1/4,1/8 in order; use the first satisfying projection/global/local bounds. If none satisfy, stop. This is geometric step limiting, not a parameter sweep.",
+    "endpoint": "Regenerate/certify endpoint SOURCE contours and evaluate the comparable refreshed objective. If it fails admission or descent, stop and keep the last accepted pose; preserve the rejected attempt. No additional line-search fitting or changed weights.",
+    "final": "Re-certify and re-evaluate final accepted pose with the same fixed-anchor objective and support gates. If final validation fails, use the old filtered output and preserve all attempted poses. If no outer step was accepted, retain old filtered output."
+  },
+  "artifacts_and_scoring": "Before any GT read save observation/geometry hashes, initial match overlays by accepted/distance/direction/ambiguity category, all anchors/weights, admission evidence, per-round statuses/costs and final poses. Then use the fixed independent scorer for per-frame center/heading/boundary and consecutive motion/gap metrics. Any regression prevents a complete-superiority claim.",
+  "stop": "Frame27 prototype admission failure or numerical implementation mismatch is recorded before expanding fits. Continue independent six-frame RGB extraction if useful. Do not convert unknown RGB or SOURCE geometry into known evidence to pass this contract."
+}
