@@ -6,6 +6,12 @@ A research project exploring **how images can reveal the spatial relationship an
 
 **Start with the complete replay: once the data is downloaded, Python's standard library is enough to view two 80-frame clips.** No GPU, CARLA server or external model is needed. The viewer displays saved results; training and optimization have separate entry points.
 
+## Start with the code walkthrough
+
+[From purpose to code: did the two cars make contact?](docs/program_flow/output_html/从目的到代码_故事版.html) is an **offline walkthrough in Chinese**. It explains the two routes, then follows case 07 / car 0 / frame 28 from RGB and masks through correspondences and pose optimization to contact and velocity checks. Click the flow nodes to go deeper; expand the actual source snippets when needed. Improvements and unresolved problems appear alongside the steps they concern.
+
+The walkthrough is a self-contained HTML file. GitHub's file view shows its source: download the file or clone the repository, then open it in a browser. Reading it needs no models, server or full dataset. Use the replay below to inspect actual RGB and 3D results. See the [walkthrough maintenance guide](docs/program_flow/README.md) for generation and checks.
+
 ## Running application
 
 These are actual screenshots of the running local browser application, not interface mockups. They show original CARLA images, SAM masks, 3D projections and predicted/reference results.
@@ -138,7 +144,7 @@ collision_world/
 
 ## Provenance and third-party materials
 
-The earlier V-JEPA relation route originated during a company project; the later geometry route is personal research. Provenance is retained, and company recordings are not included. CARLA-generated images, masks and SOURCE geometry retain their asset attribution. The original Three.js license text is included in [LICENSE_Three.txt](inspect_predictions/web_rich/input_txt/LICENSE_Three.txt). Official V-JEPA and SAM large weights are not bundled; obtain external code and weights from their official projects and follow their applicable terms.
+CARLA-generated images, masks and SOURCE geometry retain their asset attribution. The original Three.js license text is included in [LICENSE_Three.txt](inspect_predictions/web_rich/input_txt/LICENSE_Three.txt). Official V-JEPA and SAM large weights are not bundled; obtain external code and weights from their official projects and follow their applicable terms.
 
 - [Official V-JEPA project](https://github.com/facebookresearch/vjepa2)
 - [Official SAM 2 project and checkpoints](https://github.com/facebookresearch/sam2)

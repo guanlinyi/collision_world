@@ -1,0 +1,57 @@
+{
+  "schema": "collision_story_f19_evaluation_excerpt_v1",
+  "organized_date": "2026-11-15",
+  "scope": "case07/car0/frame19; read-only excerpt of saved historical results, no new fit or prediction changes",
+  "sources": [
+    {
+      "source_identifier": "20261115_case07_far_coverage_transfer/output_json/boundary_handover_evaluation.json",
+      "sha256": "fce9a8ab6ee9f8488a3649e80369ed41b6efa6f10855f41aed70a0519ef8a371"
+    },
+    {
+      "source_identifier": "20261115_case07_far_coverage_transfer/output_json/saved_f19_descent_trace.json",
+      "sha256": "a898b1abb15fdd427a662c80bedb09d24583f0384003374b054903e57a328320"
+    }
+  ],
+  "center_error_requires_reference_truth": true,
+  "accepted_rounds": [
+    {
+      "frame": 19,
+      "round": "0",
+      "center_error_cm": 0.5406984950910533,
+      "cost": 0.19726610377245085
+    },
+    {
+      "frame": 19,
+      "round": "1",
+      "center_error_cm": 0.9967463414402359,
+      "cost": 0.15220016805446188
+    },
+    {
+      "frame": 19,
+      "round": "2",
+      "center_error_cm": 1.551684324775342,
+      "cost": 0.12004674397310258
+    },
+    {
+      "frame": 19,
+      "round": "3",
+      "center_error_cm": 2.346440049168814,
+      "cost": 0.11797437873788913
+    },
+    {
+      "frame": 19,
+      "round": "7",
+      "center_error_cm": 2.345249113510179,
+      "cost": 0.11797381652698836
+    }
+  ],
+  "saved_cost_decomposition": {
+    "no_fit": true,
+    "no_GT_read": true,
+    "no_SOURCE_build": true,
+    "no_projection": true,
+    "fixed_anchor_count": 224,
+    "fixed_weights": true
+  },
+  "interpretation": "The saved image objective descends while later accepted poses move farther from the reference center. The cost-only decomposition did not read GT; center-error evaluation did. No GT round selection or prediction changes. Root cause unresolved."
+}

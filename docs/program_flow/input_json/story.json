@@ -1,0 +1,334 @@
+{
+  "sources": {
+    "student": {
+      "path": "learn_relations/code/relation_model.py",
+      "symbol": "RelationContactStudent.forward"
+    },
+    "surface": {
+      "path": "estimate_geometry/code/src/model.py",
+      "symbol": "SurfaceNet.forward"
+    },
+    "sam": {
+      "path": "estimate_geometry/observe_structure/code/whole_observer.py",
+      "symbol": "main",
+      "slice": [
+        59,
+        82
+      ]
+    },
+    "edges": {
+      "path": "estimate_geometry/observe_structure/code/observe_rgb_edges.py",
+      "symbol": "observe_frame",
+      "slice": [
+        57,
+        84
+      ]
+    },
+    "problem": {
+      "path": "estimate_geometry/refine_contours/code/problem.py",
+      "symbol": "GeometryOnlyProblem.__init__"
+    },
+    "project": {
+      "path": "estimate_geometry/refine_contours/code/portable_geometry.py",
+      "symbol": "project"
+    },
+    "actor": {
+      "path": "estimate_geometry/refine_contours/code/portable_geometry.py",
+      "symbol": "pose_row"
+    },
+    "pool": {
+      "path": "estimate_geometry/refine_contours/code/geometry_pool.py",
+      "symbol": "GeometryPool.build",
+      "slice": [
+        19,
+        43
+      ]
+    },
+    "match": {
+      "path": "estimate_geometry/refine_contours/code/exterior_matching.py",
+      "symbol": "match_observed"
+    },
+    "refresh": {
+      "path": "estimate_geometry/refine_contours/code/refresh_associations.py",
+      "symbol": "refresh",
+      "slice": [
+        23,
+        44
+      ]
+    },
+    "residual": {
+      "path": "estimate_geometry/refine_contours/code/run_candidate.py",
+      "symbol": "exterior_residual"
+    },
+    "inner": {
+      "path": "estimate_geometry/refine_contours/code/run_candidate.py",
+      "symbol": "solve_inner"
+    },
+    "backtrack": {
+      "path": "estimate_geometry/refine_contours/code/run_candidate.py",
+      "symbol": "refreshed_backtracking"
+    },
+    "driver": {
+      "path": "estimate_geometry/refine_contours/code/infer_frame.py",
+      "symbol": "main",
+      "slice": [
+        11,
+        39
+      ]
+    },
+    "compare": {
+      "path": "estimate_geometry/refine_contours/code/infer_frame.py",
+      "symbol": "main",
+      "slice": [
+        32,
+        55
+      ]
+    },
+    "velocity": {
+      "path": "inspect_predictions/code/verify_replay.py",
+      "symbol": "main",
+      "slice": [
+        5,
+        27
+      ]
+    },
+    "boxes": {
+      "path": "estimate_geometry/code/src/collision.py",
+      "symbol": "box_contact"
+    }
+  },
+  "sections": [
+    {
+      "id": "home",
+      "short": "故事起点",
+      "crumb": "目的 → 一次真实输入 → 代码与证据",
+      "title": "看见两辆车以后，我们还要知道它们到底有没有接触",
+      "teaser": "先把要判断的事说清楚。",
+      "body": "<p class='lead'>一张图里，两辆车看起来挨得很近。它们是真的碰到了，还是只是从这个角度看起来重叠？如果我们想核对这件事，就得把图像里的线索，接到同一个三维空间里。</p><p>这个项目沿着两条路尝试：一条让模型从视频特征里学习车辆关系；另一条把已知车身几何摆回图像里，调整位置与朝向，再计算两车之间的距离。下面会把两条路交代清楚，然后跟着案例07、车0、第28帧，实际走一遍当前能重新运行的几何过程。</p><p>我们要保存的是足以判断当前任务的状态：车在哪里、怎样摆放、两车是否接触、这几个判断还有什么证据。没有必要先把整条街、所有材质和每一个看不见的表面完整复原。<strong>但几何接触只能说明所用几何体相接，不等于已经识别了一次道路事故。</strong></p><div class='legend'><span class='badge given'>蓝：外部给定与缓存输入</span><span class='badge observed'>绿：从当前图像提取的观测</span><span class='badge fitted'>棕：程序求出的状态</span><span class='badge evaluated'>紫：事后评价与旧结果</span></div><div class='milestones'><div><b>2 条路线</b>关系学习与显式几何，各自保留入口。</div><div><b>1 帧重算</b>当前核心的真实验收是07／车0／第28帧。</div><div><b>2 × 80 帧</b>完整网页展示两个已有冻结片段。</div></div><p>先点下面某一层，再继续往下拆。每层都可以回上一级；代码默认收起，想知道具体怎样做时再打开。</p>",
+      "flow": [
+        "routes",
+        "inputs",
+        "frame",
+        "contact",
+        "diagnosis",
+        "run"
+      ]
+    },
+    {
+      "id": "routes",
+      "parent": "home",
+      "short": "1 两条路怎样分工",
+      "crumb": "总图 / 先选要回答的问题",
+      "title": "要判断关系，可以直接学；要追查几何，就把车摆回去",
+      "teaser": "两条路线各自做到了哪一步，哪些还没有接起来。",
+      "body": "<p>第一条路把视频交给视觉编码器，得到保留空间信息的特征，再训练一个较小的学生模型，回答双车关系、接触和事件问题。第二条路要求把位置与朝向说清楚：先从图像取得观测，再把已知车身几何投影到画面上，检查哪里对不上。</p><p>几何路线内部也经历了两个阶段。早期 SurfaceNet 学习可见表面的三维坐标；当前轮廓方法则直接把 SAM 提议、真实 RGB 边和已知几何联系起来。它们有不同输入、训练与推理入口。<strong>关系学生、SurfaceNet、当前轮廓求解还没有融合成一个模型。</strong></p><div class='branch'><div><h3 class='observed'>视频 → 关系／事件</h3><p>输入视觉特征，输出任务判断。重点是学习双参与者之间的关系。</p></div><div><h3 class='fitted'>图像证据 → 三维状态 → 接触</h3><p>明确保留几何状态，便于把错误追到观测、对应关系或求解过程。</p></div></div><p>这里的“状态按目的保存”也不能变成省略证据：如果缺少某辆车的可靠几何，结论应当是证据不足，不能顺手记成“未接触”。</p>",
+      "flow": [
+        "relations",
+        "surface",
+        "contours"
+      ]
+    },
+    {
+      "id": "relations",
+      "parent": "routes",
+      "short": "1.1 从视频特征学习关系",
+      "crumb": "两条路 / 关系学生",
+      "title": "先把画面变成特征，再学习两辆车之间的关系",
+      "teaser": "冻结 V-JEPA 提供视觉特征，小模型学习下游任务。",
+      "body": "<p>V-JEPA 在这里负责把 RGB 视频窗口编码成特征。所谓冻结，就是训练下游学生时不改这个编码器的权重。学生接收带空间位置的特征，在画面网格上处理，再汇集两个参与者各自的表示与场景信息。</p><p>代码里的 <code>slot_mask</code> 给两个参与者分配网格权重；<code>dense_physics</code> 预测局部存在、深度、速度等辅助量。随后把两个参与者、它们的差、乘积和场景表示拼起来，交给 <code>regressor</code>。输出键名叫 <code>contact</code>，含义仍须结合训练目标协议理解，不能只看到字段名就当成经过校准的事故概率。</p><p>CARLA 的几何和运动可以用来生成训练监督。推理时学生读的是视觉特征，教师字段不应变成预测捷径。已有合成小验收验证了真实优化、保存和推理，以及去除教师字段后预测不变；这没有复验真实 CARLA 全量训练，也没有重跑 V-JEPA 官方权重的 RGB 提取。</p>[[code:student]]<p>继续读可从 <code>learn_relations/code/targets.py</code> 看目标定义，再看 <code>train.py</code> 与 <code>infer.py</code> 怎样分别使用标签与特征。这个分支不会自动生成下面讲的轮廓位姿。</p>"
+    },
+    {
+      "id": "surface",
+      "parent": "routes",
+      "short": "1.2 早期：学可见表面",
+      "crumb": "两条路 / 几何路线的早期阶段",
+      "title": "如果能给像素一个表面坐标，就可以拟合整辆刚体",
+      "teaser": "SurfaceNet 预测可见表面，随后做几何拟合。",
+      "body": "<p>早期几何方法给网络输入 64×64 RGB 裁剪和实例 mask。SurfaceNet 输出归一化的可见三维表面坐标与面分类；再结合相机标定、身份、已有 proposal 和多视图信息拟合刚体状态。proposal 是上游已经给出的初始状态建议，不是这一步凭空发现的车辆。</p><p>下方 <code>forward()</code> 的 <code>o[:,:3]</code> 经过 <code>tanh</code> 给出有界坐标，余下通道提供分类信息。网络本身没有把所有接触逻辑包进去；后续几何、时序更新、三维盒与接触评价分别在其他模块里完成。</p>[[code:surface]]<p>仓库包含历史小权重和真实 CARLA 的35个有效视图、双车6状态子集，已做 CPU 推理。它们来自已见训练片段，因此适合核对输入与程序，不能拿来证明对新场景也准确。合成数学体的小训练同样只验证训练链路。运行这一分支不会得到最新 R/BT8 轮廓结果。</p>"
+    },
+    {
+      "id": "contours",
+      "parent": "routes",
+      "short": "1.3 当前：直接对轮廓求位姿",
+      "crumb": "两条路 / 几何路线的当前阶段",
+      "title": "当前演示绕着一个具体问题走：这辆车怎样摆，才对得上图像证据？",
+      "teaser": "SAM 给区域，RGB 给局部边，已知车身几何提供三维约束。",
+      "body": "<p>SAM 根据提示给出候选 mask。mask 是像素集合，告诉我们先去哪里找车身外缘；真实 RGB 梯度再提供更细的边缘候选。随后把已知的车身简化几何投影到画面里，与这些观测建立对应，迭代调整位姿。</p><p>这里把那份已知几何叫 <code>SOURCE</code>，只是源码和证据沿用的名字。它是已有的车身三角形及边界结构，并非神经网络从这一帧预测出的完整车身。与之对应，代码中的 <code>QUERY</code> 真值指本帧参考状态，不能混进求解输入。</p><p>这条路的优势是能逐层问“哪一个图像点约束了哪一段几何”。限制也很具体：我们已经知道资产、相机标定、地面、目标身份与先验，而且输入提示来自同场景。它还不能直接接收任意裸视频并自主发现所有目标。</p><div class='note'>本故事真正重新运行过的核心案例是第28帧。其他帧可以在完整网页里看，但其完整结果属于已有冻结结果。</div><p><a href='#frame'>接着看第28帧怎样一步步求出来 →</a></p>"
+    },
+    {
+      "id": "inputs",
+      "parent": "home",
+      "short": "2 先分清给定与预测",
+      "crumb": "总图 / 输入从哪里来",
+      "title": "CARLA 给了画面，也给了可用来训练和核对的世界状态",
+      "teaser": "同一批数据，不同字段进入训练、推理或评价的位置不同。",
+      "body": "<p>CARLA 是仿真环境。它可以提供相机 RGB、相机内外参数、车辆资产几何和状态记录。因为生成画面时知道物体怎样摆放，它还能给训练提供监督、给评价提供参考。<strong>“数据里有真值”与“预测程序读取真值”是两件必须分别核对的事。</strong></p><div class='table-wrap'><table><thead><tr><th>这一类量</th><th>第28帧当前怎样使用</th><th>能说明什么</th></tr></thead><tbody><tr><td class='given'>RGB、标定、身份、地面、车身几何</td><td>明确给定。标定把三维坐标和图像像素接起来。</td><td>这是受强条件约束的任务。</td></tr><tr><td class='given'>提示点、ROI、旧 prior 与 baseline</td><td>给定同场景初始化与搜索边界。</td><td>不是自动发现新目标。</td></tr><tr><td class='observed'>候选 mask、RGB 点与法向</td><td>mask 从缓存模型候选中重选；RGB 梯度实际重算。</td><td>观测也可能错，不是人工语义真值。</td></tr><tr><td class='fitted'>摆车位姿与对应关系</td><td>由几何投影和图像残差迭代求解。</td><td>结果须沿证据继续核查。</td></tr><tr><td class='evaluated'>参考位姿、接触、中心误差</td><td>用于训练标签或事后评价；当前求解不读本帧参考真值。</td><td>评价使用真值是正常的，但不能拿真值选轮次。</td></tr></tbody></table></div><p>再分清三个动作：<strong>训练</strong>改变模型参数；<strong>推理／求解</strong>用已有模型和规则产生新预测；<strong>回放</strong>读取已保存结果显示出来。浏览器看见一辆三维车动了，不代表打开页面时又运行了训练或 SAM。</p>",
+      "flow": [
+        "coordinates"
+      ]
+    },
+    {
+      "id": "coordinates",
+      "parent": "inputs",
+      "short": "2.1 三维量与像素量怎样接上",
+      "crumb": "输入 / 坐标和单位",
+      "title": "像素里的一小段线，要靠标定和已知几何才能约束三维",
+      "teaser": "平移参数、车中心、朝向和速度分别是什么。",
+      "body": "<p>图像点是二维像素坐标，例如横坐标720、纵坐标407；车身上的点则保存在车体局部坐标里，单位米。程序先按位姿把车体点放到 LAB 世界坐标，再通过相机外参数转到相机坐标，最后按内参数投影到像素。</p>[[code:project]]<p>当前 <code>candidate_pose</code> 前三项是 SOURCE 参考原点在 LAB 中的平移参数，后三项是度制旋转向量。<strong>前三个数不能未经换算就叫作车中心。</strong><code>pose_row()</code> 还使用 <code>source_asset_origin_lab_m</code> 换回 actor 矩阵；网页的中心误差来自另行定义的评价坐标。平移参数的高度约0.737米，也不能解释为车身离地0.737米。</p>[[code:actor]]<p>本例保持车身直立，只优化 x、y 和绕竖直轴的旋转量，z 随给定地面支撑与高度确定。六个数的输出格式，不代表六个自由度都由这一帧独立估计。车身朝向也不是速度方向；网页的方向延长线是观察朝向和宽度的辅助线，不是未来轨迹。</p>"
+    },
+    {
+      "id": "frame",
+      "parent": "home",
+      "short": "3 跟着07／车0／第28帧",
+      "crumb": "总图 / 当前单帧的完整过程",
+      "title": "先固定这一帧，再沿着同一份输入往下走",
+      "teaser": "给定提示 → mask → RGB边 → 投影 → 对应 → 迭代 → 位姿。",
+      "body": "<p>我们固定案例07、车0、第28帧。整张 RGB 是1920×1080，但前端已经收到裁剪框 <code>[639,394,851,536]</code>、四个正提示点、四个负提示点和车身框。ROI 就是这次打算处理的图像区域。</p><p>从这里开始，前端先选择车的像素，再在真实 RGB 中找有限边段；后端用给定旧状态构建车身投影，把图像边与三维边配起来。每走一步都保留它收到什么、输出什么，以及无法确定的部分。</p><div class='note'>本页按逻辑顺序讲一条链。实际验收分开执行：缓存 SAM 选择与 RGB 边重算已经一致；求解器此前对这份相同观测做过一次89.55秒重算。这里没有把分步验收改称为一次新的全段端到端运行。</div>",
+      "flow": [
+        "mask",
+        "edges",
+        "projection",
+        "association",
+        "solve",
+        "pose"
+      ]
+    },
+    {
+      "id": "mask",
+      "parent": "frame",
+      "short": "3.1 先选出这辆车的像素",
+      "crumb": "第28帧 / 给定提示 → mask",
+      "title": "SAM 给三个候选，我们按事先固定的规则选一个",
+      "teaser": "看提示命中和面积，再比较合格候选的自评分。",
+      "body": "<p>正提示告诉 SAM 哪些点应属于车身，负提示告诉它哪些点不应被包含。SAM据此给像素区域，并不等于在当前流程中自己认出了“这是挡风玻璃或车灯”，当前求解也没有学习整车部件组装。裁剪和提示由同场景第27帧种子及已平移的初始化提供。下面的坐标是相对裁剪框的局部像素，不是世界坐标；NCC 分数表示已保存的图像模板匹配情况，不是几何正确率。</p>[[data:prompts]]<p>候选须命中至少3个正点，不包含负点，面积至少为种子 mask 的一半。只有通过这些规则，才按 SAM 自评分选最高者。选择不读取位姿、SOURCE 匹配代价或本帧真值，因此不能为了让后面拟合更好，偷偷换一个 mask。</p>[[code:sam]][[data:sam]]<p>本次重新选择的是缓存中的三个候选，选中索引2、12999像素，与冻结 mask 逐像素相同。源码也提供显式 SAM 权重入口，但本次没有重新运行 SAM 神经网络。<strong>缓存选择一致，只能验证选择逻辑和缓存，不能保证换一套 SAM 版本仍得同一结果。</strong></p>"
+    },
+    {
+      "id": "edges",
+      "parent": "frame",
+      "short": "3.2 mask 旁边还要看真实RGB",
+      "crumb": "第28帧 / mask → RGB有限边",
+      "title": "mask 只告诉我们去哪找，真正的边还要从 RGB 里挑",
+      "teaser": "沿轮廓法向扫描灰度梯度，竞争峰和模糊区域保留未知。",
+      "body": "<p>mask 的轮廓未必正好落在真实车身边上。程序沿外轮廓逐点取附近9点，用局部形状估计切线及法向，再沿法向在 ±4像素内以0.25像素间隔采样真实 RGB 灰度。法向可以理解为与这小段轮廓垂直的方向。</p><p>程序检查灰度变化是否足够强、主峰离 mask 边是否超过2像素、是否存在相距至少1像素且超过主峰0.7的竞争峰，以及二维灰度梯度是否与法向大致一致。弯得过急、方向不明确、阴影难辨的区域保留为 <code>unknown</code>。这也不是保证找到语义车边的定理，强阴影仍可能过关。</p>[[code:edges]][[data:edges]]<p>第一个通过的记录 id=10：mask种子点在 <code>[710,409]</code>，RGB主峰约在 <code>[709.925,408.506]</code>，偏移0.5像素。这只是当前图像上的一个候选点，不是已经知道的三维车身点。463点中248点合格、215点未知；后面只把足够接近、方向相符的相邻候选连接成有限线段，不跨过未知区域硬连。</p>"
+    },
+    {
+      "id": "projection",
+      "parent": "frame",
+      "short": "3.3 把已知车身摆回画面",
+      "crumb": "第28帧 / 先验 → SOURCE投影",
+      "title": "先给车一个起始摆法，再计算这个摆法应该在图里长什么样",
+      "teaser": "用SOURCE三角形、地面和标定重建本次姿态的投影外缘。",
+      "body": "<p>后端读取旧 prior 和已经过滤的 baseline。prior 限定全局搜索范围，baseline 是这一次实际开始迭代的摆法；它们都已给定，不能写成当前帧从零推出来的初值。全局范围是 prior 周围x/y各±0.8米、旋转±12度；每个外轮的局部步长还会更小。</p>[[data:prior]][[code:problem]]<p><code>GeometryPool.build()</code> 把已知车身三角形按当前位姿转换并投影，检查深度与图像裁边，再建立投影并集。并集指这些三角形在画面中共同覆盖的区域；车身内部被挡住的边不能因为“模型里有”就直接当作可见外缘。</p>[[code:pool]]<p>随后程序对三维边采样，给可作为外缘的点保留局部坐标、投影坐标、法向、相邻关系与可见性证据。姿态一改，哪些边可用也可能改变，所以这批几何不能始终锁在初始摆法上。</p>"
+    },
+    {
+      "id": "association",
+      "parent": "frame",
+      "short": "3.4 这条图像边对应哪段车身",
+      "crumb": "第28帧 / 二维观测 ↔ 三维几何",
+      "title": "接近还不够，我们要问它是不是同一段边",
+      "teaser": "距离、法向、连续弧和竞争候选共同决定对应是否可用。",
+      "body": "<p>初始匹配从投影外缘去找图像有限线段：垂足要在线段内部、距离不超过5像素、外法向夹角不超过30度。若另一个独立轮廓弧也差不多近，距离优势不足2像素，就留下歧义。相邻采样点不一定代表两个独立证据，程序还按轮廓弧的距离判断竞争关系。</p>[[code:match]]<p>通过初始检查后，图像端的观测点、法向和权重固定下来，成为后续各轮比较的同一批 anchors，也就是“锚点”。姿态变化时，三维端允许重新寻找对应，但不能把不利的图像点删掉再说目标变好了；找不到对应的锚点仍承担缺失罚分。</p><p>刷新对应时，代码也检查完整投影并集上的弧关系，并对新三维垂足重新做可见性证书。端点不能因采样编号变化被当成物理断开，投影后连成一条外缘的结构也不能只靠旧采样图决定。这个层次正是之前端点与轮廓断连修复所针对的位置。</p>[[code:refresh]]"
+    },
+    {
+      "id": "solve",
+      "parent": "frame",
+      "short": "3.5 调整摆法后要重新检查",
+      "crumb": "第28帧 / 残差 → 内层求解 → 刷新回溯",
+      "title": "一次最小二乘建议，不足以决定这一步真的更好",
+      "teaser": "先求小步，再按新姿态重建几何、刷新对应和重新算代价。",
+      "body": "<p>对一个有匹配的锚点，程序把它对应的车身点投影出来，再计算投影点到图像观测点沿法向的偏差。它不是要求两点每个方向完全重合，而是主要约束轮廓垂直方向的错位。残差使用 Huber 形式限制较大偏差的影响；缺失匹配按原锚点权重罚分。</p>[[code:residual]]<p>内层 <code>least_squares</code> 暂时固定对应，求 x、y、绕竖直轴旋转的小调整。最多150次函数评价不等于150个视频帧；它是这一个内层优化的计算预算。</p>[[code:inner]]<p>R/BT8 的外层最多8轮。“刷新”指每个试探摆法都重建 SOURCE 投影、重找三维对应；“回溯”指按1、1/2、1/4、1/8步长依次尝试。还要满足边界、最大实际投影位移≤2像素、刷新后的支持准入和真实刷新代价下降。这里只采用第一个合格下降步；没有合格步就停止。<strong>不能只看旧对应下内层代价降低就接受。</strong></p>[[code:backtrack]]<p>支持准入还检查足够长度、沿车长的覆盖、两半权重、参数可辨性和至少80%的初始权重仍可匹配。它们是当前代码的防护条件，不能解释为“80%准确率”。</p>"
+    },
+    {
+      "id": "pose",
+      "parent": "frame",
+      "short": "3.6 这一帧最后交出了什么",
+      "crumb": "第28帧 / 新预测 → 保存 → 旧结果比较",
+      "title": "先保存新位姿，再与旧冻结结果比较",
+      "teaser": "89.55秒、接受6轮，与旧结果之差为0；这不是GT误差为0。",
+      "body": "<p><code>infer_frame.py</code> 把给定输入、SOURCE构建器和观测路径接到 <code>fit_frame()</code>。这一步不训练网络，而是实际重做投影、初始匹配、对应刷新、内层求解与回溯。求解结果先落盘；只有显式启用 <code>--verify-frozen</code>，才在之后读取旧冻结候选作比较。</p>[[code:driver]][[data:result]]<p>这次记录的耗时为89.54699999999957秒，接受6个外轮，状态为 <code>accepted</code>。位姿前三项是摆车用的平移参数，后面是度制旋转向量；其中两个旋转分量为0。目标值0.1057443522是当前定义的加权图像残差代价，不是米、准确率或事故概率。</p><div class='warn'>中心差0米、旋转差0度、代价差0，都表示新运行与旧冻结候选一致。参考真值没有进入这次求解；这些“差0”并不表示车辆真实中心误差为0。</div>[[code:compare]]<p>把这一帧求出来，得到的是一辆车的一个状态。要判断两车接触，仍需同一时刻另一辆车的有效几何和明确的距离定义；要判断速度，还需相邻时刻的历史位置。</p>"
+    },
+    {
+      "id": "contact",
+      "parent": "home",
+      "short": "4 有了状态，再问接触与速度",
+      "crumb": "总图 / 从局部状态回答任务",
+      "title": "位姿是中间结果，接触和速度还各有一步",
+      "teaser": "同帧双车计算距离；跨帧位置差分计算速度。",
+      "body": "<p>我们把车放回共同的三维坐标后，才有条件比较两辆车各自占据的空间。车中心相距多远不能代替表面间隙：车有长度、宽度和朝向，中心不同样远也可能侧擦或横穿接触。两车接触不要求中心延长线共线。</p><p>另一件事是运动。一帧能给位置与朝向，却不能只靠“车头朝哪边”得到速度。速度需要看同一身份的车在历史时间间隔里移动了多少，车身朝向和实际运动方向可以不同。</p><p>这两种计算都能放大上游错误。接触前的几厘米偏差会改变接触时刻；相邻帧误差的变化则会变成假速度。我们分开检查，不能只拿一帧投影好看就说整段运动已经解决。</p>",
+      "flow": [
+        "distance",
+        "speed"
+      ]
+    },
+    {
+      "id": "distance",
+      "parent": "contact",
+      "short": "4.1 两车表面到底还隔多远",
+      "crumb": "任务 / 同帧双车距离与接触",
+      "title": "对准同一帧的两份车身几何，再使用同一种接触定义",
+      "teaser": "欧氏间隙、历史半空间slack、盒体SAT别混着读。",
+      "body": "<p>完整网页当前显示的 <code>pair_geometry.json</code> 保存的是所显示 SOURCE 凸体之间的三维欧氏最短距离：分离时为正，接触或重叠时为0。它计算的是这份简化几何的接触，不是 CARLA 物理碰撞回调，也不是对事故性质的判断。</p>[[data:gaps]]<p>案例07第40帧最新预测仍隔约2.759厘米，参考约0.953厘米；第41帧两者显示距离均为0并进入接触。案例11第22帧最新预测约10.107米，参考约10.115米，均未接触。这些数值读自已有冻结片段，<strong>不是把第28帧单车重算冒充为整条双车接触链重新运行。</strong></p><p>历史 <code>pose_experiments.json</code> 还保留 <code>source_convex_3d_slack_m</code>，是公共半空间松弛量，符号可判接触，却不等同欧氏间隙。早期 SurfaceNet 分支的 <code>box_contact()</code> 则对有向盒做分离轴测试；最小轴向重叠量同样不是一般的表面最短距离。这三种量各有定义，不能互换。</p>[[code:boxes]]<p>这里给出盒体代码是为了说明不同入口的计算边界。完整网页的 SOURCE 欧氏距离来自打包的冻结数据，本包的回放核验不等于重新生成了这些距离证书。两个80帧已有片段的几何接触未见误报或漏报，只能在这两个片段、这份几何和参考定义下陈述。</p>"
+    },
+    {
+      "id": "speed",
+      "parent": "contact",
+      "short": "4.2 为什么位置还行却冒出假速度",
+      "crumb": "任务 / 历史位置 → 速度",
+      "title": "速度看的是位置变化，而误差变化也会被算进去",
+      "teaser": "第18→19帧的位置误差差分，解释第19帧速度红格。",
+      "body": "<p>相邻时刻位置之差除以时间间隔，得到平均速度向量：<code>v̂ₜ=(p̂ₜ−p̂ₜ₋₁)/Δt</code>。如果预测位置含误差e，那么速度误差就是 <code>(eₜ−eₜ₋₁)/Δt</code>。两帧的误差大小都不算大，也可能因为方向变了而产生明显的假速度。</p>[[data:velocity]]<p>这一段相邻帧约差0.1秒。车0第18→19帧预测x从约−9.54855变成−9.51113米，横向速度约+0.374米/秒；参考横向速度约−0.0034米/秒。第19帧三维速度向量误差达到0.44334米/秒，超过页面0.3米/秒的红格阈值。第20帧又降到约0.02358米/秒。</p><p>第19帧新候选的中心误差只有约2.345厘米，仍不能据此说速度已经对了；第18帧保留旧过滤结果、第19帧进入新候选，是必须检查的交接位置。第33帧退出该候选区间时也有速度红格。来源交接与误差差分已能从冻结数据确认，造成图像目标与真实位置偏离的更深原因仍未查清。</p>[[code:velocity]]<p>速率是速度向量的长度，速度向量误差与速率误差也不同；只比较“跑得多快”会漏掉横向假运动。网页朝向延长线只帮助看车身朝向，不能代替这些历史差分。</p>"
+    },
+    {
+      "id": "diagnosis",
+      "parent": "home",
+      "short": "5 出错后怎样沿一帧往回查",
+      "crumb": "总图 / 错误不能靠换一帧解释",
+      "title": "看到红格，先留在同一个坏样本上",
+      "teaser": "从最终量往上追，区分已经证实的问题与仍待区分的嫌疑。",
+      "body": "<p>假设第19帧速度红了。先固定案例、帧、车和方法，再看第18、19、20帧的位姿来源及有符号位置误差。我们要找的是哪一步首次偏离，不是挑一个看起来更好的帧替它作证。</p><p>网页把原RGB、SAM mask、RGB边候选、SOURCE投影和参考结果放在一起，就是为了让这些问题能分层问：输入有没有放错？观测实际在图里吗？对应是否连错？位姿改变后是否重算了对应？保存结果是否交接到另一来源？评价读取的是哪一种几何定义？</p><div class='diagram'><svg viewBox='0 0 760 208' role='img' aria-label='围绕同一坏帧的分层检查'><defs><marker id='diagArrow' markerWidth='6' markerHeight='6' refX='5' refY='3' orient='auto'><path d='M0,0L6,3L0,6' fill='#74887b'/></marker></defs><g fill='#f0f4ef' stroke='#aebfb1'><rect x='8' y='40' width='158' height='110' rx='9'/><rect x='200' y='40' width='158' height='110' rx='9'/><rect x='392' y='40' width='158' height='110' rx='9'/><rect x='584' y='40' width='168' height='110' rx='9'/></g><g font-size='17' fill='#294b38' text-anchor='middle' font-family='Microsoft YaHei,sans-serif'><text x='87' y='79'>固定坏帧与方法</text><text x='87' y='110' font-size='13'>帧／车／位姿来源</text><text x='279' y='79'>核对图像观测</text><text x='279' y='110' font-size='13'>RGB／mask／有限边</text><text x='471' y='79'>核对几何与对应</text><text x='471' y='110' font-size='13'>端点／投影并集／刷新</text><text x='668' y='79'>核对任务与评价</text><text x='668' y='110' font-size='13'>距离定义／历史差分</text></g><g stroke='#74887b' marker-end='url(#diagArrow)'><path d='M167 95H195'/><path d='M359 95H387'/><path d='M551 95H579'/></g><text x='380' y='186' font-size='13' fill='#69786b' text-anchor='middle'>同一批观测、同一坏帧，逐层找首次异常；这张是检查路线示意，不是算法测量图。</text></svg></div>",
+      "flow": [
+        "topology",
+        "counterexample"
+      ]
+    },
+    {
+      "id": "topology",
+      "parent": "diagnosis",
+      "short": "5.1 不要一开始就怪mask",
+      "crumb": "查因 / 先核对几何结构",
+      "title": "画面没变，几何端点与轮廓断连也足以把对应弄错",
+      "teaser": "已有有效修复发生在几何与对应层；它没有证明所有图像观测都正确。",
+      "body": "<p>mask 可能出错，但不能因为它是网络输出就先把责任归给它。已知车身投影里，同一个物理端点可能来自多条边；如果按采样编号把它们当成互不相干的点，或者把投影并集中连续的轮廓误当断开，就会影响弧距离、竞争边判断和新对应准入。</p><p>现代码在 <code>GeometryPool</code> 中使用实际顶点键合并共享端点，在 <code>ExactUnionIndex</code> 中沿完整投影并集定位与计算弧关系；<code>refresh()</code> 把旧采样图明确标为描述性信息，不再让它替代完整外缘关系。前面展开的刷新代码正落在这一层。</p><p>这类端点与轮廓断连修复已经有效，最新案例07车0最大中心误差由原过滤基线约6.38厘米降到3.90厘米；但改进还包括明确的新候选区间，不能把整段结果归因给一个小条件。两段结果也仍有验证范围，不能由“图看顺了”推出普遍可靠。</p><div class='note'>现在仍有第19、33帧速度红格，说明解决一层问题不等于所有层都已正确。下一步应围绕同一坏帧作能区分嫌疑的最小对照；没有新证据之前，不用平滑把错误藏起来。</div>"
+    },
+    {
+      "id": "counterexample",
+      "parent": "diagnosis",
+      "short": "5.2 图像分更好，三维却更差",
+      "crumb": "查因 / 第19帧的具体反例",
+      "title": "第19帧告诉我们：优化目标下降，还不能替代真实误差",
+      "teaser": "固定224个锚点，图像代价下降，但接受路径后来远离参考中心。",
+      "body": "<p>第19帧同一条已保存接受路径提供了一个具体反例：第0轮接受后，中心误差约0.541厘米，图像代价约0.197266；继续接受时，代价降低到约0.117974，中心误差却增至约2.345厘米。求解器确实在改进自己定义的图像目标，但那不是实际三维中心误差的同一个量。</p>[[data:counterexample]]<p>这份记录是历史结果的只读整理，没有重跑优化，也没有用真值挑一个“最好轮次”替换原预测。中心误差由参考真值评价得到；另一个只拆已保存代价的记录标记 <code>no_GT_read</code>，只表示那次代价拆解未读取真值，不能把它扩展成“这些中心误差不需要真值”。</p><p>已能确认：224个图像锚点和权重固定，真实刷新图像代价在下降，最终中心仍比早期接受步更偏。这排除了把它简单说成“只是内层旧对应分数下降”的解释。还没确认：究竟是图像边偏差、几何简化、投影模型还是具体对应如何共同推动了偏离。未知原因必须保留为未知，不能把“用真值早停”当成修复。</p><p>接下来的有效对照，应留在这一帧，逐个核对有影响的锚点、它在真实RGB里的边、三维垂足和代价贡献，再看修改是否同时改善该帧、相邻帧和接触任务。这里没有启动新实验。</p>"
+    },
+    {
+      "id": "run",
+      "parent": "home",
+      "short": "6 怎样读代码、怎样运行",
+      "crumb": "总图 / 可复核入口与验证边界",
+      "title": "先看已有结果，再重算一帧，最后才决定要不要训练",
+      "teaser": "按目的选入口，把每一次运行的实际范围说清楚。",
+      "body": "<p>想理解数据怎样流动，先沿第28帧这六层读代码，比从目录第一个文件读到最后更直接。主线是 <code>observe_frame.py → observe_rgb_edges.py → infer_frame.py → fit_frame()</code>，其中 <code>GeometryPool</code> 管几何，<code>exterior_matching</code> 管初始观测对应，<code>refresh_associations</code> 管新姿态下的对应，<code>run_candidate</code> 管求解与接受。</p><div class='table-wrap'><table><thead><tr><th>想做什么</th><th>从哪里开始</th><th>实际会发生什么</th></tr></thead><tbody><tr><td>看两个完整片段</td><td><code>python -S -B start_full_replay.py</code></td><td>标准库启动本地网页，读取已有80×2帧结果；浏览器打开8883端口。</td></tr><tr><td>核对冻结数值</td><td><code>python -S -B inspect_predictions/code/verify_replay.py</code></td><td>独立核对位置、速度差分和已存接触标签，不重做感知。</td></tr><tr><td>重选缓存SAM与提RGB边</td><td><code>estimate_geometry/observe_structure/README.md</code></td><td>按明确输入重做选择与真实RGB计算；神经SAM另需官方代码和权重。</td></tr><tr><td>重算第28帧位姿</td><td><code>estimate_geometry/refine_contours/code/infer_frame.py</code></td><td>真实构建几何与迭代求解，输出到新目录。</td></tr><tr><td>学习关系或可见表面</td><td><code>learn_relations/README.md</code>、<code>estimate_geometry/README.md</code></td><td>各自准备训练输入；训练不会自动生成当前完整网页结果。</td></tr></tbody></table></div><p>完整回放需要拉全仓库的 Git LFS 资源。终端从仓库根运行第一条后，浏览器可打开 <code>http://127.0.0.1:8883/cases/07/#frame=28&amp;car=0&amp;method=case07_far_exterior_bt8</code>。切换帧、车辆和方法时，先确认选择器再读数值，避免把两套来源当成同一预测。网页还会显示历史部件mask、整车分区和调试线；这些显示层不等于当前方案都把它们当作定位输入。手工改显示分区不会自动重训或重算三维，当前014单帧直接使用的是SAM区域提议和真实RGB外缘结构。</p><h3>只重算这一帧的命令</h3><pre class='run'>python -B estimate_geometry/refine_contours/code/infer_frame.py --output estimate_geometry/refine_contours/experiments/my_frame28_story_run --verify-frozen</pre><p>这条命令需要对应几何依赖，目录必须是新的。前端若重算新观测，可显式用 <code>--observation</code> 传给求解入口；详细分步命令在前端说明中。故事页本身只生成和显示说明，任何流程框都不会启动模型。</p>",
+      "flow": [
+        "limits"
+      ]
+    },
+    {
+      "id": "limits",
+      "parent": "run",
+      "short": "6.1 现在能确认到哪里",
+      "crumb": "运行 / 已验收与尚未验收",
+      "title": "能复现一帧，和能判断任意视频，是相距很远的两件事",
+      "teaser": "把程序运行、冻结评价、合成验收和未知项放回各自范围。",
+      "body": "<div class='table-wrap'><table><thead><tr><th>已有证据</th><th>结论止于这里</th></tr></thead><tbody><tr><td>两个各80帧、共320车辆姿态的完整回放；2240个PNG URL经HTTP核对，RGB哈希一致</td><td>这些资源可读取、显示的原图来自打包数据；不代表全按钮、全部新平台或全片段重算。</td></tr><tr><td>第28帧CPU89.55秒、接受6轮、与旧冻结候选差0</td><td>真实核心移植复现一致；不是对真值误差0，不包含新SAM神经前向。</td></tr><tr><td>缓存SAM重选和真实RGB结构重算一致</td><td>候选选择与463点／248候选可重复；不证明换版本SAM结果一致。</td></tr><tr><td>关系学生和SurfaceNet的CPU小训练；真实35视图历史权重推理</td><td>软件入口和协议可运行；合成训练不是实际道路效果，已见子集不是独立测试集。</td></tr><tr><td>案例07首次接触第41帧、案例11未接触；两段冻结几何接触无误报漏报</td><td>只覆盖两个片段和所用SOURCE几何；不是通用事故准确率。</td></tr></tbody></table></div><p>强输入条件仍是已知标定、车身资产、地面、身份和先验。同场景第27帧模板用于更早帧时还含未来信息，所以整段离线结果不能不加说明地叫作实时因果感知。</p><p>本次未复验全量真实训练、V-JEPA官方权重RGB提取、新SAM神经前向、两个片段全部重算、真实道路事故判断与跨场景泛化。新装环境、Linux和Jetson Orin也尚未完成验收。第19帧目标与三维误差背离的根因，以及第19、33帧速度问题，仍是下一阶段要解决的具体问题。</p><p>这篇故事从目的走到输入、观测、对应、位姿和任务判断；遇到未知时，继续沿同一份证据往回查。仓库完整验收说明在 <code>docs/VALIDATION.md</code>。本页的源片段由生成器直接抽取，路径、实际行数和SHA都随片段保留；生成时只读取源码，未导入或执行模型代码。JSON数据则只挑了这里解释所需的少量字段。</p>"
+    }
+  ]
+}

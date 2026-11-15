@@ -6,6 +6,14 @@
 
 **最快体验：下载完整数据后，只用 Python 标准库就能打开两段各 80 帧的完整回放。** 无需 GPU、CARLA 服务或外部模型；页面展示已有结果，重新训练和重新求解有各自入口。
 
+## 想先弄懂这个项目，就从这里看
+
+[从目的到代码：两辆车到底有没有接触](docs/program_flow/output_html/从目的到代码_故事版.html)
+
+先讲我们到底想判断什么，再把两条路线分开，接着跟着案例07、车0、第28帧，看原图、掩码、二维与三维的对应、摆车求解，最后怎样核对距离和速度。流程框可以逐层点进去，相关的真实代码默认收起，想看时再展开。已有改善和还没解决的问题也放在对应环节里。
+
+**这是一个可以离线打开的单文件 HTML。** GitHub 文件页显示的是源码；下载该文件，或克隆仓库后双击打开即可。读这份解读不需要模型、服务或完整数据。它解释程序怎样工作；查看原图和三维结果，请继续打开下面的回放页。维护与重新生成方法见[解读说明](docs/program_flow/README.md)。
+
 ## 实际运行界面
 
 以下是项目在本地浏览器中的真实运行截图，并非界面草图，展示 CARLA 原图、SAM 掩码、三维投影及预测／参考结果。
@@ -138,7 +146,7 @@ collision_world/
 
 ## 来源与第三方材料
 
-早期 V-JEPA 关系学习来自公司项目阶段，后续几何路线为个人研究；仓库保留来源记录，不包含公司录像。CARLA 生成图像、掩码及 SOURCE 几何保留其资产来源；Three.js 的原许可文本见 [LICENSE_Three.txt](inspect_predictions/web_rich/input_txt/LICENSE_Three.txt)。V-JEPA 和 SAM 官方大权重未打包，外部代码与权重应从各自官方项目获取并遵循对应条件。
+CARLA 生成图像、掩码及 SOURCE 几何保留其资产来源；Three.js 的原许可文本见 [LICENSE_Three.txt](inspect_predictions/web_rich/input_txt/LICENSE_Three.txt)。V-JEPA 和 SAM 官方大权重未打包，外部代码与权重应从各自官方项目获取并遵循对应条件。
 
 - [V-JEPA 官方项目](https://github.com/facebookresearch/vjepa2)
 - [SAM 2 官方项目与权重说明](https://github.com/facebookresearch/sam2)

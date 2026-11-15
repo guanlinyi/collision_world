@@ -17,3 +17,5 @@ __pycache__/
 /docs/publication/output_json/release_check.json
 /docs/publication/output_json/release_check*.json
 !/docs/publication/output_json/release_check_final.json
+/docs/program_flow/output_html/从目的到代码_故事版_20261115.html
+/docs/program_flow/理解代码_2026-11.md

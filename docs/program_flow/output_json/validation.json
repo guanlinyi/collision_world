@@ -1,0 +1,516 @@
+{
+  "date": "2026-11-15",
+  "scope": "Documentation validation only; no model training or new geometry inference",
+  "html": "output_html/从目的到代码_故事版.html",
+  "html_sha256": "dbb8019360d2cc6f1350a04603232fa7811ded5c5075356bbd7c5e04512fed98",
+  "html_bytes": 103304,
+  "source_excerpts": 17,
+  "source_excerpts_ast_and_hash_checked": true,
+  "static": {
+    "bytes": 103304,
+    "duplicate_static_ids": [],
+    "automatic_external_assets": [],
+    "missing_local_targets": [],
+    "invalid_unicode_replacement": false,
+    "passed": true
+  },
+  "javascript_syntax": "node --check passed",
+  "browser": "Chrome, actual DOM interaction and screenshots",
+  "browser_checks": {
+    "desktop": {
+      "passed": true,
+      "checks": 59,
+      "chapters": 22,
+      "viewport": [
+        1440,
+        1150
+      ],
+      "results": [
+        {
+          "name": "initial home",
+          "passed": true
+        },
+        {
+          "name": "one visible chapter",
+          "passed": true
+        },
+        {
+          "name": "directory navigation",
+          "passed": true
+        },
+        {
+          "name": "flow drill down",
+          "passed": true
+        },
+        {
+          "name": "parent follows chapter",
+          "passed": true
+        },
+        {
+          "name": "parent navigation",
+          "passed": true
+        },
+        {
+          "name": "code initially collapsed",
+          "passed": true
+        },
+        {
+          "name": "code expands",
+          "passed": true
+        },
+        {
+          "name": "code closes",
+          "passed": true
+        },
+        {
+          "name": "expand all codes",
+          "passed": true
+        },
+        {
+          "name": "collapse all codes",
+          "passed": true
+        },
+        {
+          "name": "search filters",
+          "passed": true
+        },
+        {
+          "name": "search keeps matches",
+          "passed": true
+        },
+        {
+          "name": "search reset",
+          "passed": true
+        },
+        {
+          "name": "chapter home",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout home",
+          "passed": true
+        },
+        {
+          "name": "chapter routes",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout routes",
+          "passed": true
+        },
+        {
+          "name": "chapter relations",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout relations",
+          "passed": true
+        },
+        {
+          "name": "chapter surface",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout surface",
+          "passed": true
+        },
+        {
+          "name": "chapter contours",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout contours",
+          "passed": true
+        },
+        {
+          "name": "chapter inputs",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout inputs",
+          "passed": true
+        },
+        {
+          "name": "chapter coordinates",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout coordinates",
+          "passed": true
+        },
+        {
+          "name": "chapter frame",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout frame",
+          "passed": true
+        },
+        {
+          "name": "chapter mask",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout mask",
+          "passed": true
+        },
+        {
+          "name": "chapter edges",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout edges",
+          "passed": true
+        },
+        {
+          "name": "chapter projection",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout projection",
+          "passed": true
+        },
+        {
+          "name": "chapter association",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout association",
+          "passed": true
+        },
+        {
+          "name": "chapter solve",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout solve",
+          "passed": true
+        },
+        {
+          "name": "chapter pose",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout pose",
+          "passed": true
+        },
+        {
+          "name": "chapter contact",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout contact",
+          "passed": true
+        },
+        {
+          "name": "chapter distance",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout distance",
+          "passed": true
+        },
+        {
+          "name": "chapter speed",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout speed",
+          "passed": true
+        },
+        {
+          "name": "chapter diagnosis",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout diagnosis",
+          "passed": true
+        },
+        {
+          "name": "chapter topology",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout topology",
+          "passed": true
+        },
+        {
+          "name": "chapter counterexample",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout counterexample",
+          "passed": true
+        },
+        {
+          "name": "chapter run",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout run",
+          "passed": true
+        },
+        {
+          "name": "chapter limits",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout limits",
+          "passed": true
+        },
+        {
+          "name": "return home",
+          "passed": true
+        }
+      ]
+    },
+    "mobile": {
+      "passed": true,
+      "checks": 59,
+      "chapters": 22,
+      "viewport": [
+        430,
+        1000
+      ],
+      "results": [
+        {
+          "name": "initial home",
+          "passed": true
+        },
+        {
+          "name": "one visible chapter",
+          "passed": true
+        },
+        {
+          "name": "directory navigation",
+          "passed": true
+        },
+        {
+          "name": "flow drill down",
+          "passed": true
+        },
+        {
+          "name": "parent follows chapter",
+          "passed": true
+        },
+        {
+          "name": "parent navigation",
+          "passed": true
+        },
+        {
+          "name": "code initially collapsed",
+          "passed": true
+        },
+        {
+          "name": "code expands",
+          "passed": true
+        },
+        {
+          "name": "code closes",
+          "passed": true
+        },
+        {
+          "name": "expand all codes",
+          "passed": true
+        },
+        {
+          "name": "collapse all codes",
+          "passed": true
+        },
+        {
+          "name": "search filters",
+          "passed": true
+        },
+        {
+          "name": "search keeps matches",
+          "passed": true
+        },
+        {
+          "name": "search reset",
+          "passed": true
+        },
+        {
+          "name": "chapter home",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout home",
+          "passed": true
+        },
+        {
+          "name": "chapter routes",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout routes",
+          "passed": true
+        },
+        {
+          "name": "chapter relations",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout relations",
+          "passed": true
+        },
+        {
+          "name": "chapter surface",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout surface",
+          "passed": true
+        },
+        {
+          "name": "chapter contours",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout contours",
+          "passed": true
+        },
+        {
+          "name": "chapter inputs",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout inputs",
+          "passed": true
+        },
+        {
+          "name": "chapter coordinates",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout coordinates",
+          "passed": true
+        },
+        {
+          "name": "chapter frame",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout frame",
+          "passed": true
+        },
+        {
+          "name": "chapter mask",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout mask",
+          "passed": true
+        },
+        {
+          "name": "chapter edges",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout edges",
+          "passed": true
+        },
+        {
+          "name": "chapter projection",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout projection",
+          "passed": true
+        },
+        {
+          "name": "chapter association",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout association",
+          "passed": true
+        },
+        {
+          "name": "chapter solve",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout solve",
+          "passed": true
+        },
+        {
+          "name": "chapter pose",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout pose",
+          "passed": true
+        },
+        {
+          "name": "chapter contact",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout contact",
+          "passed": true
+        },
+        {
+          "name": "chapter distance",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout distance",
+          "passed": true
+        },
+        {
+          "name": "chapter speed",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout speed",
+          "passed": true
+        },
+        {
+          "name": "chapter diagnosis",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout diagnosis",
+          "passed": true
+        },
+        {
+          "name": "chapter topology",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout topology",
+          "passed": true
+        },
+        {
+          "name": "chapter counterexample",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout counterexample",
+          "passed": true
+        },
+        {
+          "name": "chapter run",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout run",
+          "passed": true
+        },
+        {
+          "name": "chapter limits",
+          "passed": true
+        },
+        {
+          "name": "horizontal layout limits",
+          "passed": true
+        },
+        {
+          "name": "return home",
+          "passed": true
+        }
+      ]
+    }
+  },
+  "passed": true
+}

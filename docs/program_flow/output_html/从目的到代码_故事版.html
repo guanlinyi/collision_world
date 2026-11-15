@@ -1,0 +1,587 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="沿着一帧真实输入，理解从RGB轮廓到三维位姿、接触与速度核查的代码。"><title>从目的到代码｜两辆车到底有没有接触</title><style>
+:root{--bg:#f6f4ee;--paper:#fffefa;--ink:#24322e;--muted:#65716a;--line:#dcded5;--given:#355fa3;--obs:#087d76;--fit:#9a5a19;--eval:#7853a2;--warn:#ab493b}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.9 'Segoe UI','Microsoft YaHei',sans-serif}a{color:var(--obs);text-decoration-thickness:1px;text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:294px;background:#eef0e9;border-right:1px solid var(--line);padding:28px 19px;overflow:auto}aside h2{font-size:19px;line-height:1.5;margin:0 0 9px}.intro{font-size:13px;color:var(--muted);line-height:1.7}nav a{display:block;font-size:14px;line-height:1.6;padding:7px 9px;border-left:3px solid transparent;text-decoration:none;color:#46564c}nav a:hover,nav a.active{background:#fffefa;border-color:var(--obs);color:#126961}nav details{margin:5px 0}nav summary{cursor:pointer;font-weight:600;font-size:14px}nav .child{padding-left:17px}main{max-width:1160px;margin-left:294px;padding:35px 60px 100px}.topbar{position:sticky;top:0;z-index:3;background:rgba(246,244,238,.97);border-bottom:1px solid var(--line);padding:10px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px}.topbar a,.up a,.prevnext a,button{border:1px solid var(--line);background:var(--paper);padding:5px 11px;border-radius:7px;color:#3d5547;text-decoration:none;cursor:pointer;font:inherit}.topbar span{color:var(--muted);margin-left:auto}section{padding:42px 0 34px;border-bottom:1px solid var(--line)}section:first-of-type{padding-top:24px}.crumb{font-size:13px;color:var(--muted);letter-spacing:.06em}h1{font-size:40px;line-height:1.45;letter-spacing:-.02em;margin:16px 0 24px}h2{font-size:29px;line-height:1.5;margin:10px 0 23px}h3{font-size:19px;line-height:1.6;margin:24px 0 10px}p{margin:14px 0}.lead{font-size:21px;line-height:1.85}.kicker{font-size:13px;letter-spacing:.1em;font-weight:700;color:var(--obs)}.legend{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0}.badge{padding:3px 11px;border-radius:30px;font-size:13px;background:#e8edeb;border:1px solid currentColor}.given{color:var(--given)}.observed{color:var(--obs)}.fitted{color:var(--fit)}.evaluated{color:var(--eval)}.warn{border-left:4px solid var(--warn);padding:13px 18px;background:#fff0e9}.note{border-left:4px solid var(--obs);padding:12px 18px;background:#edf5ef}.flow{background:#eaf0ea;border:1px solid #d2dfd5;border-radius:14px;padding:22px;margin:26px 0}.flow h3{margin-top:0}.flow-node{display:block;background:var(--paper);padding:16px 18px;border:1px solid #cbd8cf;border-left:5px solid var(--obs);border-radius:8px;text-decoration:none;color:var(--ink)}.flow-node strong{display:block;font-size:18px}.flow-node span{display:block;color:var(--muted);font-size:14px;margin-top:4px}.arrow{text-align:center;font-size:21px;line-height:1.5;color:#83978b}.branch{display:grid;grid-template-columns:1fr 1fr;gap:15px}.branch>div{padding:15px 19px;background:var(--paper);border:1px solid var(--line);border-radius:10px}.branch h3{margin-top:0}.data{border-left:4px solid var(--given);background:#edf2f8;padding:1px 19px 12px;margin:25px 0}.data h3{color:#31537b}.data pre{max-height:470px;overflow:auto;background:rgba(255,255,255,.6);font-size:13px;color:#263f55;padding:12px}.source{margin:26px 0;border:1px solid var(--line);border-radius:9px;background:var(--paper);overflow:hidden}.source summary{cursor:pointer;padding:13px 17px;font-weight:600;color:#5e4b2c;font-size:15px}.source p{padding:0 18px}.source pre{background:#202e29;color:#e2ece2;margin:0;padding:20px;max-height:650px;overflow:auto;font-size:13px;line-height:1.75}.source-meta{font-size:12px;line-height:1.7;color:var(--muted);overflow-wrap:anywhere}.hash{font-size:11px;font-family:Consolas,monospace;word-break:break-all;color:var(--muted)}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:Consolas,'Microsoft YaHei',monospace}p code,td code{font-size:.89em;background:#e7eae2;padding:2px 4px;border-radius:4px;overflow-wrap:anywhere}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.8;margin:22px 0}th,td{border:1px solid var(--line);padding:12px 13px;text-align:left;vertical-align:top}th{background:#e9ede5}td{background:#fffefa}.up{font-size:13px;margin-top:26px;display:flex;gap:9px}.prevnext{display:flex;justify-content:space-between;gap:13px;font-size:13px;margin-top:30px}.diagram{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;overflow:auto}.diagram svg{display:block;max-width:100%;min-width:430px;height:auto}.caption{font-size:13px;color:var(--muted)}.run{background:#26372e;color:#e9f0e9;padding:18px;font-size:13px;border-radius:8px}.milestones{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}.milestones div{background:#fffefa;border-top:3px solid var(--obs);padding:14px;font-size:14px}.milestones b{display:block;font-size:25px}.hidden{display:none!important}#search{width:100%;padding:10px;border:1px solid #c6d1c4;border-radius:7px;background:#fffefa;margin:12px 0;font:inherit;font-size:14px}@media(max-width:900px){aside{position:relative;width:auto;max-height:370px;border-bottom:1px solid var(--line)}main{margin-left:0;padding:20px 24px 70px}h1{font-size:31px}h2{font-size:25px}.branch,.milestones{grid-template-columns:1fr}.topbar span{margin-left:0}section{padding-top:30px}}@media print{aside,.topbar,.up,.prevnext{display:none}main{margin:0;max-width:none;padding:0}details{break-inside:avoid}body{background:white;font-size:12px}h1{font-size:26px}h2{font-size:21px}section{padding:15px 0}}
+body.browse section{display:none}body.browse section.current{display:block}@media print{body.browse section{display:block}}</style></head><body><aside><div class="kicker">COLLISION WORLD · 代码故事</div><h2>两辆车到底有没有接触</h2><p class="intro">先看想解决什么，再看一次输入怎样向下走。蓝＝给定，绿＝图像观测，棕＝求解，紫＝评价。整理于 2026-11-15。</p><input id="search" type="search" aria-label="筛选左侧目录" placeholder="筛选目录，如：速度、轮廓"><nav aria-label="故事目录"><a href="#home">总图｜我们到底想判断什么</a><details open><summary>1 两条路怎样分工</summary><a href="#routes">本层总图</a><a class="child" href="#relations">1.1 从视频特征学习关系</a><a class="child" href="#surface">1.2 早期：学可见表面</a><a class="child" href="#contours">1.3 当前：直接对轮廓求位姿</a></details><details open><summary>2 先分清给定与预测</summary><a href="#inputs">本层总图</a><a class="child" href="#coordinates">2.1 三维量与像素量怎样接上</a></details><details open><summary>3 跟着07／车0／第28帧</summary><a href="#frame">本层总图</a><a class="child" href="#mask">3.1 先选出这辆车的像素</a><a class="child" href="#edges">3.2 mask 旁边还要看真实RGB</a><a class="child" href="#projection">3.3 把已知车身摆回画面</a><a class="child" href="#association">3.4 这条图像边对应哪段车身</a><a class="child" href="#solve">3.5 调整摆法后要重新检查</a><a class="child" href="#pose">3.6 这一帧最后交出了什么</a></details><details open><summary>4 有了状态，再问接触与速度</summary><a href="#contact">本层总图</a><a class="child" href="#distance">4.1 两车表面到底还隔多远</a><a class="child" href="#speed">4.2 为什么位置还行却冒出假速度</a></details><details open><summary>5 出错后怎样沿一帧往回查</summary><a href="#diagnosis">本层总图</a><a class="child" href="#topology">5.1 不要一开始就怪mask</a><a class="child" href="#counterexample">5.2 图像分更好，三维却更差</a></details><details open><summary>6 怎样读代码、怎样运行</summary><a href="#run">本层总图</a><a class="child" href="#limits">6.1 现在能确认到哪里</a></details></nav><p class="intro">单文件离线阅读，无外部脚本或字体。所有代码可展开；网页不会运行模型。</p></aside><main><div class="topbar"><a href="#home">总图</a><a id="parent-link" href="#home">↑ 上一级</a><button id="code-toggle" type="button">展开全部代码</button><span id="where">故事起点</span></div><section id="home" data-parent="home" data-short="故事起点"><div class="crumb">目的 → 一次真实输入 → 代码与证据</div><h1>看见两辆车以后，我们还要知道它们到底有没有接触</h1><p class='lead'>一张图里，两辆车看起来挨得很近。它们是真的碰到了，还是只是从这个角度看起来重叠？如果我们想核对这件事，就得把图像里的线索，接到同一个三维空间里。</p><p>这个项目沿着两条路尝试：一条让模型从视频特征里学习车辆关系；另一条把已知车身几何摆回图像里，调整位置与朝向，再计算两车之间的距离。下面会把两条路交代清楚，然后跟着案例07、车0、第28帧，实际走一遍当前能重新运行的几何过程。</p><p>我们要保存的是足以判断当前任务的状态：车在哪里、怎样摆放、两车是否接触、这几个判断还有什么证据。没有必要先把整条街、所有材质和每一个看不见的表面完整复原。<strong>但几何接触只能说明所用几何体相接，不等于已经识别了一次道路事故。</strong></p><div class='legend'><span class='badge given'>蓝：外部给定与缓存输入</span><span class='badge observed'>绿：从当前图像提取的观测</span><span class='badge fitted'>棕：程序求出的状态</span><span class='badge evaluated'>紫：事后评价与旧结果</span></div><div class='milestones'><div><b>2 条路线</b>关系学习与显式几何，各自保留入口。</div><div><b>1 帧重算</b>当前核心的真实验收是07／车0／第28帧。</div><div><b>2 × 80 帧</b>完整网页展示两个已有冻结片段。</div></div><p>先点下面某一层，再继续往下拆。每层都可以回上一级；代码默认收起，想知道具体怎样做时再打开。</p><div class="flow"><h3>接下来，我们把这件事拆开看</h3><a class="flow-node" href="#routes"><strong>要判断关系，可以直接学；要追查几何，就把车摆回去</strong><span>两条路线各自做到了哪一步，哪些还没有接起来。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#inputs"><strong>CARLA 给了画面，也给了可用来训练和核对的世界状态</strong><span>同一批数据，不同字段进入训练、推理或评价的位置不同。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#frame"><strong>先固定这一帧，再沿着同一份输入往下走</strong><span>给定提示 → mask → RGB边 → 投影 → 对应 → 迭代 → 位姿。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#contact"><strong>位姿是中间结果，接触和速度还各有一步</strong><span>同帧双车计算距离；跨帧位置差分计算速度。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#diagnosis"><strong>看到红格，先留在同一个坏样本上</strong><span>从最终量往上追，区分已经证实的问题与仍待区分的嫌疑。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#run"><strong>先看已有结果，再重算一帧，最后才决定要不要训练</strong><span>按目的选入口，把每一次运行的实际范围说清楚。　点开这一步 →</span></a></div><div class="up"><a href="#home">↑ 回到总图</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#home">← 故事起点</a><a href="#routes">1 两条路怎样分工 →</a></div></section><section id="routes" data-parent="home" data-short="1 两条路怎样分工"><div class="crumb">总图 / 先选要回答的问题</div><h2>要判断关系，可以直接学；要追查几何，就把车摆回去</h2><p>第一条路把视频交给视觉编码器，得到保留空间信息的特征，再训练一个较小的学生模型，回答双车关系、接触和事件问题。第二条路要求把位置与朝向说清楚：先从图像取得观测，再把已知车身几何投影到画面上，检查哪里对不上。</p><p>几何路线内部也经历了两个阶段。早期 SurfaceNet 学习可见表面的三维坐标；当前轮廓方法则直接把 SAM 提议、真实 RGB 边和已知几何联系起来。它们有不同输入、训练与推理入口。<strong>关系学生、SurfaceNet、当前轮廓求解还没有融合成一个模型。</strong></p><div class='branch'><div><h3 class='observed'>视频 → 关系／事件</h3><p>输入视觉特征，输出任务判断。重点是学习双参与者之间的关系。</p></div><div><h3 class='fitted'>图像证据 → 三维状态 → 接触</h3><p>明确保留几何状态，便于把错误追到观测、对应关系或求解过程。</p></div></div><p>这里的“状态按目的保存”也不能变成省略证据：如果缺少某辆车的可靠几何，结论应当是证据不足，不能顺手记成“未接触”。</p><div class="flow"><h3>接下来，我们把这件事拆开看</h3><a class="flow-node" href="#relations"><strong>先把画面变成特征，再学习两辆车之间的关系</strong><span>冻结 V-JEPA 提供视觉特征，小模型学习下游任务。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#surface"><strong>如果能给像素一个表面坐标，就可以拟合整辆刚体</strong><span>SurfaceNet 预测可见表面，随后做几何拟合。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#contours"><strong>当前演示绕着一个具体问题走：这辆车怎样摆，才对得上图像证据？</strong><span>SAM 给区域，RGB 给局部边，已知车身几何提供三维约束。　点开这一步 →</span></a></div><div class="up"><a href="#home">↑ 回到总图</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#home">← 故事起点</a><a href="#relations">1.1 从视频特征学习关系 →</a></div></section><section id="relations" data-parent="routes" data-short="1.1 从视频特征学习关系"><div class="crumb">两条路 / 关系学生</div><h2>先把画面变成特征，再学习两辆车之间的关系</h2><p>V-JEPA 在这里负责把 RGB 视频窗口编码成特征。所谓冻结，就是训练下游学生时不改这个编码器的权重。学生接收带空间位置的特征，在画面网格上处理，再汇集两个参与者各自的表示与场景信息。</p><p>代码里的 <code>slot_mask</code> 给两个参与者分配网格权重；<code>dense_physics</code> 预测局部存在、深度、速度等辅助量。随后把两个参与者、它们的差、乘积和场景表示拼起来，交给 <code>regressor</code>。输出键名叫 <code>contact</code>，含义仍须结合训练目标协议理解，不能只看到字段名就当成经过校准的事故概率。</p><p>CARLA 的几何和运动可以用来生成训练监督。推理时学生读的是视觉特征，教师字段不应变成预测捷径。已有合成小验收验证了真实优化、保存和推理，以及去除教师字段后预测不变；这没有复验真实 CARLA 全量训练，也没有重跑 V-JEPA 官方权重的 RGB 提取。</p><details class="source"><summary>看这一步的代码：RelationContactStudent.forward</summary><p class="source-meta">learn_relations/code/relation_model.py · 实际第 33–64 行。</p><pre><code>    def forward(self, tokens: torch.Tensor) -&gt; dict[str, torch.Tensor]:
+        batch = tokens.shape[0]
+        local = self.project(tokens).transpose(1, 2).reshape(
+            batch, -1, self.grid_size, self.grid_size
+        )
+        local = self.spatial(local).flatten(2).transpose(1, 2)
+        mask_logits = self.slot_mask(local).transpose(1, 2)
+        dense = self.dense_physics(local)
+        weights = torch.sigmoid(mask_logits)
+        weights = weights / weights.sum(dim=2, keepdim=True).clamp_min(1e-4)
+        slots = torch.einsum(&quot;bsp,bph-&gt;bsh&quot;, weights, local)
+        slot_xy = torch.einsum(&quot;bsp,pc-&gt;bsc&quot;, weights, self.patch_xy)
+        predicted_presence = torch.sigmoid(dense[:, :, 0])
+        predicted_depth = F.softplus(dense[:, :, 1])
+        predicted_speed = F.softplus(dense[:, :, 2])
+        slot_depth = torch.einsum(&quot;bsp,bp-&gt;bs&quot;, weights, predicted_depth).unsqueeze(-1)
+        slot_speed = torch.einsum(&quot;bsp,bp-&gt;bs&quot;, weights, predicted_speed).unsqueeze(-1)
+        slot_stats = torch.cat((slot_xy, slot_depth, slot_speed), dim=2).flatten(1)
+        first, second = slots[:, 0], slots[:, 1]
+        scene_mean = local.mean(dim=1)
+        scene_max = local.amax(dim=1)
+        relation = torch.cat((
+            first, second, torch.abs(first - second), first * second,
+            scene_mean, scene_max, slot_stats,
+        ), dim=1)
+        return {
+            &quot;contact&quot;: self.regressor(relation),
+            &quot;slot_mask_logits&quot;: mask_logits,
+            &quot;dense&quot;: dense,
+            &quot;predicted_presence&quot;: predicted_presence,
+            &quot;relation_embedding&quot;: relation,
+        }</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：1706b87051b56fe6628b028f987d18f62e216285e078c0c4b98d673b9cc6ca53<br>片段 SHA-256：a553ca9c22df904b758471a16311b6af56eed730db4a1b058d37ee902c450247</p></details></details><p>继续读可从 <code>learn_relations/code/targets.py</code> 看目标定义，再看 <code>train.py</code> 与 <code>infer.py</code> 怎样分别使用标签与特征。这个分支不会自动生成下面讲的轮廓位姿。</p><div class="up"><a href="#routes">↑ 回到上一级：1 两条路怎样分工</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#routes">← 1 两条路怎样分工</a><a href="#surface">1.2 早期：学可见表面 →</a></div></section><section id="surface" data-parent="routes" data-short="1.2 早期：学可见表面"><div class="crumb">两条路 / 几何路线的早期阶段</div><h2>如果能给像素一个表面坐标，就可以拟合整辆刚体</h2><p>早期几何方法给网络输入 64×64 RGB 裁剪和实例 mask。SurfaceNet 输出归一化的可见三维表面坐标与面分类；再结合相机标定、身份、已有 proposal 和多视图信息拟合刚体状态。proposal 是上游已经给出的初始状态建议，不是这一步凭空发现的车辆。</p><p>下方 <code>forward()</code> 的 <code>o[:,:3]</code> 经过 <code>tanh</code> 给出有界坐标，余下通道提供分类信息。网络本身没有把所有接触逻辑包进去；后续几何、时序更新、三维盒与接触评价分别在其他模块里完成。</p><details class="source"><summary>看这一步的代码：SurfaceNet.forward</summary><p class="source-meta">estimate_geometry/code/src/model.py · 实际第 14–24 行。</p><pre><code>    def forward(self,x,return_features=False):
+        a=self.a(x);b=self.b(F.avg_pool2d(a,2));c=self.c(F.avg_pool2d(b,2))
+        if self.global_context:
+            yy,xx=torch.meshgrid(torch.linspace(-1,1,c.shape[2],device=c.device,dtype=c.dtype),torch.linspace(-1,1,c.shape[3],device=c.device,dtype=c.dtype),indexing=&#x27;ij&#x27;)
+            position=self.context_position(torch.stack([xx,yy],-1).reshape(1,-1,2));tokens=c.flatten(2).transpose(1,2);query=self.context_norm(tokens)+position
+            attended,_=self.context_attention(query,query,tokens,need_weights=False)
+            c=c+attended.transpose(1,2).reshape_as(c)
+        d=self.d(torch.cat([F.interpolate(c,size=b.shape[-2:],mode=&#x27;bilinear&#x27;,align_corners=False),b],1))
+        e=self.e(torch.cat([F.interpolate(d,size=a.shape[-2:],mode=&#x27;bilinear&#x27;,align_corners=False),a],1));o=self.out(e)
+        result=(.65*torch.tanh(o[:,:3]),o[:,3:])
+        return (*result,e) if return_features else result</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：1ed94edcd4c0b5338b9246ff0f29ec4116089498eeed4ea8e0ec587fa7c5c90c<br>片段 SHA-256：91e6b023a63c13fbb9fc890fca97497a197a187d699d6536532b841cefc3b4a6</p></details></details><p>仓库包含历史小权重和真实 CARLA 的35个有效视图、双车6状态子集，已做 CPU 推理。它们来自已见训练片段，因此适合核对输入与程序，不能拿来证明对新场景也准确。合成数学体的小训练同样只验证训练链路。运行这一分支不会得到最新 R/BT8 轮廓结果。</p><div class="up"><a href="#routes">↑ 回到上一级：1 两条路怎样分工</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#relations">← 1.1 从视频特征学习关系</a><a href="#contours">1.3 当前：直接对轮廓求位姿 →</a></div></section><section id="contours" data-parent="routes" data-short="1.3 当前：直接对轮廓求位姿"><div class="crumb">两条路 / 几何路线的当前阶段</div><h2>当前演示绕着一个具体问题走：这辆车怎样摆，才对得上图像证据？</h2><p>SAM 根据提示给出候选 mask。mask 是像素集合，告诉我们先去哪里找车身外缘；真实 RGB 梯度再提供更细的边缘候选。随后把已知的车身简化几何投影到画面里，与这些观测建立对应，迭代调整位姿。</p><p>这里把那份已知几何叫 <code>SOURCE</code>，只是源码和证据沿用的名字。它是已有的车身三角形及边界结构，并非神经网络从这一帧预测出的完整车身。与之对应，代码中的 <code>QUERY</code> 真值指本帧参考状态，不能混进求解输入。</p><p>这条路的优势是能逐层问“哪一个图像点约束了哪一段几何”。限制也很具体：我们已经知道资产、相机标定、地面、目标身份与先验，而且输入提示来自同场景。它还不能直接接收任意裸视频并自主发现所有目标。</p><div class='note'>本故事真正重新运行过的核心案例是第28帧。其他帧可以在完整网页里看，但其完整结果属于已有冻结结果。</div><p><a href='#frame'>接着看第28帧怎样一步步求出来 →</a></p><div class="up"><a href="#routes">↑ 回到上一级：1 两条路怎样分工</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#surface">← 1.2 早期：学可见表面</a><a href="#inputs">2 先分清给定与预测 →</a></div></section><section id="inputs" data-parent="home" data-short="2 先分清给定与预测"><div class="crumb">总图 / 输入从哪里来</div><h2>CARLA 给了画面，也给了可用来训练和核对的世界状态</h2><p>CARLA 是仿真环境。它可以提供相机 RGB、相机内外参数、车辆资产几何和状态记录。因为生成画面时知道物体怎样摆放，它还能给训练提供监督、给评价提供参考。<strong>“数据里有真值”与“预测程序读取真值”是两件必须分别核对的事。</strong></p><div class='table-wrap'><table><thead><tr><th>这一类量</th><th>第28帧当前怎样使用</th><th>能说明什么</th></tr></thead><tbody><tr><td class='given'>RGB、标定、身份、地面、车身几何</td><td>明确给定。标定把三维坐标和图像像素接起来。</td><td>这是受强条件约束的任务。</td></tr><tr><td class='given'>提示点、ROI、旧 prior 与 baseline</td><td>给定同场景初始化与搜索边界。</td><td>不是自动发现新目标。</td></tr><tr><td class='observed'>候选 mask、RGB 点与法向</td><td>mask 从缓存模型候选中重选；RGB 梯度实际重算。</td><td>观测也可能错，不是人工语义真值。</td></tr><tr><td class='fitted'>摆车位姿与对应关系</td><td>由几何投影和图像残差迭代求解。</td><td>结果须沿证据继续核查。</td></tr><tr><td class='evaluated'>参考位姿、接触、中心误差</td><td>用于训练标签或事后评价；当前求解不读本帧参考真值。</td><td>评价使用真值是正常的，但不能拿真值选轮次。</td></tr></tbody></table></div><p>再分清三个动作：<strong>训练</strong>改变模型参数；<strong>推理／求解</strong>用已有模型和规则产生新预测；<strong>回放</strong>读取已保存结果显示出来。浏览器看见一辆三维车动了，不代表打开页面时又运行了训练或 SAM。</p><div class="flow"><h3>接下来，我们把这件事拆开看</h3><a class="flow-node" href="#coordinates"><strong>像素里的一小段线，要靠标定和已知几何才能约束三维</strong><span>平移参数、车中心、朝向和速度分别是什么。　点开这一步 →</span></a></div><div class="up"><a href="#home">↑ 回到总图</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#contours">← 1.3 当前：直接对轮廓求位姿</a><a href="#coordinates">2.1 三维量与像素量怎样接上 →</a></div></section><section id="coordinates" data-parent="inputs" data-short="2.1 三维量与像素量怎样接上"><div class="crumb">输入 / 坐标和单位</div><h2>像素里的一小段线，要靠标定和已知几何才能约束三维</h2><p>图像点是二维像素坐标，例如横坐标720、纵坐标407；车身上的点则保存在车体局部坐标里，单位米。程序先按位姿把车体点放到 LAB 世界坐标，再通过相机外参数转到相机坐标，最后按内参数投影到像素。</p><details class="source"><summary>看这一步的代码：project</summary><p class="source-meta">estimate_geometry/refine_contours/code/portable_geometry.py · 实际第 31–34 行。</p><pre><code>def project(xyz, pose, row):
+    q, t, f, c = camera(row)
+    cp = (xyz @ rot(pose).T + pose[:3] - t) @ np.linalg.inv(q.T)
+    return (cp[:, :2] / cp[:, 2, None] * f + c, cp[:, 2])</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：68d78b1e77e2c45a88cf03c04214c05621ad0561f6de9e90acdc2a5b6dcd1324<br>片段 SHA-256：226bf5c90cc8982037bca66f2440b60f9d333bb9a1c4a087a4d7cbbc2bc304fa</p></details></details><p>当前 <code>candidate_pose</code> 前三项是 SOURCE 参考原点在 LAB 中的平移参数，后三项是度制旋转向量。<strong>前三个数不能未经换算就叫作车中心。</strong><code>pose_row()</code> 还使用 <code>source_asset_origin_lab_m</code> 换回 actor 矩阵；网页的中心误差来自另行定义的评价坐标。平移参数的高度约0.737米，也不能解释为车身离地0.737米。</p><details class="source"><summary>看这一步的代码：pose_row</summary><p class="source-meta">estimate_geometry/refine_contours/code/portable_geometry.py · 实际第 24–30 行。</p><pre><code>def pose_row(row, pose, origin):
+    S = np.diag([1.0, -1.0, 1.0])
+    R = rot(pose)
+    T = np.eye(4)
+    T[:3, :3] = S @ R @ S
+    T[:3, 3] = S @ (np.array(pose[:3]) - R @ origin)
+    return {**{k: row[k] for k in [&#x27;image_height&#x27;, &#x27;image_width&#x27;, &#x27;intrinsics&#x27;, &#x27;camera_matrix&#x27;]}, &#x27;actor_matrix&#x27;: T.tolist()}</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：68d78b1e77e2c45a88cf03c04214c05621ad0561f6de9e90acdc2a5b6dcd1324<br>片段 SHA-256：fd1b3bd543513d585272fa7a694d355dd8cd4805afe669bdba1c7e2b592f0d3c</p></details></details><p>本例保持车身直立，只优化 x、y 和绕竖直轴的旋转量，z 随给定地面支撑与高度确定。六个数的输出格式，不代表六个自由度都由这一帧独立估计。车身朝向也不是速度方向；网页的方向延长线是观察朝向和宽度的辅助线，不是未来轨迹。</p><div class="up"><a href="#inputs">↑ 回到上一级：2 先分清给定与预测</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#inputs">← 2 先分清给定与预测</a><a href="#frame">3 跟着07／车0／第28帧 →</a></div></section><section id="frame" data-parent="home" data-short="3 跟着07／车0／第28帧"><div class="crumb">总图 / 当前单帧的完整过程</div><h2>先固定这一帧，再沿着同一份输入往下走</h2><p>我们固定案例07、车0、第28帧。整张 RGB 是1920×1080，但前端已经收到裁剪框 <code>[639,394,851,536]</code>、四个正提示点、四个负提示点和车身框。ROI 就是这次打算处理的图像区域。</p><p>从这里开始，前端先选择车的像素，再在真实 RGB 中找有限边段；后端用给定旧状态构建车身投影，把图像边与三维边配起来。每走一步都保留它收到什么、输出什么，以及无法确定的部分。</p><div class='note'>本页按逻辑顺序讲一条链。实际验收分开执行：缓存 SAM 选择与 RGB 边重算已经一致；求解器此前对这份相同观测做过一次89.55秒重算。这里没有把分步验收改称为一次新的全段端到端运行。</div><div class="flow"><h3>接下来，我们把这件事拆开看</h3><a class="flow-node" href="#mask"><strong>SAM 给三个候选，我们按事先固定的规则选一个</strong><span>看提示命中和面积，再比较合格候选的自评分。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#edges"><strong>mask 只告诉我们去哪找，真正的边还要从 RGB 里挑</strong><span>沿轮廓法向扫描灰度梯度，竞争峰和模糊区域保留未知。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#projection"><strong>先给车一个起始摆法，再计算这个摆法应该在图里长什么样</strong><span>用SOURCE三角形、地面和标定重建本次姿态的投影外缘。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#association"><strong>接近还不够，我们要问它是不是同一段边</strong><span>距离、法向、连续弧和竞争候选共同决定对应是否可用。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#solve"><strong>一次最小二乘建议，不足以决定这一步真的更好</strong><span>先求小步，再按新姿态重建几何、刷新对应和重新算代价。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#pose"><strong>先保存新位姿，再与旧冻结结果比较</strong><span>89.55秒、接受6轮，与旧结果之差为0；这不是GT误差为0。　点开这一步 →</span></a></div><div class="up"><a href="#home">↑ 回到总图</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#coordinates">← 2.1 三维量与像素量怎样接上</a><a href="#mask">3.1 先选出这辆车的像素 →</a></div></section><section id="mask" data-parent="frame" data-short="3.1 先选出这辆车的像素"><div class="crumb">第28帧 / 给定提示 → mask</div><h2>SAM 给三个候选，我们按事先固定的规则选一个</h2><p>正提示告诉 SAM 哪些点应属于车身，负提示告诉它哪些点不应被包含。SAM据此给像素区域，并不等于在当前流程中自己认出了“这是挡风玻璃或车灯”，当前求解也没有学习整车部件组装。裁剪和提示由同场景第27帧种子及已平移的初始化提供。下面的坐标是相对裁剪框的局部像素，不是世界坐标；NCC 分数表示已保存的图像模板匹配情况，不是几何正确率。</p><div class="data"><h3>本帧真正交给前端的输入（像素坐标）</h3><pre>{
+  &quot;frame&quot;: 28,
+  &quot;car&quot;: 0,
+  &quot;crop_xyxy&quot;: [
+    639,
+    394,
+    851,
+    536
+  ],
+  &quot;positive_points_crop_xy&quot;: [
+    [
+      45,
+      43
+    ],
+    [
+      84,
+      22
+    ],
+    [
+      76,
+      79
+    ],
+    [
+      153,
+      74
+    ]
+  ],
+  &quot;negative_points_crop_xy&quot;: [
+    [
+      2,
+      2
+    ],
+    [
+      209,
+      2
+    ],
+    [
+      209,
+      139
+    ],
+    [
+      2,
+      139
+    ]
+  ],
+  &quot;body_box_crop_xyxy&quot;: [
+    14,
+    11,
+    198,
+    130
+  ],
+  &quot;NCC_score&quot;: 0.9774029850959778
+}</pre><p class="source-meta">数值来源：estimate_geometry/observe_structure/input_json/frame28_inputs.json</p></div><p>候选须命中至少3个正点，不包含负点，面积至少为种子 mask 的一半。只有通过这些规则，才按 SAM 自评分选最高者。选择不读取位姿、SOURCE 匹配代价或本帧真值，因此不能为了让后面拟合更好，偷偷换一个 mask。</p><details class="source"><summary>看这一步的代码：main</summary><p class="source-meta">estimate_geometry/observe_structure/code/whole_observer.py · 实际第 95–118 行。</p><pre><code>        points, negatives = (item[&#x27;positive_points_crop_xy&#x27;], item[&#x27;negative_points_crop_xy&#x27;])
+        if prompt_transform is not None or inputs_override is not None:
+            save_png(ROOT / f&#x27;output_png/f{frame}_pure_RGB.png&#x27;, Image.fromarray(rgb))
+            save_png(ROOT / f&#x27;output_png/f{frame}_RGB_prompts.png&#x27;, overlay(rgb, np.zeros(rgb.shape[:2], bool), points, negatives, f&#x27;f{frame} RGB prompts only&#x27;))
+        with ui.torch.inference_mode():
+            predictor.set_image(rgb)
+            masks, scores, logits = predictor.predict(point_coords=np.array(points + negatives, np.float32), point_labels=np.array([1] * len(points) + [0] * len(negatives)), box=np.array(item[&#x27;body_box_crop_xyxy&#x27;], np.float32), multimask_output=True)
+        with (ROOT / f&#x27;output_npz/f{frame}_whole_candidates.npz&#x27;).open(&#x27;xb&#x27;) as stream:
+            np.savez_compressed(stream, masks=masks, scores=scores, logits=logits)
+        candidates = []
+        for index, mask in enumerate(masks.astype(bool)):
+            positive_hits = sum((bool(mask[int(point[1]), int(point[0])]) for point in points))
+            negative_hits = sum((bool(mask[int(point[1]), int(point[0])]) for point in negatives))
+            area = int(mask.sum())
+            reasons = []
+            if positive_hits &lt; 3:
+                reasons.append(&#x27;misses_body_positive_point&#x27;)
+            if negative_hits:
+                reasons.append(&#x27;includes_body_negative_point&#x27;)
+            if area &lt; contract[&#x27;selection&#x27;][&#x27;min_area_pixels&#x27;]:
+                reasons.append(&#x27;insufficient_wholecar_area&#x27;)
+            candidates.append(dict(index=index, sam_self_score=float(scores[index]), area_pixels=area, positive_hits=positive_hits, negative_hits=negative_hits, eligible=not reasons, reasons=reasons))
+        eligible = [candidate for candidate in candidates if candidate[&#x27;eligible&#x27;]]
+        selected = max(eligible, key=lambda candidate: candidate[&#x27;sam_self_score&#x27;])[&#x27;index&#x27;] if eligible else None</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：2e613471427490c2055dc728e15e270e08b2050ead5359a884d0749fc2fab02c<br>片段 SHA-256：01e864acaf2271a55ea9d5adc7c05a87c8346f2f7f6e7d5f1d1a697816f19545</p></details></details><div class="data"><h3>缓存候选选择的验收记录</h3><pre>{
+  &quot;selected&quot;: 2,
+  &quot;selected_area_pixels&quot;: 12999,
+  &quot;selected_mask_pixel_identical&quot;: true,
+  &quot;SAM_forward_rerun&quot;: false
+}</pre><p class="source-meta">数值来源：docs/validation/output_json/sam_cache_selection.json</p></div><p>本次重新选择的是缓存中的三个候选，选中索引2、12999像素，与冻结 mask 逐像素相同。源码也提供显式 SAM 权重入口，但本次没有重新运行 SAM 神经网络。<strong>缓存选择一致，只能验证选择逻辑和缓存，不能保证换一套 SAM 版本仍得同一结果。</strong></p><div class="up"><a href="#frame">↑ 回到上一级：3 跟着07／车0／第28帧</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#frame">← 3 跟着07／车0／第28帧</a><a href="#edges">3.2 mask 旁边还要看真实RGB →</a></div></section><section id="edges" data-parent="frame" data-short="3.2 mask 旁边还要看真实RGB"><div class="crumb">第28帧 / mask → RGB有限边</div><h2>mask 只告诉我们去哪找，真正的边还要从 RGB 里挑</h2><p>mask 的轮廓未必正好落在真实车身边上。程序沿外轮廓逐点取附近9点，用局部形状估计切线及法向，再沿法向在 ±4像素内以0.25像素间隔采样真实 RGB 灰度。法向可以理解为与这小段轮廓垂直的方向。</p><p>程序检查灰度变化是否足够强、主峰离 mask 边是否超过2像素、是否存在相距至少1像素且超过主峰0.7的竞争峰，以及二维灰度梯度是否与法向大致一致。弯得过急、方向不明确、阴影难辨的区域保留为 <code>unknown</code>。这也不是保证找到语义车边的定理，强阴影仍可能过关。</p><details class="source"><summary>看这一步的代码：observe_frame</summary><p class="source-meta">estimate_geometry/observe_structure/code/observe_rgb_edges.py · 实际第 94–121 行。</p><pre><code>        magnitude=abs(profile)
+        found,props=find_peaks(magnitude,plateau_size=True)
+        peaks=found.tolist()
+        if magnitude[0]&gt;magnitude[1]:peaks.append(0)
+        if magnitude[-1]&gt;magnitude[-2]:peaks.append(len(magnitude)-1)
+        peaks.sort(key=lambda k:(-magnitude[k],abs(offsets[k]),k))
+        main=peaks[0] if peaks else int(np.argmax(magnitude))
+        independent=[p for p in peaks[1:] if abs(offsets[p]-offsets[main])&gt;=1]
+        secondary=independent[0] if independent else None
+        ratio=float(magnitude[secondary]/magnitude[main]) if secondary is not None and magnitude[main]&gt;0 else 0.
+        point=coordinates[index,main]
+        gx=float(sample(gray,np.array([point+[.5,0]]))[0]-sample(gray,np.array([point-[.5,0]]))[0])
+        gy=float(sample(gray,np.array([point+[0,.5]]))[0]-sample(gray,np.array([point-[0,.5]]))[0])
+        gradient=np.array([gx,gy]);alignment=float(abs(gradient@normal)/np.linalg.norm(gradient)) if np.linalg.norm(gradient)&gt;0 else 0.
+        reasons=list(geo[&#x27;reasons&#x27;])
+        if magnitude[main]&lt;8:reasons.append(&#x27;weak_gray_contrast_shadow_not_identified&#x27;)
+        if abs(offsets[main])&gt;2:reasons.append(&#x27;strongest_peak_too_far_from_proposal&#x27;)
+        if ratio&gt;.7:reasons.append(&#x27;competing_independent_gradient_peaks&#x27;)
+        if alignment&lt;np.cos(np.pi/6):reasons.append(&#x27;gradient_not_normal_consistent&#x27;)
+        records.append(dict(id=index,contour_id=int(contour_ids[index]),contour_point_index=int(contour_points[index]),
+            SAM_seed_full_image_xy=seed.tolist(),outward_normal_xy=normal.tolist(),main_peak_full_image_xy=point.tolist(),
+            main_peak_offset_px=float(offsets[main]),main_peak_abs_gray_derivative=float(magnitude[main]),main_peak_signed_gray_derivative=float(profile[main]),
+            secondary_peak_offset_px=float(offsets[secondary]) if secondary is not None else None,secondary_main_ratio=ratio,
+            normal_gradient_abs_cosine=alignment,main_gray_gradient_xy=gradient.tolist(),
+            all_peak_indices=peaks,geometry=geo,status=&#x27;photometric_candidate&#x27; if not reasons else &#x27;unknown&#x27;,reasons=reasons))
+    good=np.array([r[&#x27;status&#x27;]==&#x27;photometric_candidate&#x27; for r in records])
+    reason_counts=Counter(reason for r in records for reason in r[&#x27;reasons&#x27;])
+    angle=np.mod(np.degrees(np.arctan2(normals[good,1],normals[good,0])),180)</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：16dad178329f6d590c738967a8520cfdb57fac840698fe593117e28f1a4af016<br>片段 SHA-256：2c96da9078f9b993d7f20ad449bce6d93036f5b521475526c31ce17f6d9a91b9</p></details></details><div class="data"><h3>463 个轮廓点里，248 个成为 RGB 边候选</h3><pre>{
+  &quot;total_candidates&quot;: 463,
+  &quot;photometric_candidates&quot;: 248,
+  &quot;unknown&quot;: 215,
+  &quot;first_accepted_record&quot;: {
+    &quot;id&quot;: 10,
+    &quot;SAM_seed_full_image_xy&quot;: [
+      710.0,
+      409.0
+    ],
+    &quot;outward_normal_xy&quot;: [
+      -0.1498930671991918,
+      -0.9887022142210559
+    ],
+    &quot;main_peak_full_image_xy&quot;: [
+      709.9250534664004,
+      408.5056488928895
+    ],
+    &quot;main_peak_offset_px&quot;: 0.5,
+    &quot;secondary_main_ratio&quot;: 0.609497817586784,
+    &quot;status&quot;: &quot;photometric_candidate&quot;
+  }
+}</pre><p class="source-meta">数值来源：estimate_geometry/refine_contours/input_json/observation.json</p></div><p>第一个通过的记录 id=10：mask种子点在 <code>[710,409]</code>，RGB主峰约在 <code>[709.925,408.506]</code>，偏移0.5像素。这只是当前图像上的一个候选点，不是已经知道的三维车身点。463点中248点合格、215点未知；后面只把足够接近、方向相符的相邻候选连接成有限线段，不跨过未知区域硬连。</p><div class="up"><a href="#frame">↑ 回到上一级：3 跟着07／车0／第28帧</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#mask">← 3.1 先选出这辆车的像素</a><a href="#projection">3.3 把已知车身摆回画面 →</a></div></section><section id="projection" data-parent="frame" data-short="3.3 把已知车身摆回画面"><div class="crumb">第28帧 / 先验 → SOURCE投影</div><h2>先给车一个起始摆法，再计算这个摆法应该在图里长什么样</h2><p>后端读取旧 prior 和已经过滤的 baseline。prior 限定全局搜索范围，baseline 是这一次实际开始迭代的摆法；它们都已给定，不能写成当前帧从零推出来的初值。全局范围是 prior 周围x/y各±0.8米、旋转±12度；每个外轮的局部步长还会更小。</p><div class="data"><h3>起点与边界来自给定输入</h3><pre>{
+  &quot;baseline_pose&quot;: [
+    -9.55984749570816,
+    123.60886293245832,
+    0.7378745171523359,
+    0.0,
+    0.0,
+    270.8827892613521
+  ],
+  &quot;old_predicted_prior&quot;: [
+    -9.537526813620108,
+    123.70727588578603,
+    0.7378743874234266,
+    0.0,
+    0.0,
+    270.0076264574506
+  ],
+  &quot;intrinsics&quot;: {
+    &quot;fx&quot;: 960.0,
+    &quot;fy&quot;: 960.0,
+    &quot;cx&quot;: 959.5,
+    &quot;cy&quot;: 539.5
+  },
+  &quot;query_truth_read&quot;: false
+}</pre><p class="source-meta">数值来源：estimate_geometry/refine_contours/input_json/safe_inputs.json</p></div><details class="source"><summary>看这一步的代码：GeometryOnlyProblem.__init__</summary><p class="source-meta">estimate_geometry/refine_contours/code/problem.py · 实际第 6–12 行。</p><pre><code>    def __init__(self, safe, filtered, support, module):
+        self.geo = geometry_from_meta(support[&#x27;ground_support&#x27;], module)
+        self.start = np.array(safe[&#x27;old_predicted_prior&#x27;], float)[[0, 1, 5]]
+        self.bound = np.array([0.8, 0.8, 12.0])
+        baseline = np.array(filtered[&#x27;pose&#x27;], float)
+        self.row = module.pose_row(safe[&#x27;calibration&#x27;], baseline, np.array(support[&#x27;source_asset_origin_lab_m&#x27;]))
+        self.meta = dict(key=safe[&#x27;key&#x27;], case=safe[&#x27;case&#x27;], frame=safe[&#x27;frame&#x27;], car=safe[&#x27;car&#x27;], prior=safe[&#x27;old_predicted_prior&#x27;], baseline_pose=baseline.tolist(), baseline_cost=filtered[&#x27;cost&#x27;])</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：e6cb1a28362868ab91060b806a4027a1ab5c40cbd4f5ac982d2b82a4fc22418d<br>片段 SHA-256：ec9ac2e0644bb02b71ca4131a61b38ce963a1d5b095aba3a71328f4bf259267d</p></details></details><p><code>GeometryPool.build()</code> 把已知车身三角形按当前位姿转换并投影，检查深度与图像裁边，再建立投影并集。并集指这些三角形在画面中共同覆盖的区域；车身内部被挡住的边不能因为“模型里有”就直接当作可见外缘。</p><details class="source"><summary>看这一步的代码：GeometryPool.build</summary><p class="source-meta">estimate_geometry/refine_contours/code/geometry_pool.py · 实际第 50–74 行。</p><pre><code>        if np.any(cp[:, :, 2] &lt;= 0):
+            raise ValueError(&#x27;Unsupported SOURCE near clipping&#x27;)
+        uv = cp[:, :, :2] / cp[:, :, 2, None] * cam[2] + cam[3]
+        shape = (row[&#x27;image_height&#x27;], row[&#x27;image_width&#x27;])
+        if uv[:, :, 0].min() &lt; 0 or uv[:, :, 1].min() &lt; 0 or uv[:, :, 0].max() &gt;= shape[1] or (uv[:, :, 1].max() &gt;= shape[0]):
+            raise ValueError(&#x27;SOURCE image clipping&#x27;)
+        projected = ProjectedUnion(uv, cp[:, :, 2], shape)
+        depth, _ = projected.raster()
+        foreground = np.isfinite(depth)
+        raster = pixel_square_boundary(foreground)
+        distance = distance_transform_edt(~(foreground &amp; ~binary_erosion(foreground)))
+        image, z = m.project(self.endpoints.reshape(-1, 3), pose, row)
+        image, z = (image.reshape(-1, 2, 2), z.reshape(-1, 2))
+        local_list, xy_list, edge_list, t_list, normal_list = ([], [], [], [], [])
+        for eid, (ends, pixels, zs) in enumerate(zip(self.endpoints, image, z)):
+            vector = pixels[1] - pixels[0]
+            length = float(np.linalg.norm(vector))
+            if length &lt;= 1e-12:
+                continue
+            s = np.linspace(0, 1, max(2, int(np.ceil(length)) + 1))
+            t = s * zs[0] / ((1 - s) * zs[1] + s * zs[0])
+            local = ends[0] + t[:, None] * (ends[1] - ends[0])
+            xy, _ = m.project(local, pose, row)
+            local_list.extend(local)
+            xy_list.extend(xy)</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：df1dbb377c4d457c7a172eeca7021fb63c4c6deff563a9f573fc76266b08a946<br>片段 SHA-256：ffab15e01263d275cadb3eacdaf947eb3fb5dad0977a87cacb3cb9a18e35ef77</p></details></details><p>随后程序对三维边采样，给可作为外缘的点保留局部坐标、投影坐标、法向、相邻关系与可见性证据。姿态一改，哪些边可用也可能改变，所以这批几何不能始终锁在初始摆法上。</p><div class="up"><a href="#frame">↑ 回到上一级：3 跟着07／车0／第28帧</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#edges">← 3.2 mask 旁边还要看真实RGB</a><a href="#association">3.4 这条图像边对应哪段车身 →</a></div></section><section id="association" data-parent="frame" data-short="3.4 这条图像边对应哪段车身"><div class="crumb">第28帧 / 二维观测 ↔ 三维几何</div><h2>接近还不够，我们要问它是不是同一段边</h2><p>初始匹配从投影外缘去找图像有限线段：垂足要在线段内部、距离不超过5像素、外法向夹角不超过30度。若另一个独立轮廓弧也差不多近，距离优势不足2像素，就留下歧义。相邻采样点不一定代表两个独立证据，程序还按轮廓弧的距离判断竞争关系。</p><details class="source"><summary>看这一步的代码：match_observed</summary><p class="source-meta">estimate_geometry/refine_contours/code/exterior_matching.py · 实际第 49–77 行。</p><pre><code>def match_observed(point, normal, obs):
+    segments = obs[&#x27;points&#x27;]
+    vector = segments[:, 1] - segments[:, 0]
+    alpha = np.sum((point - segments[:, 0]) * vector, axis=1) / np.sum(vector * vector, axis=1)
+    foot = segments[:, 0] + alpha[:, None] * vector
+    distance = np.linalg.norm(point - foot, axis=1)
+    interior = (alpha &gt; 0) &amp; (alpha &lt; 1)
+    close = interior &amp; (distance &lt;= 5)
+    angle = obs[&#x27;normal&#x27;] @ normal &gt;= np.cos(np.pi / 6)
+    eligible = np.where(close &amp; angle)[0]
+    if not len(eligible):
+        return (None, &#x27;no_strict_segment_foot_within_5px&#x27; if not close.any() else &#x27;outward_normal_over_30deg&#x27;)
+    eligible = eligible[np.argsort(distance[eligible], kind=&#x27;stable&#x27;)]
+    best = int(eligible[0])
+    best_coordinate = float(obs[&#x27;coordinate&#x27;][best] + alpha[best] * obs[&#x27;seed_length&#x27;][best])
+    competitor = None
+    for candidate in eligible[1:]:
+        if obs[&#x27;contour_id&#x27;][candidate] == obs[&#x27;contour_id&#x27;][best]:
+            other_coordinate = obs[&#x27;coordinate&#x27;][candidate] + alpha[candidate] * obs[&#x27;seed_length&#x27;][candidate]
+            separation = abs(other_coordinate - best_coordinate)
+            perimeter = obs[&#x27;perimeters&#x27;][int(obs[&#x27;contour_id&#x27;][best])]
+            separation = min(separation, perimeter - separation)
+            if separation &lt; 10:
+                continue
+        competitor = int(candidate)
+        break
+    if competitor is not None and distance[competitor] - distance[best] &lt; 2:
+        return (None, &#x27;competing_distinct_observed_arc_margin_under_2px&#x27;)
+    return (dict(observed_xy=foot[best], normal=obs[&#x27;normal&#x27;][best], observed_segment_id=best, observed_arc_id=int(obs[&#x27;arc_id&#x27;][best]), contour_id=int(obs[&#x27;contour_id&#x27;][best]), contour_coordinate=best_coordinate, distance=float(distance[best]), competitor_segment_id=competitor, competitor_distance=float(distance[competitor]) if competitor is not None else None), None)</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：2ad049beb3013e8c7063cb89681acfee5f1cb7572fd2a0ac83ad72ba6fb540ec<br>片段 SHA-256：a552b6245b9bee4e0aae13773583a750449d6ba908a9fc1f57c4d7599fd89479</p></details></details><p>通过初始检查后，图像端的观测点、法向和权重固定下来，成为后续各轮比较的同一批 anchors，也就是“锚点”。姿态变化时，三维端允许重新寻找对应，但不能把不利的图像点删掉再说目标变好了；找不到对应的锚点仍承担缺失罚分。</p><p>刷新对应时，代码也检查完整投影并集上的弧关系，并对新三维垂足重新做可见性证书。端点不能因采样编号变化被当成物理断开，投影后连成一条外缘的结构也不能只靠旧采样图决定。这个层次正是之前端点与轮廓断连修复所针对的位置。</p><details class="source"><summary>看这一步的代码：refresh</summary><p class="source-meta">estimate_geometry/refine_contours/code/refresh_associations.py · 实际第 156–177 行。</p><pre><code>        eligible = np.where((distance &lt;= 5) &amp; (normals @ normal &gt;= np.cos(np.pi / 6)))[0]
+        guard_removed = 0
+        if source_foot_allowed is not None and len(eligible):
+            candidate_ends = pool[&#x27;local&#x27;][segments[eligible]]
+            _, candidate_z = builder.module.project(candidate_ends.reshape(-1, 3), pose, problem.row)
+            candidate_z = candidate_z.reshape(-1, 2)
+            s = alpha[eligible]
+            t = s * candidate_z[:, 0] / ((1 - s) * candidate_z[:, 1] + s * candidate_z[:, 0])
+            candidate_local = candidate_ends[:, 0] + t[:, None] * (candidate_ends[:, 1] - candidate_ends[:, 0])
+            candidate_q, _ = builder.module.project(candidate_local, pose, problem.row)
+            allowed = source_foot_allowed(candidate_q)
+            guard_removed = int((~allowed).sum())
+            eligible = eligible[allowed]
+        eligible = eligible[np.argsort(distance[eligible], kind=&#x27;stable&#x27;)]
+        reason = &#x27;source_foot_mutual_occlusion_unknown&#x27; if guard_removed and (not len(eligible)) else &#x27;no_source_segment_meets_fixed_gates&#x27;
+        match = None
+        if len(eligible):
+            best = int(eligible[0])
+            component = int(graph[&#x27;component&#x27;][graph[&#x27;nodes&#x27;][best, 0]])
+            best_binding = union_index.locate(best, float(alpha[best]))
+            if not best_binding[&#x27;valid&#x27;]:
+                reason = &#x27;unknown_projected_union_boundary_location&#x27;</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：43ba4fe45732b2ca591f13802bdc0042cc7f6215e802cff0b6519030092dbd7a<br>片段 SHA-256：5c66ffa29ea2a807016b652a2cc9d0bf70b4a5a54a8086404591f6d70bcae9f8</p></details></details><div class="up"><a href="#frame">↑ 回到上一级：3 跟着07／车0／第28帧</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#projection">← 3.3 把已知车身摆回画面</a><a href="#solve">3.5 调整摆法后要重新检查 →</a></div></section><section id="solve" data-parent="frame" data-short="3.5 调整摆法后要重新检查"><div class="crumb">第28帧 / 残差 → 内层求解 → 刷新回溯</div><h2>一次最小二乘建议，不足以决定这一步真的更好</h2><p>对一个有匹配的锚点，程序把它对应的车身点投影出来，再计算投影点到图像观测点沿法向的偏差。它不是要求两点每个方向完全重合，而是主要约束轮廓垂直方向的错位。残差使用 Huber 形式限制较大偏差的影响；缺失匹配按原锚点权重罚分。</p><details class="source"><summary>看这一步的代码：exterior_residual</summary><p class="source-meta">estimate_geometry/refine_contours/code/run_candidate.py · 实际第 15–25 行。</p><pre><code>def exterior_residual(problem, builder, anchors, state, x):
+    values = []
+    pose = problem.geo.full(x)
+    for anchor, association in zip(anchors, state[&#x27;associations&#x27;]):
+        if association[&#x27;status&#x27;] == &#x27;missing&#x27;:
+            values.append(np.sqrt(anchor[&#x27;weight&#x27;] * 16 / 3))
+            continue
+        xy, _ = builder.module.project(np.array([association[&#x27;local&#x27;]]), pose, problem.row)
+        raw = float((xy[0] - anchor[&#x27;observed_xy&#x27;]) @ anchor[&#x27;normal&#x27;])
+        values.append(np.sign(raw) * np.sqrt(anchor[&#x27;weight&#x27;] * huber(raw) / 3))
+    return np.asarray(values)</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：1c37b5ed86c9f74a1bf4a95f5ac1cf6daaabeae976b76d2648b7da06f5fee6fb<br>片段 SHA-256：1bfad52ca14d4bcf5a86f735f5631dd69a502a86869c6bad9c992cd653c0660e</p></details></details><p>内层 <code>least_squares</code> 暂时固定对应，求 x、y、绕竖直轴旋转的小调整。最多150次函数评价不等于150个视频帧；它是这一个内层优化的计算预算。</p><details class="source"><summary>看这一步的代码：solve_inner</summary><p class="source-meta">estimate_geometry/refine_contours/code/run_candidate.py · 实际第 39–46 行。</p><pre><code>def solve_inner(problem, builder, anchors, state, x, lower, upper, objective_mode=&#x27;mixed&#x27;):
+    fun = lambda v: residual(problem, builder, anchors, state, v, objective_mode)
+    options = dict(max_nfev=150, xtol=1e-10, ftol=1e-10, gtol=1e-10)
+    fit = least_squares(fun, x, bounds=(lower, upper), diff_step=1e-05, loss=&#x27;linear&#x27;, **options)
+    if not fit.success:
+        fit = least_squares(lambda delta: fun(x + delta), np.zeros(3), bounds=(lower - x, upper - x), loss=&#x27;linear&#x27;, **options)
+        fit.x += x
+    return fit</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：1c37b5ed86c9f74a1bf4a95f5ac1cf6daaabeae976b76d2648b7da06f5fee6fb<br>片段 SHA-256：26934cf3f30555291ef082c47e50aa29d6e155cbb9381dde3ffa12d4b7703c26</p></details></details><p>R/BT8 的外层最多8轮。“刷新”指每个试探摆法都重建 SOURCE 投影、重找三维对应；“回溯”指按1、1/2、1/4、1/8步长依次尝试。还要满足边界、最大实际投影位移≤2像素、刷新后的支持准入和真实刷新代价下降。这里只采用第一个合格下降步；没有合格步就停止。<strong>不能只看旧对应下内层代价降低就接受。</strong></p><details class="source"><summary>看这一步的代码：refreshed_backtracking</summary><p class="source-meta">estimate_geometry/refine_contours/code/run_candidate.py · 实际第 123–169 行。</p><pre><code>def refreshed_backtracking(problem, builder, anchors, state, current, inner_x, lower, upper, prefix, cost_current, source_foot_allowed=None):
+    &quot;&quot;&quot;Opt-in first valid true-cost descent; rejected witnesses never commit state.&quot;&quot;&quot;
+    if not np.isfinite(cost_current):
+        raise FloatingPointError(&#x27;Nonfinite current refreshed cost: &#x27; + str(cost_current))
+    active = np.array([a[&#x27;local&#x27;] for a in state[&#x27;associations&#x27;] if a[&#x27;status&#x27;] == &#x27;matched&#x27;])
+    start_xy, _ = builder.module.project(active, current, problem.row)
+    x = current[[0, 1, 5]]
+    trials = []
+    attempted = []
+    permitted = 0
+    for fraction in [1.0, 0.5, 0.25, 0.125]:
+        proposed_x = x + fraction * (inner_x - x)
+        pose = problem.geo.full(proposed_x)
+        label = prefix + &#x27;_fraction&#x27; + str(fraction).replace(&#x27;.&#x27;, &#x27;p&#x27;)
+        trial = dict(fraction=fraction, pose=pose.tolist(), witness_label=label, current_refreshed_cost=cost_current)
+        trials.append(trial)
+        try:
+            image, _ = builder.module.project(active, pose, problem.row)
+            displacement = float(np.linalg.norm(image - start_xy, axis=1).max())
+            within = bool(np.all(proposed_x &gt;= lower) &amp; np.all(proposed_x &lt;= upper))
+            trial.update(max_actual_projected_displacement_px=displacement, within_bounds=within)
+            if not within or not np.isfinite(displacement) or displacement &gt; 2:
+                trial[&#x27;status&#x27;] = &#x27;rejected_bounds_or_projected_step&#x27;
+                continue
+            permitted += 1
+            attempted.append(pose.tolist())
+            pool = builder.build(pose, problem.row, label)
+            refreshed = refresh(builder, pool, anchors, problem, source_foot_allowed)
+            cost = state_cost(problem, builder, anchors, refreshed, pose, &#x27;exterior_only&#x27;)
+            missing = sum((a[&#x27;weight&#x27;] for a, s in zip(anchors, refreshed[&#x27;associations&#x27;]) if s[&#x27;status&#x27;] == &#x27;missing&#x27;))
+            trial.update(proposed_support=plain(refreshed), support_weight=refreshed[&#x27;support_weight&#x27;], missing_initial_weight=missing, missing_penalty_cost=missing * 16 / 3, trial_refreshed_cost=float(cost) if np.isfinite(cost) else None)
+            if not refreshed[&#x27;admission&#x27;][&#x27;passed&#x27;]:
+                trial[&#x27;status&#x27;] = &#x27;rejected_refreshed_admission&#x27;
+            elif not np.isfinite(cost):
+                trial.update(status=&#x27;rejected_nonfinite_cost&#x27;, nonfinite_cost_repr=str(cost))
+            elif cost_current - cost &lt;= 1e-10 * max(1, cost_current):
+                trial[&#x27;status&#x27;] = &#x27;rejected_no_refreshed_descent&#x27;
+            else:
+                trial[&#x27;status&#x27;] = &#x27;accepted&#x27;
+                return dict(accepted=True, pose=pose, pool=pool, state=refreshed, cost=cost, accepted_fraction=fraction, trials=trials, attempted=attempted, terminal_reason=&#x27;accepted_first_admissible_descent&#x27;)
+        except Exception as exc:
+            known_clipping = isinstance(exc, ValueError) and str(exc) in [&#x27;Unsupported SOURCE near clipping&#x27;, &#x27;SOURCE image clipping&#x27;]
+            trial.update(status=&#x27;rejected_known_geometry_clipping&#x27; if known_clipping else &#x27;fatal_trial_exception&#x27;, exception_type=type(exc).__name__, exception_message=str(exc))
+            if not known_clipping:
+                exc.refreshed_backtracking_trials = plain(trials)
+                raise
+    return dict(accepted=False, trials=trials, attempted=attempted, accepted_fraction=None, terminal_reason=&#x27;stopped_no_admissible_refreshed_descent&#x27; if permitted else &#x27;stopped_no_permitted_projected_step&#x27;)</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：1c37b5ed86c9f74a1bf4a95f5ac1cf6daaabeae976b76d2648b7da06f5fee6fb<br>片段 SHA-256：daba1e9ad734aacb330d24cbe615ec94ea1a3aa1e3b22efc6cafdcd259023c95</p></details></details><p>支持准入还检查足够长度、沿车长的覆盖、两半权重、参数可辨性和至少80%的初始权重仍可匹配。它们是当前代码的防护条件，不能解释为“80%准确率”。</p><div class="up"><a href="#frame">↑ 回到上一级：3 跟着07／车0／第28帧</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#association">← 3.4 这条图像边对应哪段车身</a><a href="#pose">3.6 这一帧最后交出了什么 →</a></div></section><section id="pose" data-parent="frame" data-short="3.6 这一帧最后交出了什么"><div class="crumb">第28帧 / 新预测 → 保存 → 旧结果比较</div><h2>先保存新位姿，再与旧冻结结果比较</h2><p><code>infer_frame.py</code> 把给定输入、SOURCE构建器和观测路径接到 <code>fit_frame()</code>。这一步不训练网络，而是实际重做投影、初始匹配、对应刷新、内层求解与回溯。求解结果先落盘；只有显式启用 <code>--verify-frozen</code>，才在之后读取旧冻结候选作比较。</p><details class="source"><summary>看这一步的代码：main</summary><p class="source-meta">estimate_geometry/refine_contours/code/infer_frame.py · 实际第 36–64 行。</p><pre><code>    assert safe[&#x27;query_truth_read&#x27;] is False
+    problem=GeometryOnlyProblem(safe,dict(pose=safe[&#x27;baseline_pose&#x27;],cost=safe[&#x27;baseline_cost&#x27;]),support,legacy())
+    engine.ATTEMPT=prototype_frame27.ATTEMPT=&#x27;fit&#x27;
+    prototype_frame27.REQUIRE_FULL_POOL=refresh_associations.REQUIRE_FULL_POOL=False
+    builder=GeometryPool(out_root=out,attempt=&#x27;fit&#x27;);original_build=builder.build
+    def build(pose,row,label):
+        pool=original_build(pose,row,label);pool.setdefault(&#x27;_artifact_label&#x27;,label);return pool
+    builder.build=build
+    observation=args.observation.resolve()
+    if not observation.is_relative_to(PROJECT):raise ValueError(&#x27;Observation must stay inside this project&#x27;)
+    context=dict(sample_id=safe[&#x27;key&#x27;],problem=problem,observation_path=observation,
+        rgb_record=dict(image=str(PROJECT/safe[&#x27;image&#x27;]),crop_xyxy=[639,394,851,536]),
+        source_paths=[Path(__file__),ROOT/&#x27;input_json/safe_inputs.json&#x27;,ROOT/&#x27;input_json/support.json&#x27;,
+                      observation,ROOT/&#x27;SOURCE_TRANSFORMATION.json&#x27;])
+    record=engine.fit_frame(safe[&#x27;frame&#x27;],builder,problem,out_root=out,objective_mode=&#x27;exterior_only&#x27;,
+        context=context,source_foot_allowed=None,contract_path=ROOT/&#x27;input_json/contract.json&#x27;,
+        acceptance_policy=&#x27;true_refreshed_backtracking&#x27;)
+    report=dict(prediction_saved_before_comparison=True,reference_truth_read=False,
+        source_geometry_rebuilt=True,SAM_and_RGB_structure_extraction_cached=True,
+        elapsed_seconds=time.monotonic()-started,status=record[&#x27;status&#x27;],
+        accepted_outer_rounds=record[&#x27;accepted_outer_rounds&#x27;],candidate_pose=record[&#x27;candidate_pose&#x27;],
+        candidate_cost=record[&#x27;candidate_cost&#x27;],python=sys.version)
+    if args.verify_frozen:
+        frozen=read(ROOT/&#x27;evaluation_only_json/frozen_candidate.json&#x27;)
+        difference=np.asarray(record[&#x27;candidate_pose&#x27;])-frozen[&#x27;candidate_pose&#x27;]
+        assert record[&#x27;candidate_pose&#x27;][3:5]==frozen[&#x27;candidate_pose&#x27;][3:5]==[0.,0.], &#x27;This replay supports upright z rotation only&#x27;
+        angle=abs((record[&#x27;candidate_pose&#x27;][5]-frozen[&#x27;candidate_pose&#x27;][5]+180)%360-180)
+        report.update(frozen_candidate_sha256=hashlib.sha256((ROOT/&#x27;evaluation_only_json/frozen_candidate.json&#x27;).read_bytes()).hexdigest(),
+            center_difference_m=float(np.linalg.norm(difference[:3])),rotation_difference_deg=angle,</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：935eeddc6fca11caf5f765f71cff513a968f6afa6f6b392ae650481f0a13019f<br>片段 SHA-256：0e1a58fef83bc9ba750c1bddd2d9c9a0f02043dcd7f85fe916479cf39c036360</p></details></details><div class="data"><h3>这一次 CPU 重算留下的结果</h3><pre>{
+  &quot;elapsed_seconds&quot;: 89.54699999999957,
+  &quot;status&quot;: &quot;accepted&quot;,
+  &quot;accepted_outer_rounds&quot;: 6,
+  &quot;candidate_pose&quot;: [
+    -9.529396225742842,
+    123.55107151344964,
+    0.7378746194065775,
+    0.0,
+    0.0,
+    269.4312311802022
+  ],
+  &quot;candidate_cost&quot;: 0.10574435221845366,
+  &quot;center_difference_m&quot;: 0.0,
+  &quot;rotation_difference_deg&quot;: 0.0,
+  &quot;cost_difference&quot;: 0.0,
+  &quot;reference_truth_read&quot;: false
+}</pre><p class="source-meta">数值来源：docs/validation/output_json/latest014_frame28.json</p></div><p>这次记录的耗时为89.54699999999957秒，接受6个外轮，状态为 <code>accepted</code>。位姿前三项是摆车用的平移参数，后面是度制旋转向量；其中两个旋转分量为0。目标值0.1057443522是当前定义的加权图像残差代价，不是米、准确率或事故概率。</p><div class='warn'>中心差0米、旋转差0度、代价差0，都表示新运行与旧冻结候选一致。参考真值没有进入这次求解；这些“差0”并不表示车辆真实中心误差为0。</div><details class="source"><summary>看这一步的代码：main</summary><p class="source-meta">estimate_geometry/refine_contours/code/infer_frame.py · 实际第 57–74 行。</p><pre><code>        candidate_cost=record[&#x27;candidate_cost&#x27;],python=sys.version)
+    if args.verify_frozen:
+        frozen=read(ROOT/&#x27;evaluation_only_json/frozen_candidate.json&#x27;)
+        difference=np.asarray(record[&#x27;candidate_pose&#x27;])-frozen[&#x27;candidate_pose&#x27;]
+        assert record[&#x27;candidate_pose&#x27;][3:5]==frozen[&#x27;candidate_pose&#x27;][3:5]==[0.,0.], &#x27;This replay supports upright z rotation only&#x27;
+        angle=abs((record[&#x27;candidate_pose&#x27;][5]-frozen[&#x27;candidate_pose&#x27;][5]+180)%360-180)
+        report.update(frozen_candidate_sha256=hashlib.sha256((ROOT/&#x27;evaluation_only_json/frozen_candidate.json&#x27;).read_bytes()).hexdigest(),
+            center_difference_m=float(np.linalg.norm(difference[:3])),rotation_difference_deg=angle,
+            cost_difference=abs(record[&#x27;candidate_cost&#x27;]-frozen[&#x27;candidate_cost&#x27;]),
+            same_status=record[&#x27;status&#x27;]==frozen[&#x27;status&#x27;],
+            same_accepted_rounds=record[&#x27;accepted_outer_rounds&#x27;]==frozen[&#x27;accepted_outer_rounds&#x27;])
+        # This checks migration repeatability, not accuracy: 1e-8m and 1e-7deg
+        # allow final floating-point serialization/order noise far below pixels.
+        report[&#x27;passed&#x27;]=(report[&#x27;same_status&#x27;] and report[&#x27;same_accepted_rounds&#x27;] and
+            report[&#x27;center_difference_m&#x27;]&lt;1e-8 and report[&#x27;rotation_difference_deg&#x27;]&lt;1e-7 and report[&#x27;cost_difference&#x27;]&lt;1e-8)
+    save_json(out/&#x27;output_json/acceptance.json&#x27;,report)
+    print(json.dumps(report,indent=2,allow_nan=False),flush=True)
+    if args.verify_frozen and not report[&#x27;passed&#x27;]:raise SystemExit(2)</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：935eeddc6fca11caf5f765f71cff513a968f6afa6f6b392ae650481f0a13019f<br>片段 SHA-256：8b12c97a7a8507e1be56a78888f9e8bede558c94cadc909d9af0e7ff27ccbb5f</p></details></details><p>把这一帧求出来，得到的是一辆车的一个状态。要判断两车接触，仍需同一时刻另一辆车的有效几何和明确的距离定义；要判断速度，还需相邻时刻的历史位置。</p><div class="up"><a href="#frame">↑ 回到上一级：3 跟着07／车0／第28帧</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#solve">← 3.5 调整摆法后要重新检查</a><a href="#contact">4 有了状态，再问接触与速度 →</a></div></section><section id="contact" data-parent="home" data-short="4 有了状态，再问接触与速度"><div class="crumb">总图 / 从局部状态回答任务</div><h2>位姿是中间结果，接触和速度还各有一步</h2><p>我们把车放回共同的三维坐标后，才有条件比较两辆车各自占据的空间。车中心相距多远不能代替表面间隙：车有长度、宽度和朝向，中心不同样远也可能侧擦或横穿接触。两车接触不要求中心延长线共线。</p><p>另一件事是运动。一帧能给位置与朝向，却不能只靠“车头朝哪边”得到速度。速度需要看同一身份的车在历史时间间隔里移动了多少，车身朝向和实际运动方向可以不同。</p><p>这两种计算都能放大上游错误。接触前的几厘米偏差会改变接触时刻；相邻帧误差的变化则会变成假速度。我们分开检查，不能只拿一帧投影好看就说整段运动已经解决。</p><div class="flow"><h3>接下来，我们把这件事拆开看</h3><a class="flow-node" href="#distance"><strong>对准同一帧的两份车身几何，再使用同一种接触定义</strong><span>欧氏间隙、历史半空间slack、盒体SAT别混着读。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#speed"><strong>速度看的是位置变化，而误差变化也会被算进去</strong><span>第18→19帧的位置误差差分，解释第19帧速度红格。　点开这一步 →</span></a></div><div class="up"><a href="#home">↑ 回到总图</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#pose">← 3.6 这一帧最后交出了什么</a><a href="#distance">4.1 两车表面到底还隔多远 →</a></div></section><section id="distance" data-parent="contact" data-short="4.1 两车表面到底还隔多远"><div class="crumb">任务 / 同帧双车距离与接触</div><h2>对准同一帧的两份车身几何，再使用同一种接触定义</h2><p>完整网页当前显示的 <code>pair_geometry.json</code> 保存的是所显示 SOURCE 凸体之间的三维欧氏最短距离：分离时为正，接触或重叠时为0。它计算的是这份简化几何的接触，不是 CARLA 物理碰撞回调，也不是对事故性质的判断。</p><div class="data"><h3>网页已有冻结距离：同一时刻的两车一起算</h3><pre>[
+  {
+    &quot;case&quot;: &quot;07&quot;,
+    &quot;frame&quot;: 28,
+    &quot;method&quot;: &quot;case07_far_exterior_bt8&quot;,
+    &quot;predicted_distance_m&quot;: 6.229297272283826,
+    &quot;reference_distance_m&quot;: 6.239233134603555,
+    &quot;predicted_contact&quot;: false,
+    &quot;reference_contact&quot;: false
+  },
+  {
+    &quot;case&quot;: &quot;07&quot;,
+    &quot;frame&quot;: 40,
+    &quot;method&quot;: &quot;case07_far_exterior_bt8&quot;,
+    &quot;predicted_distance_m&quot;: 0.027592604498589614,
+    &quot;reference_distance_m&quot;: 0.009527492754087638,
+    &quot;predicted_contact&quot;: false,
+    &quot;reference_contact&quot;: false
+  },
+  {
+    &quot;case&quot;: &quot;07&quot;,
+    &quot;frame&quot;: 41,
+    &quot;method&quot;: &quot;case07_far_exterior_bt8&quot;,
+    &quot;predicted_distance_m&quot;: 0,
+    &quot;reference_distance_m&quot;: 0,
+    &quot;predicted_contact&quot;: true,
+    &quot;reference_contact&quot;: true
+  },
+  {
+    &quot;case&quot;: &quot;11&quot;,
+    &quot;frame&quot;: 22,
+    &quot;method&quot;: &quot;contiguous_exact_contour_bt8&quot;,
+    &quot;predicted_distance_m&quot;: 10.107071734712907,
+    &quot;reference_distance_m&quot;: 10.115068813680042,
+    &quot;predicted_contact&quot;: false,
+    &quot;reference_contact&quot;: false
+  }
+]</pre><p class="source-meta">数值来源：datasets/carla_replay/case07/input_json/pair_geometry.json；datasets/carla_replay/case11/input_json/pair_geometry.json</p></div><p>案例07第40帧最新预测仍隔约2.759厘米，参考约0.953厘米；第41帧两者显示距离均为0并进入接触。案例11第22帧最新预测约10.107米，参考约10.115米，均未接触。这些数值读自已有冻结片段，<strong>不是把第28帧单车重算冒充为整条双车接触链重新运行。</strong></p><p>历史 <code>pose_experiments.json</code> 还保留 <code>source_convex_3d_slack_m</code>，是公共半空间松弛量，符号可判接触，却不等同欧氏间隙。早期 SurfaceNet 分支的 <code>box_contact()</code> 则对有向盒做分离轴测试；最小轴向重叠量同样不是一般的表面最短距离。这三种量各有定义，不能互换。</p><details class="source"><summary>看这一步的代码：box_contact</summary><p class="source-meta">estimate_geometry/code/src/collision.py · 实际第 9–33 行。</p><pre><code>def box_contact(a, b, tolerance_m=1e-7):
+    center_a=np.asarray(a[&#x27;center&#x27;],dtype=float)
+    center_b=np.asarray(b[&#x27;center&#x27;],dtype=float)
+    axes_a=np.asarray(a[&#x27;rotation&#x27;],dtype=float)
+    axes_b=np.asarray(b[&#x27;rotation&#x27;],dtype=float)
+    half_a=np.asarray(a[&#x27;dims&#x27;],dtype=float)/2
+    half_b=np.asarray(b[&#x27;dims&#x27;],dtype=float)/2
+    if not (np.isfinite(center_a).all() and np.isfinite(center_b).all()
+            and np.isfinite(axes_a).all() and np.isfinite(axes_b).all()
+            and (half_a&gt;0).all() and (half_b&gt;0).all()):
+        raise ValueError(&#x27;Finite centers, rotations, and positive dimensions are required&#x27;)
+    candidates=[axes_a[:,i] for i in range(3)]+[axes_b[:,i] for i in range(3)]
+    candidates += [np.cross(axes_a[:,i],axes_b[:,j]) for i,j in itertools.product(range(3),repeat=2)]
+    signed_margins=[]
+    displacement=center_b-center_a
+    for axis in candidates:
+        norm=np.linalg.norm(axis)
+        if norm&lt;1e-10:continue
+        axis=axis/norm
+        radius_a=np.sum(half_a*np.abs(axes_a.T@axis))
+        radius_b=np.sum(half_b*np.abs(axes_b.T@axis))
+        signed_margins.append(float(radius_a+radius_b-abs(displacement@axis)))
+    margin=min(signed_margins)
+    return dict(overlap=margin&gt;=-tolerance_m,minimum_axis_margin_m=margin,
+                meaning=&#x27;Positive: every tested axis overlaps; negative: a separating axis exists. This margin is not necessarily Euclidean surface distance.&#x27;)</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：11a627d02d6b8b1ebc23a656b34e6abe8a312f825e1e87a1aa23a68167d389a7<br>片段 SHA-256：84e422ca9f0acb1724612d0f68bc79d08ad46e222e44cbc27c0d2d4f6d78e549</p></details></details><p>这里给出盒体代码是为了说明不同入口的计算边界。完整网页的 SOURCE 欧氏距离来自打包的冻结数据，本包的回放核验不等于重新生成了这些距离证书。两个80帧已有片段的几何接触未见误报或漏报，只能在这两个片段、这份几何和参考定义下陈述。</p><div class="up"><a href="#contact">↑ 回到上一级：4 有了状态，再问接触与速度</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#contact">← 4 有了状态，再问接触与速度</a><a href="#speed">4.2 为什么位置还行却冒出假速度 →</a></div></section><section id="speed" data-parent="contact" data-short="4.2 为什么位置还行却冒出假速度"><div class="crumb">任务 / 历史位置 → 速度</div><h2>速度看的是位置变化，而误差变化也会被算进去</h2><p>相邻时刻位置之差除以时间间隔，得到平均速度向量：<code>v̂ₜ=(p̂ₜ−p̂ₜ₋₁)/Δt</code>。如果预测位置含误差e，那么速度误差就是 <code>(eₜ−eₜ₋₁)/Δt</code>。两帧的误差大小都不算大，也可能因为方向变了而产生明显的假速度。</p><div class="data"><h3>车0从第18帧进入第19帧：位置差分变成了速度</h3><pre>[
+  {
+    &quot;frame&quot;: 18,
+    &quot;x_m&quot;: -9.548546991566544,
+    &quot;y_m&quot;: 126.55684857663034,
+    &quot;center_error_m&quot;: 0.02764405026872293,
+    &quot;velocity_vector_mps&quot;: [
+      -0.08815557379722606,
+      -2.45417005028722,
+      3.515521205050246e-06
+    ],
+    &quot;velocity_error_mps&quot;: 0.09747677738563744
+  },
+  {
+    &quot;frame&quot;: 19,
+    &quot;x_m&quot;: -9.511128569554886,
+    &quot;y_m&quot;: 126.32723386044017,
+    &quot;center_error_m&quot;: 0.02345249113510179,
+    &quot;velocity_vector_mps&quot;: [
+      0.3741842145408031,
+      -2.296147127686442,
+      3.5625042917707146e-06
+    ],
+    &quot;velocity_error_mps&quot;: 0.44333934095141964
+  },
+  {
+    &quot;frame&quot;: 20,
+    &quot;x_m&quot;: -9.513609283673885,
+    &quot;y_m&quot;: 126.06414587747032,
+    &quot;center_error_m&quot;: 0.023834725712266122,
+    &quot;velocity_vector_mps&quot;: [
+      -0.024807140820333407,
+      -2.6308797904953365,
+      3.8103703879444886e-06
+    ],
+    &quot;velocity_error_mps&quot;: 0.02357681949446902
+  }
+]</pre><p class="source-meta">数值来源：datasets/carla_replay/case07/input_json/pose_experiments.json · case07_far_exterior_bt8</p></div><p>这一段相邻帧约差0.1秒。车0第18→19帧预测x从约−9.54855变成−9.51113米，横向速度约+0.374米/秒；参考横向速度约−0.0034米/秒。第19帧三维速度向量误差达到0.44334米/秒，超过页面0.3米/秒的红格阈值。第20帧又降到约0.02358米/秒。</p><p>第19帧新候选的中心误差只有约2.345厘米，仍不能据此说速度已经对了；第18帧保留旧过滤结果、第19帧进入新候选，是必须检查的交接位置。第33帧退出该候选区间时也有速度红格。来源交接与误差差分已能从冻结数据确认，造成图像目标与真实位置偏离的更深原因仍未查清。</p><details class="source"><summary>看这一步的代码：main</summary><p class="source-meta">inspect_predictions/code/verify_replay.py · 实际第 21–43 行。</p><pre><code>        position_max=velocity_max=0.
+        red=[]; fp=fn=0
+        for i,frame in enumerate(data[&#x27;frames&#x27;]):
+            assert frame[&#x27;frame&#x27;]==i and len(frame[&#x27;cars&#x27;])==2
+            for car in frame[&#x27;cars&#x27;]:
+                p=car[&#x27;prediction&#x27;][&#x27;pose&#x27;]; r=car[&#x27;reference&#x27;][&#x27;pose&#x27;]; m=car[&#x27;prediction&#x27;][&#x27;metrics&#x27;]
+                err=math.dist(p[:3],r[:3]);position_max=max(position_max,abs(err-m[&#x27;center_error_m&#x27;]))
+                if i:
+                    prev=data[&#x27;frames&#x27;][i-1][&#x27;cars&#x27;][car[&#x27;car&#x27;]]
+                    dt=frame[&#x27;time_s&#x27;]-data[&#x27;frames&#x27;][i-1][&#x27;time_s&#x27;]
+                    pe=prev[&#x27;prediction&#x27;][&#x27;pose&#x27;];re=prev[&#x27;reference&#x27;][&#x27;pose&#x27;]
+                    velocity=math.sqrt(sum(((p[k]-pe[k])-(r[k]-re[k]))**2 for k in range(3)))/dt
+                    stored=m.get(&#x27;velocity_error_mps&#x27;,m.get(&#x27;velocity_vector_error_mps&#x27;))
+                    assert stored is not None
+                    velocity_max=max(velocity_max,abs(velocity-stored))
+                    if velocity&gt;.3:red.append([i,car[&#x27;car&#x27;]])
+            pair=frame[&#x27;pair&#x27;];pred=pair[&#x27;prediction&#x27;][&#x27;contact&#x27;];truth=pair[&#x27;reference&#x27;][&#x27;contact&#x27;]
+            fp+=int(pred and not truth);fn+=int(truth and not pred)
+        assert position_max&lt;1e-6 and velocity_max&lt;1e-5,(position_max,velocity_max)
+        report[&#x27;cases&#x27;][case]=dict(frames=80,poses=160,maximum_position_metric_difference_m=position_max,
+            maximum_velocity_metric_difference_mps=velocity_max,velocity_red_frames=red,
+            stored_geometric_contact_false_positive_frames=fp,stored_geometric_contact_false_negative_frames=fn)
+    spec=importlib.util.spec_from_file_location(&#x27;replay_server&#x27;,Path(__file__).with_name(&#x27;serve.py&#x27;))</code></pre><details class="verification"><summary>核对代码摘要</summary><p class="hash">文件 SHA-256：37a9c1cdd9215905e2531d7eef1f4556e11930ab5e8b087a8d13cd59d5f3eb7b<br>片段 SHA-256：cf080d2b518eb884c1b3fcb0d61c262ddf4d552a6362abd1838730729b257559</p></details></details><p>速率是速度向量的长度，速度向量误差与速率误差也不同；只比较“跑得多快”会漏掉横向假运动。网页朝向延长线只帮助看车身朝向，不能代替这些历史差分。</p><div class="up"><a href="#contact">↑ 回到上一级：4 有了状态，再问接触与速度</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#distance">← 4.1 两车表面到底还隔多远</a><a href="#diagnosis">5 出错后怎样沿一帧往回查 →</a></div></section><section id="diagnosis" data-parent="home" data-short="5 出错后怎样沿一帧往回查"><div class="crumb">总图 / 错误不能靠换一帧解释</div><h2>看到红格，先留在同一个坏样本上</h2><p>假设第19帧速度红了。先固定案例、帧、车和方法，再看第18、19、20帧的位姿来源及有符号位置误差。我们要找的是哪一步首次偏离，不是挑一个看起来更好的帧替它作证。</p><p>网页把原RGB、SAM mask、RGB边候选、SOURCE投影和参考结果放在一起，就是为了让这些问题能分层问：输入有没有放错？观测实际在图里吗？对应是否连错？位姿改变后是否重算了对应？保存结果是否交接到另一来源？评价读取的是哪一种几何定义？</p><div class='diagram'><svg viewBox='0 0 760 208' role='img' aria-label='围绕同一坏帧的分层检查'><defs><marker id='diagArrow' markerWidth='6' markerHeight='6' refX='5' refY='3' orient='auto'><path d='M0,0L6,3L0,6' fill='#74887b'/></marker></defs><g fill='#f0f4ef' stroke='#aebfb1'><rect x='8' y='40' width='158' height='110' rx='9'/><rect x='200' y='40' width='158' height='110' rx='9'/><rect x='392' y='40' width='158' height='110' rx='9'/><rect x='584' y='40' width='168' height='110' rx='9'/></g><g font-size='17' fill='#294b38' text-anchor='middle' font-family='Microsoft YaHei,sans-serif'><text x='87' y='79'>固定坏帧与方法</text><text x='87' y='110' font-size='13'>帧／车／位姿来源</text><text x='279' y='79'>核对图像观测</text><text x='279' y='110' font-size='13'>RGB／mask／有限边</text><text x='471' y='79'>核对几何与对应</text><text x='471' y='110' font-size='13'>端点／投影并集／刷新</text><text x='668' y='79'>核对任务与评价</text><text x='668' y='110' font-size='13'>距离定义／历史差分</text></g><g stroke='#74887b' marker-end='url(#diagArrow)'><path d='M167 95H195'/><path d='M359 95H387'/><path d='M551 95H579'/></g><text x='380' y='186' font-size='13' fill='#69786b' text-anchor='middle'>同一批观测、同一坏帧，逐层找首次异常；这张是检查路线示意，不是算法测量图。</text></svg></div><div class="flow"><h3>接下来，我们把这件事拆开看</h3><a class="flow-node" href="#topology"><strong>画面没变，几何端点与轮廓断连也足以把对应弄错</strong><span>已有有效修复发生在几何与对应层；它没有证明所有图像观测都正确。　点开这一步 →</span></a><div class="arrow" aria-hidden="true">↓</div><a class="flow-node" href="#counterexample"><strong>第19帧告诉我们：优化目标下降，还不能替代真实误差</strong><span>固定224个锚点，图像代价下降，但接受路径后来远离参考中心。　点开这一步 →</span></a></div><div class="up"><a href="#home">↑ 回到总图</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#speed">← 4.2 为什么位置还行却冒出假速度</a><a href="#topology">5.1 不要一开始就怪mask →</a></div></section><section id="topology" data-parent="diagnosis" data-short="5.1 不要一开始就怪mask"><div class="crumb">查因 / 先核对几何结构</div><h2>画面没变，几何端点与轮廓断连也足以把对应弄错</h2><p>mask 可能出错，但不能因为它是网络输出就先把责任归给它。已知车身投影里，同一个物理端点可能来自多条边；如果按采样编号把它们当成互不相干的点，或者把投影并集中连续的轮廓误当断开，就会影响弧距离、竞争边判断和新对应准入。</p><p>现代码在 <code>GeometryPool</code> 中使用实际顶点键合并共享端点，在 <code>ExactUnionIndex</code> 中沿完整投影并集定位与计算弧关系；<code>refresh()</code> 把旧采样图明确标为描述性信息，不再让它替代完整外缘关系。前面展开的刷新代码正落在这一层。</p><p>这类端点与轮廓断连修复已经有效，最新案例07车0最大中心误差由原过滤基线约6.38厘米降到3.90厘米；但改进还包括明确的新候选区间，不能把整段结果归因给一个小条件。两段结果也仍有验证范围，不能由“图看顺了”推出普遍可靠。</p><div class='note'>现在仍有第19、33帧速度红格，说明解决一层问题不等于所有层都已正确。下一步应围绕同一坏帧作能区分嫌疑的最小对照；没有新证据之前，不用平滑把错误藏起来。</div><div class="up"><a href="#diagnosis">↑ 回到上一级：5 出错后怎样沿一帧往回查</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#diagnosis">← 5 出错后怎样沿一帧往回查</a><a href="#counterexample">5.2 图像分更好，三维却更差 →</a></div></section><section id="counterexample" data-parent="diagnosis" data-short="5.2 图像分更好，三维却更差"><div class="crumb">查因 / 第19帧的具体反例</div><h2>第19帧告诉我们：优化目标下降，还不能替代真实误差</h2><p>第19帧同一条已保存接受路径提供了一个具体反例：第0轮接受后，中心误差约0.541厘米，图像代价约0.197266；继续接受时，代价降低到约0.117974，中心误差却增至约2.345厘米。求解器确实在改进自己定义的图像目标，但那不是实际三维中心误差的同一个量。</p><div class="data"><h3>已保存第19帧接受路径的评价摘录（中心误差单位：厘米）</h3><pre>{
+  &quot;accepted_rounds&quot;: [
+    {
+      &quot;frame&quot;: 19,
+      &quot;round&quot;: &quot;0&quot;,
+      &quot;center_error_cm&quot;: 0.5406984950910533,
+      &quot;cost&quot;: 0.19726610377245085
+    },
+    {
+      &quot;frame&quot;: 19,
+      &quot;round&quot;: &quot;1&quot;,
+      &quot;center_error_cm&quot;: 0.9967463414402359,
+      &quot;cost&quot;: 0.15220016805446188
+    },
+    {
+      &quot;frame&quot;: 19,
+      &quot;round&quot;: &quot;2&quot;,
+      &quot;center_error_cm&quot;: 1.551684324775342,
+      &quot;cost&quot;: 0.12004674397310258
+    },
+    {
+      &quot;frame&quot;: 19,
+      &quot;round&quot;: &quot;3&quot;,
+      &quot;center_error_cm&quot;: 2.346440049168814,
+      &quot;cost&quot;: 0.11797437873788913
+    },
+    {
+      &quot;frame&quot;: 19,
+      &quot;round&quot;: &quot;7&quot;,
+      &quot;center_error_cm&quot;: 2.345249113510179,
+      &quot;cost&quot;: 0.11797381652698836
+    }
+  ],
+  &quot;fixed_anchor_count&quot;: 224,
+  &quot;fixed_weights&quot;: true,
+  &quot;center_error_requires_reference_truth&quot;: true,
+  &quot;sources&quot;: [
+    {
+      &quot;source_identifier&quot;: &quot;20261115_case07_far_coverage_transfer/output_json/boundary_handover_evaluation.json&quot;,
+      &quot;sha256&quot;: &quot;fce9a8ab6ee9f8488a3649e80369ed41b6efa6f10855f41aed70a0519ef8a371&quot;
+    },
+    {
+      &quot;source_identifier&quot;: &quot;20261115_case07_far_coverage_transfer/output_json/saved_f19_descent_trace.json&quot;,
+      &quot;sha256&quot;: &quot;a898b1abb15fdd427a662c80bedb09d24583f0384003374b054903e57a328320&quot;
+    }
+  ]
+}</pre><p class="source-meta">数值来源：docs/program_flow/input_json/f19_counterexample.json</p></div><p>这份记录是历史结果的只读整理，没有重跑优化，也没有用真值挑一个“最好轮次”替换原预测。中心误差由参考真值评价得到；另一个只拆已保存代价的记录标记 <code>no_GT_read</code>，只表示那次代价拆解未读取真值，不能把它扩展成“这些中心误差不需要真值”。</p><p>已能确认：224个图像锚点和权重固定，真实刷新图像代价在下降，最终中心仍比早期接受步更偏。这排除了把它简单说成“只是内层旧对应分数下降”的解释。还没确认：究竟是图像边偏差、几何简化、投影模型还是具体对应如何共同推动了偏离。未知原因必须保留为未知，不能把“用真值早停”当成修复。</p><p>接下来的有效对照，应留在这一帧，逐个核对有影响的锚点、它在真实RGB里的边、三维垂足和代价贡献，再看修改是否同时改善该帧、相邻帧和接触任务。这里没有启动新实验。</p><div class="up"><a href="#diagnosis">↑ 回到上一级：5 出错后怎样沿一帧往回查</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#topology">← 5.1 不要一开始就怪mask</a><a href="#run">6 怎样读代码、怎样运行 →</a></div></section><section id="run" data-parent="home" data-short="6 怎样读代码、怎样运行"><div class="crumb">总图 / 可复核入口与验证边界</div><h2>先看已有结果，再重算一帧，最后才决定要不要训练</h2><p>想理解数据怎样流动，先沿第28帧这六层读代码，比从目录第一个文件读到最后更直接。主线是 <code>observe_frame.py → observe_rgb_edges.py → infer_frame.py → fit_frame()</code>，其中 <code>GeometryPool</code> 管几何，<code>exterior_matching</code> 管初始观测对应，<code>refresh_associations</code> 管新姿态下的对应，<code>run_candidate</code> 管求解与接受。</p><div class='table-wrap'><table><thead><tr><th>想做什么</th><th>从哪里开始</th><th>实际会发生什么</th></tr></thead><tbody><tr><td>看两个完整片段</td><td><code>python -S -B start_full_replay.py</code></td><td>标准库启动本地网页，读取已有80×2帧结果；浏览器打开8883端口。</td></tr><tr><td>核对冻结数值</td><td><code>python -S -B inspect_predictions/code/verify_replay.py</code></td><td>独立核对位置、速度差分和已存接触标签，不重做感知。</td></tr><tr><td>重选缓存SAM与提RGB边</td><td><code>estimate_geometry/observe_structure/README.md</code></td><td>按明确输入重做选择与真实RGB计算；神经SAM另需官方代码和权重。</td></tr><tr><td>重算第28帧位姿</td><td><code>estimate_geometry/refine_contours/code/infer_frame.py</code></td><td>真实构建几何与迭代求解，输出到新目录。</td></tr><tr><td>学习关系或可见表面</td><td><code>learn_relations/README.md</code>、<code>estimate_geometry/README.md</code></td><td>各自准备训练输入；训练不会自动生成当前完整网页结果。</td></tr></tbody></table></div><p>完整回放需要拉全仓库的 Git LFS 资源。终端从仓库根运行第一条后，浏览器可打开 <code>http://127.0.0.1:8883/cases/07/#frame=28&amp;car=0&amp;method=case07_far_exterior_bt8</code>。切换帧、车辆和方法时，先确认选择器再读数值，避免把两套来源当成同一预测。网页还会显示历史部件mask、整车分区和调试线；这些显示层不等于当前方案都把它们当作定位输入。手工改显示分区不会自动重训或重算三维，当前014单帧直接使用的是SAM区域提议和真实RGB外缘结构。</p><h3>只重算这一帧的命令</h3><pre class='run'>python -B estimate_geometry/refine_contours/code/infer_frame.py --output estimate_geometry/refine_contours/experiments/my_frame28_story_run --verify-frozen</pre><p>这条命令需要对应几何依赖，目录必须是新的。前端若重算新观测，可显式用 <code>--observation</code> 传给求解入口；详细分步命令在前端说明中。故事页本身只生成和显示说明，任何流程框都不会启动模型。</p><div class="flow"><h3>接下来，我们把这件事拆开看</h3><a class="flow-node" href="#limits"><strong>能复现一帧，和能判断任意视频，是相距很远的两件事</strong><span>把程序运行、冻结评价、合成验收和未知项放回各自范围。　点开这一步 →</span></a></div><div class="up"><a href="#home">↑ 回到总图</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#counterexample">← 5.2 图像分更好，三维却更差</a><a href="#limits">6.1 现在能确认到哪里 →</a></div></section><section id="limits" data-parent="run" data-short="6.1 现在能确认到哪里"><div class="crumb">运行 / 已验收与尚未验收</div><h2>能复现一帧，和能判断任意视频，是相距很远的两件事</h2><div class='table-wrap'><table><thead><tr><th>已有证据</th><th>结论止于这里</th></tr></thead><tbody><tr><td>两个各80帧、共320车辆姿态的完整回放；2240个PNG URL经HTTP核对，RGB哈希一致</td><td>这些资源可读取、显示的原图来自打包数据；不代表全按钮、全部新平台或全片段重算。</td></tr><tr><td>第28帧CPU89.55秒、接受6轮、与旧冻结候选差0</td><td>真实核心移植复现一致；不是对真值误差0，不包含新SAM神经前向。</td></tr><tr><td>缓存SAM重选和真实RGB结构重算一致</td><td>候选选择与463点／248候选可重复；不证明换版本SAM结果一致。</td></tr><tr><td>关系学生和SurfaceNet的CPU小训练；真实35视图历史权重推理</td><td>软件入口和协议可运行；合成训练不是实际道路效果，已见子集不是独立测试集。</td></tr><tr><td>案例07首次接触第41帧、案例11未接触；两段冻结几何接触无误报漏报</td><td>只覆盖两个片段和所用SOURCE几何；不是通用事故准确率。</td></tr></tbody></table></div><p>强输入条件仍是已知标定、车身资产、地面、身份和先验。同场景第27帧模板用于更早帧时还含未来信息，所以整段离线结果不能不加说明地叫作实时因果感知。</p><p>本次未复验全量真实训练、V-JEPA官方权重RGB提取、新SAM神经前向、两个片段全部重算、真实道路事故判断与跨场景泛化。新装环境、Linux和Jetson Orin也尚未完成验收。第19帧目标与三维误差背离的根因，以及第19、33帧速度问题，仍是下一阶段要解决的具体问题。</p><p>这篇故事从目的走到输入、观测、对应、位姿和任务判断；遇到未知时，继续沿同一份证据往回查。仓库完整验收说明在 <code>docs/VALIDATION.md</code>。本页的源片段由生成器直接抽取，路径、实际行数和SHA都随片段保留；生成时只读取源码，未导入或执行模型代码。JSON数据则只挑了这里解释所需的少量字段。</p><div class="up"><a href="#run">↑ 回到上一级：6 怎样读代码、怎样运行</a><a href="#home">↖ 回到总图</a></div><div class="prevnext"><a href="#run">← 6 怎样读代码、怎样运行</a><a href="#limits">6.1 现在能确认到哪里 →</a></div></section></main><script type="application/json" id="source-manifest">[{"path": "learn_relations/code/relation_model.py", "symbol": "RelationContactStudent.forward", "first": 33, "last": 64, "file_sha256": "1706b87051b56fe6628b028f987d18f62e216285e078c0c4b98d673b9cc6ca53", "excerpt_sha256": "a553ca9c22df904b758471a16311b6af56eed730db4a1b058d37ee902c450247"}, {"path": "estimate_geometry/code/src/model.py", "symbol": "SurfaceNet.forward", "first": 14, "last": 24, "file_sha256": "1ed94edcd4c0b5338b9246ff0f29ec4116089498eeed4ea8e0ec587fa7c5c90c", "excerpt_sha256": "91e6b023a63c13fbb9fc890fca97497a197a187d699d6536532b841cefc3b4a6"}, {"path": "estimate_geometry/observe_structure/code/whole_observer.py", "symbol": "main", "first": 95, "last": 118, "file_sha256": "2e613471427490c2055dc728e15e270e08b2050ead5359a884d0749fc2fab02c", "excerpt_sha256": "01e864acaf2271a55ea9d5adc7c05a87c8346f2f7f6e7d5f1d1a697816f19545"}, {"path": "estimate_geometry/observe_structure/code/observe_rgb_edges.py", "symbol": "observe_frame", "first": 94, "last": 121, "file_sha256": "16dad178329f6d590c738967a8520cfdb57fac840698fe593117e28f1a4af016", "excerpt_sha256": "2c96da9078f9b993d7f20ad449bce6d93036f5b521475526c31ce17f6d9a91b9"}, {"path": "estimate_geometry/refine_contours/code/problem.py", "symbol": "GeometryOnlyProblem.__init__", "first": 6, "last": 12, "file_sha256": "e6cb1a28362868ab91060b806a4027a1ab5c40cbd4f5ac982d2b82a4fc22418d", "excerpt_sha256": "ec9ac2e0644bb02b71ca4131a61b38ce963a1d5b095aba3a71328f4bf259267d"}, {"path": "estimate_geometry/refine_contours/code/portable_geometry.py", "symbol": "project", "first": 31, "last": 34, "file_sha256": "68d78b1e77e2c45a88cf03c04214c05621ad0561f6de9e90acdc2a5b6dcd1324", "excerpt_sha256": "226bf5c90cc8982037bca66f2440b60f9d333bb9a1c4a087a4d7cbbc2bc304fa"}, {"path": "estimate_geometry/refine_contours/code/portable_geometry.py", "symbol": "pose_row", "first": 24, "last": 30, "file_sha256": "68d78b1e77e2c45a88cf03c04214c05621ad0561f6de9e90acdc2a5b6dcd1324", "excerpt_sha256": "fd1b3bd543513d585272fa7a694d355dd8cd4805afe669bdba1c7e2b592f0d3c"}, {"path": "estimate_geometry/refine_contours/code/geometry_pool.py", "symbol": "GeometryPool.build", "first": 50, "last": 74, "file_sha256": "df1dbb377c4d457c7a172eeca7021fb63c4c6deff563a9f573fc76266b08a946", "excerpt_sha256": "ffab15e01263d275cadb3eacdaf947eb3fb5dad0977a87cacb3cb9a18e35ef77"}, {"path": "estimate_geometry/refine_contours/code/exterior_matching.py", "symbol": "match_observed", "first": 49, "last": 77, "file_sha256": "2ad049beb3013e8c7063cb89681acfee5f1cb7572fd2a0ac83ad72ba6fb540ec", "excerpt_sha256": "a552b6245b9bee4e0aae13773583a750449d6ba908a9fc1f57c4d7599fd89479"}, {"path": "estimate_geometry/refine_contours/code/refresh_associations.py", "symbol": "refresh", "first": 156, "last": 177, "file_sha256": "43ba4fe45732b2ca591f13802bdc0042cc7f6215e802cff0b6519030092dbd7a", "excerpt_sha256": "5c66ffa29ea2a807016b652a2cc9d0bf70b4a5a54a8086404591f6d70bcae9f8"}, {"path": "estimate_geometry/refine_contours/code/run_candidate.py", "symbol": "exterior_residual", "first": 15, "last": 25, "file_sha256": "1c37b5ed86c9f74a1bf4a95f5ac1cf6daaabeae976b76d2648b7da06f5fee6fb", "excerpt_sha256": "1bfad52ca14d4bcf5a86f735f5631dd69a502a86869c6bad9c992cd653c0660e"}, {"path": "estimate_geometry/refine_contours/code/run_candidate.py", "symbol": "solve_inner", "first": 39, "last": 46, "file_sha256": "1c37b5ed86c9f74a1bf4a95f5ac1cf6daaabeae976b76d2648b7da06f5fee6fb", "excerpt_sha256": "26934cf3f30555291ef082c47e50aa29d6e155cbb9381dde3ffa12d4b7703c26"}, {"path": "estimate_geometry/refine_contours/code/run_candidate.py", "symbol": "refreshed_backtracking", "first": 123, "last": 169, "file_sha256": "1c37b5ed86c9f74a1bf4a95f5ac1cf6daaabeae976b76d2648b7da06f5fee6fb", "excerpt_sha256": "daba1e9ad734aacb330d24cbe615ec94ea1a3aa1e3b22efc6cafdcd259023c95"}, {"path": "estimate_geometry/refine_contours/code/infer_frame.py", "symbol": "main", "first": 36, "last": 64, "file_sha256": "935eeddc6fca11caf5f765f71cff513a968f6afa6f6b392ae650481f0a13019f", "excerpt_sha256": "0e1a58fef83bc9ba750c1bddd2d9c9a0f02043dcd7f85fe916479cf39c036360"}, {"path": "estimate_geometry/refine_contours/code/infer_frame.py", "symbol": "main", "first": 57, "last": 74, "file_sha256": "935eeddc6fca11caf5f765f71cff513a968f6afa6f6b392ae650481f0a13019f", "excerpt_sha256": "8b12c97a7a8507e1be56a78888f9e8bede558c94cadc909d9af0e7ff27ccbb5f"}, {"path": "inspect_predictions/code/verify_replay.py", "symbol": "main", "first": 21, "last": 43, "file_sha256": "37a9c1cdd9215905e2531d7eef1f4556e11930ab5e8b087a8d13cd59d5f3eb7b", "excerpt_sha256": "cf080d2b518eb884c1b3fcb0d61c262ddf4d552a6362abd1838730729b257559"}, {"path": "estimate_geometry/code/src/collision.py", "symbol": "box_contact", "first": 9, "last": 33, "file_sha256": "11a627d02d6b8b1ebc23a656b34e6abe8a312f825e1e87a1aa23a68167d389a7", "excerpt_sha256": "84e422ca9f0acb1724612d0f68bc79d08ad46e222e44cbc27c0d2d4f6d78e549"}]</script><script>
+const sections=[...document.querySelectorAll('main section')];
+const links=[...document.querySelectorAll('nav a')];
+const up=document.getElementById('parent-link');
+const current=document.getElementById('where');
+function mark(id){const s=document.getElementById(id);if(!s)return;links.forEach(a=>a.classList.toggle('active',a.hash==='#'+id));up.href='#'+(s.dataset.parent||'home');current.textContent=s.dataset.short;const a=links.find(a=>a.hash==='#'+id);for(let p=a?.parentElement;p;p=p.parentElement){if(p.tagName==='DETAILS')p.open=true}}
+function showChapter(){const id=location.hash.slice(1)||'home';const target=document.getElementById(id);if(!target||target.tagName!=='SECTION')return;document.body.classList.add('browse');sections.forEach(s=>s.classList.toggle('current',s===target));mark(id);window.scrollTo({top:0,behavior:'instant'})}
+window.addEventListener('hashchange',showChapter);
+document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();links.forEach(a=>a.classList.toggle('hidden',q&&!a.textContent.toLowerCase().includes(q)));document.querySelectorAll('nav details').forEach(d=>{if(q)d.open=true})});
+document.getElementById('code-toggle').addEventListener('click',e=>{const ds=[...document.querySelectorAll('details.source')];const open=ds.some(d=>!d.open);ds.forEach(d=>d.open=open);e.target.textContent=open?'收起全部代码':'展开全部代码'});
+showChapter();
+</script></body></html>

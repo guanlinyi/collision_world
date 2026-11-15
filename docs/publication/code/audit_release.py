@@ -46,7 +46,7 @@ def main() -> None:
                 or path.name.endswith('_20261115.md')):
             forbidden.append(relative)
         content = path.read_bytes()
-        if path.suffix.lower() in {'.py','.js','.mjs','.cjs','.json','.md','.txt','.yaml','.yml','.toml','.sh','.ps1'}:
+        if path.suffix.lower() in {'.py','.js','.mjs','.cjs','.json','.md','.html','.txt','.yaml','.yml','.toml','.sh','.ps1'}:
             text = content.decode('utf-8-sig')
             if SECRET.search(text):
                 credentials.append(relative)
